@@ -101,7 +101,19 @@ class PersistentBottomNavBar extends StatelessWidget {
         showElevation: this.showElevation,
         isCurved: this.isCurved,
       );
-    } else {
+    } else if (navBarStyle == NavBarStyle.style7) {
+      return BottomNavStyle7(
+        items: this.items,
+        backgroundColor: this.backgroundColor,
+        iconSize: this.iconSize,
+        isIOS: this.isIOS,
+        navBarHeight: this.navBarHeight,
+        onItemSelected: this.onItemSelected,
+        selectedIndex: this.selectedIndex,
+        showElevation: this.showElevation,
+        isCurved: this.isCurved,
+      );
+    }else {
       return BottomNavSimple(
         items: this.items,
         backgroundColor: this.backgroundColor,

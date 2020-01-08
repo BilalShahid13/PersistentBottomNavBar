@@ -5,5 +5,6 @@ class NavBarStyle {
   static const style4 = "style4";
   static const style5 = "style5";
   static const style6 = "style6";
+  static const style7 = "style7";
   static const simple = "simple";
 }

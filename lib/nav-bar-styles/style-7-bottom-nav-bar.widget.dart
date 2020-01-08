@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-class BottomNavSimple extends StatelessWidget {
+class BottomNavStyle7 extends StatelessWidget {
   final int selectedIndex;
   final double iconSize;
   final Color backgroundColor;
@@ -13,13 +13,13 @@ class BottomNavSimple extends StatelessWidget {
   final bool isIOS;
   final bool isCurved;
 
-  BottomNavSimple(
+  BottomNavStyle7(
       {Key key,
       this.selectedIndex,
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
-      this.animationDuration = const Duration(milliseconds: 1000),
+      this.animationDuration = const Duration(milliseconds: 270),
       this.navBarHeight = 0.0,
       @required this.items,
       this.onItemSelected,
@@ -29,53 +29,59 @@ class BottomNavSimple extends StatelessWidget {
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
-      width: 150.0,
-      height: this.isIOS ? height / 2.0 : height,
+      width: isSelected ? 140 : 50,
+      height: this.isIOS ? height / 2.3 : height / 1.6,
       duration: animationDuration,
+      padding: EdgeInsets.all(item.contentPadding),
       decoration: BoxDecoration(
-        color: backgroundColor,
+        color: isSelected ? item.activeColor : backgroundColor,
+        borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
-      child: AnimatedContainer(
-        duration: animationDuration,
+      child: Container(
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.3 : height,
+        height: this.isIOS ? height / 2.3 : height / 1.6,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
           scrollDirection: Axis.horizontal,
           children: <Widget>[
-            Column(
+            Row(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Expanded(
+                Padding(
+                  padding: const EdgeInsets.only(right: 8),
                   child: IconTheme(
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
                             : item.inactiveColor == null
                                 ? item.activeColor
                                 : item.inactiveColor),
                     child: item.icon,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                        child: Text(
-                      item.title,
-                      style: TextStyle(
-                          color: isSelected
-                              ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
-                              : item.inactiveColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: item.titleFontSize),
-                    )),
-                  ),
-                )
+                isSelected
+                    ? Padding(
+                        padding: const EdgeInsets.only(top: 4.0),
+                        child: Material(
+                          type: MaterialType.transparency,
+                          child: FittedBox(
+                              child: Text(
+                            item.title,
+                            style: TextStyle(
+                                color: (item.activeContentColor == null
+                                    ? item.activeColor
+                                    : item.activeContentColor),
+                                fontWeight: FontWeight.w400,
+                                fontSize: item.titleFontSize),
+                          )),
+                        ),
+                      )
+                    : SizedBox.shrink()
               ],
             )
           ],
@@ -121,15 +127,14 @@ class BottomNavSimple extends StatelessWidget {
         height: _navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.07,
+                right: MediaQuery.of(context).size.width * 0.07,
                 top: _navBarHeight * 0.12,
                 bottom: _navBarHeight * 0.38,
               )
-            : EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.15,
+            : EdgeInsets.symmetric(
+                horizontal: MediaQuery.of(context).size.width * 0.07,
+                vertical: _navBarHeight * 0.15,
               ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -138,6 +143,7 @@ class BottomNavSimple extends StatelessWidget {
           children: items.map((item) {
             var index = items.indexOf(item);
             return Flexible(
+              flex: selectedIndex == index ? 2 : 1,
               child: GestureDetector(
                 onTap: () {
                   this.onItemSelected(index);

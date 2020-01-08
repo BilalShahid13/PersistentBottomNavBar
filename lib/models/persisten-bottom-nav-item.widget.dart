@@ -5,6 +5,7 @@ class PersistentBottomNavBarItem {
   final String title;
   final Color activeColor;
   final Color inactiveColor;
+  final Color activeContentColor;
   final double contentPadding;
   final double titleFontSize;
 
@@ -14,6 +15,7 @@ class PersistentBottomNavBarItem {
       this.titleFontSize = 14.0,
       this.contentPadding = 5.0,
       this.activeColor = CupertinoColors.activeBlue,
+      this.activeContentColor,
       this.inactiveColor}) {
     assert(icon != null);
     assert(title != null);
