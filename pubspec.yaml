@@ -3,7 +3,7 @@ description: A feature rich persistent bottom navigation bar for flutter
 
 homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
 respository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 0.0.2
+version: 0.0.3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

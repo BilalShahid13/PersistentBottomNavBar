@@ -6,9 +6,9 @@ A persistent bottom navigation bar for Flutter.
 
 - Persistent Bottom Navigation Bar.
 - Ability to push new screens with or without bottom navigation bar.
+- Includes platform specific behavior as an option (specify it in the two navigator functions).
 - 8 styles for the bottom navigation bar (includes BottomNavyBar style).
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
-- Includes platform specific behavior as an option (specify it in the two navigator functions).
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 
 ## Example
@@ -77,5 +77,32 @@ class MyApp extends StatelessWidget {
         ),
         ];
     }
+
+```
+
+To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. Additionally, `platform specific` behavior can be enabled or disabled from here (`disabled` by default).
+
+If `platform specific` is enabled while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is default behavior specified by each platform.
+
+```dart
+
+    pushNewScreen(
+        context: context,
+        screen: HomeScreen(),
+        platformSpecific: false, // OPTIONAL VALUE. False by default, which means the bottom nav bar will persist
+        withNavBar: true, // OPTIONAL VALUE. True by default.
+    );
+
+```
+
+```dart
+
+    pushNewScreenWithRouteSettings(
+        settings: RouteSettings(name: HomeScreen.routeName),
+        context: context,
+        screen: HomeScreen(),
+        platformSpecific: false,
+        withNavBar: true,
+    );
 
 ```
