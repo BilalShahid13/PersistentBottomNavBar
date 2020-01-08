@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
 
 To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. Additionally, `platform specific` behavior can be enabled or disabled from here (`disabled` by default).
 
-If `platform specific` is enabled while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is default behavior specified by each platform.
+If `platform specific` is enabled while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is the default behavior specified by each platform.
 
 ```dart
 
@@ -106,3 +106,5 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
     );
 
 ```
+
+For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.
