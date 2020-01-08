@@ -54,7 +54,9 @@ class BottomNavStyle3 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
                             : item.inactiveColor == null
                                 ? item.activeColor
                                 : item.inactiveColor),
@@ -68,7 +70,9 @@ class BottomNavStyle3 extends StatelessWidget {
                     child: DefaultTextStyle.merge(
                       style: TextStyle(
                           color: isSelected
-                              ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
                               : item.inactiveColor,
                           fontWeight: FontWeight.w400,
                           fontSize: item.titleFontSize),
@@ -128,7 +132,10 @@ class BottomNavStyle3 extends StatelessWidget {
                 AnimatedContainer(
                   duration: Duration(milliseconds: 300),
                   color: backgroundColor,
-                  width: selectedIndex == 0 ? MediaQuery.of(context).size.width * 0.0 : itemWidth * (selectedIndex) - MediaQuery.of(context).size.width * 0.025,
+                  width: selectedIndex == 0
+                      ? MediaQuery.of(context).size.width * 0.0
+                      : itemWidth * (selectedIndex) -
+                          MediaQuery.of(context).size.width * 0.025,
                   height: 4.0,
                 ),
                 Flexible(

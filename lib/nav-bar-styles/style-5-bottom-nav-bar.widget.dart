@@ -53,7 +53,9 @@ class BottomNavStyle5 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
                             : item.inactiveColor == null
                                 ? item.activeColor
                                 : item.inactiveColor),
@@ -65,8 +67,11 @@ class BottomNavStyle5 extends StatelessWidget {
                   width: 5.0,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.0),
-                      color:
-                          isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : Colors.transparent),
+                      color: isSelected
+                          ? (item.activeContentColor == null
+                              ? item.activeColor
+                              : item.activeContentColor)
+                          : Colors.transparent),
                 ),
               ],
             )

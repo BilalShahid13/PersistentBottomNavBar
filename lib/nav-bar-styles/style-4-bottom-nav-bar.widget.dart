@@ -53,7 +53,9 @@ class BottomNavStyle4 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
                             : item.inactiveColor == null
                                 ? item.activeColor
                                 : item.inactiveColor),
@@ -67,7 +69,9 @@ class BottomNavStyle4 extends StatelessWidget {
                     child: DefaultTextStyle.merge(
                       style: TextStyle(
                           color: isSelected
-                              ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
                               : item.inactiveColor,
                           fontWeight: FontWeight.w400,
                           fontSize: item.titleFontSize),

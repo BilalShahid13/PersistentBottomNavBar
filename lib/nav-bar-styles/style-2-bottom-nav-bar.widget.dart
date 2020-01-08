@@ -53,7 +53,9 @@ class BottomNavStyle2 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
                             : item.inactiveColor == null
                                 ? item.activeColor
                                 : item.inactiveColor),
@@ -68,7 +70,9 @@ class BottomNavStyle2 extends StatelessWidget {
                         child: Text(
                       isSelected ? item.title : " ",
                       style: TextStyle(
-                          color: (item.activeContentColor == null ? item.activeColor : item.activeContentColor),
+                          color: (item.activeContentColor == null
+                              ? item.activeColor
+                              : item.activeContentColor),
                           fontWeight: FontWeight.w400,
                           fontSize: item.titleFontSize),
                     )),
