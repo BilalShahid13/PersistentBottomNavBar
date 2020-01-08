@@ -78,7 +78,6 @@ class BottomNavStyle5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bgColor = (backgroundColor == null) ? Colors.white : backgroundColor;
     double _navBarHeight = 0.0;
     if (this.navBarHeight == 0.0) {
       if (this.isIOS) {
@@ -90,24 +89,12 @@ class BottomNavStyle5 extends StatelessWidget {
       _navBarHeight = this.navBarHeight;
     }
     return Container(
-      decoration: this.isCurved
-          ? BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0)),
-              boxShadow: [
-                if (showElevation)
-                  BoxShadow(color: Colors.black12, blurRadius: 2)
-              ],
-            )
-          : BoxDecoration(
-              color: bgColor,
-              boxShadow: [
-                if (showElevation)
-                  BoxShadow(color: Colors.black12, blurRadius: 2)
-              ],
-            ),
+      decoration: getNavBarDecoration(
+        backgroundColor:
+            (backgroundColor == null) ? Colors.white : backgroundColor,
+        isCurved: this.isCurved,
+        showElevation: this.showElevation,
+      ),
       child: Container(
         width: double.infinity,
         height: _navBarHeight,

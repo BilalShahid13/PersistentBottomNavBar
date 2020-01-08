@@ -73,33 +73,3 @@ class PersistentTabView extends StatelessWidget {
     );
   }
 }
-
-pushNewScreen(
-    {BuildContext context,
-    Widget screen,
-    bool withNavBar,
-    bool platformSpecific}) {
-  if (platformSpecific && withNavBar == null) {
-    withNavBar = Platform.isAndroid ? false : true;
-  } else {
-    withNavBar = true;
-  }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(
-      CupertinoPageRoute<void>(builder: (BuildContext context) => screen));
-}
-
-pushNewScreenWithRouteSettings(
-    {BuildContext context,
-    Widget screen,
-    RouteSettings settings,
-    bool withNavBar,
-    bool platformSpecific = false}) {
-  if (platformSpecific && withNavBar == null) {
-    withNavBar = Platform.isAndroid ? false : true;
-  } else {
-    withNavBar = true;
-  }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(
-      CupertinoPageRoute<void>(
-          settings: settings, builder: (BuildContext context) => screen));
-}

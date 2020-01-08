@@ -89,7 +89,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         showElevation: this.showElevation,
         isCurved: this.isCurved,
       );
-    }else if (navBarStyle == NavBarStyle.style6) {
+    } else if (navBarStyle == NavBarStyle.style6) {
       return BottomNavStyle6(
         items: this.items,
         backgroundColor: this.backgroundColor,
@@ -113,7 +113,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         showElevation: this.showElevation,
         isCurved: this.isCurved,
       );
-    }else {
+    } else {
       return BottomNavSimple(
         items: this.items,
         backgroundColor: this.backgroundColor,
