@@ -5,8 +5,16 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("This is Home Screen"),
+    return Scaffold(
+      backgroundColor: Colors.black12,
+      body: Container(
+        child: Center(
+          child: Text(
+            "This is Home Screen",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -16,8 +24,16 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text("This is Settings Screen"),
+    return Scaffold(
+      backgroundColor: Colors.black12,
+      body: Container(
+        child: Center(
+          child: Text(
+            "This is Settings Screen",
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }

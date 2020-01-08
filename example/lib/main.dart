@@ -61,10 +61,9 @@ class _MyHomePageState extends State<MyHomePage> {
       items: _navBarsItems(),
       screens: _buildScreens(),
       showElevation: true,
-      isCurved: false,
+      isCurved: true,
       iconSize: 26.0,
-      navBarStyle:
-          NavBarStyle.style1, // Choose the nav bar style with this property
+      navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
       onItemSelected: (index) {
         print(index);
       },
