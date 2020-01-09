@@ -5,7 +5,7 @@ pushNewScreen(
     {BuildContext context,
     Widget screen,
     bool withNavBar,
-    bool platformSpecific}) {
+    bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else {
