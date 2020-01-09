@@ -107,16 +107,14 @@ class BottomNavStyle2 extends StatelessWidget {
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.04
-                    : this.bottomPadding
-              )
+                    : this.bottomPadding)
             : EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
                 top: this.navBarHeight * 0.15,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.12
-                    : this.bottomPadding
-              ),
+                    : this.bottomPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment:
@@ -128,7 +126,8 @@ class BottomNavStyle2 extends StatelessWidget {
                 onTap: () {
                   this.onItemSelected(index);
                 },
-                child: _buildItem(item, selectedIndex == index, this.navBarHeight),
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
             );
           }).toList(),

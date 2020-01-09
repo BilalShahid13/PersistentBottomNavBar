@@ -1,6 +1,6 @@
-import 'package:example/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'screens.dart';
 
 void main() => runApp(MyApp());
 
@@ -63,7 +63,8 @@ class _MyHomePageState extends State<MyHomePage> {
       showElevation: true,
       isCurved: true,
       iconSize: 26.0,
-      navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
+      navBarStyle:
+          NavBarStyle.style1, // Choose the nav bar style with this property
       onItemSelected: (index) {
         print(index);
       },

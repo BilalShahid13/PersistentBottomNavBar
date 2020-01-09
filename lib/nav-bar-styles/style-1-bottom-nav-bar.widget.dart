@@ -111,8 +111,7 @@ class BottomNavStyle1 extends StatelessWidget {
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.38
-                    : this.bottomPadding
-              )
+                    : this.bottomPadding)
             : this.bottomPadding == null
                 ? EdgeInsets.symmetric(
                     horizontal: MediaQuery.of(context).size.width * 0.07,
@@ -135,7 +134,8 @@ class BottomNavStyle1 extends StatelessWidget {
                 onTap: () {
                   this.onItemSelected(index);
                 },
-                child: _buildItem(item, selectedIndex == index, this.navBarHeight),
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
             );
           }).toList(),
