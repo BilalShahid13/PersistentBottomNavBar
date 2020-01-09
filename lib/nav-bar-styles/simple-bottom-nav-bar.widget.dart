@@ -120,7 +120,7 @@ class BottomNavSimple extends StatelessWidget {
             : EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.15,
+                top: _navBarHeight * 0.2,
               ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
