@@ -11,7 +11,7 @@ A persistent bottom navigation bar for Flutter.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 
-## Example
+## Usage
 
 Persistent bottom navigation bar uses `PersistentTabController` as its controller. Here is how to declare it:
 
