@@ -1,9 +1,9 @@
 name: persistent_bottom_nav_bar
-description: A DO ALL persistent bottom navigation bar for flutter. It includes a total of 8 nav bar styles in addition to being optionally platform specific and ability to control bottom nav bar visibility.
+description: A DO ALL persistent bottom navigation bar for flutter. It includes a total of 8 nav bar styles in addition to being optionally platform specific.
 
 homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
 repository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 1.0.3
+version: 1.0.3+1
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
