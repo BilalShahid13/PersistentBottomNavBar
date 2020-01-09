@@ -13,10 +13,10 @@ class PersistentTabView extends StatelessWidget {
       this.showElevation = false,
       this.backgroundColor = CupertinoColors.white,
       this.iconSize = 26.0,
-      this.navBarHeight = 0.0,
       this.selectedIndex = 0,
       this.onItemSelected,
       this.isCurved = false,
+      this.bottomPadding,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
     assert(items != null);
@@ -24,41 +24,52 @@ class PersistentTabView extends StatelessWidget {
     assert(items.length >= 2 && items.length <= 5);
   }
 
+  ///List of persistent bottom navigation bar items to be displayed in the navigation bar.
   final List<PersistentBottomNavBarItem> items;
+
+  ///Screens that will be displayed on tapping of persistent bottom navigation bar items.
   final List<Widget> screens;
+
+  ///Controller for persistent bottom navigation bar. Will be declared if left empty.
   final PersistentTabController controller;
+
+  ///Background color of bottom navigation bar. `white` by default.
   final Color backgroundColor;
+
+  ///Show shadow on the upper part of the navigation bar to give it an elevated feel. `true` by default.
   final bool showElevation;
+
+  ///Icon size for the `persistent bottom navigation bar items`. `26.0` by default.
   final double iconSize;
-  final double navBarHeight;
+
+  ///Index of the page to be selected. `0` by default.
   final int selectedIndex;
+
+  ///Callback when page or tab change is detected.
   final ValueChanged<int> onItemSelected;
+
+  ///Curves the top corners of the persistent bottom navigation bar. `false` by default.
   final bool isCurved;
+
+  ///Style for persistent bottom navigation bar. Accepts `NavBarStyle` to determine the theme.
   final String navBarStyle;
+
+  ///Bottom `padding` for the persistent navigation bar items.
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
-    bool _isIOS = (Theme.of(context).platform == TargetPlatform.iOS &&
-            Device.get().isIphoneX) ||
-        (Theme.of(context).platform == TargetPlatform.iOS &&
-            Device.get().isTablet);
-    double _navBarHeight = 0.0;
-    if (this.navBarHeight == 0.0) {
-      _navBarHeight = _isIOS ? 90.0 : 60.0;
-    } else {
-      _navBarHeight = this.navBarHeight;
-    }
     return PersistentTabScaffold(
       controller: this.controller,
-      isIOS: _isIOS,
+      isIOS: isIOS(context),
       tabBar: PersistentBottomNavBar(
         showElevation: this.showElevation,
         items: this.items,
         backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
-        navBarHeight: _navBarHeight,
+        navBarHeight: isIOS(context) ? 90.0 : 60.0,
         selectedIndex: this.selectedIndex,
-        isIOS: _isIOS,
+        isIOS: isIOS(context),
         isCurved: isCurved,
         navBarStyle: this.navBarStyle,
         onItemSelected: (int index) {

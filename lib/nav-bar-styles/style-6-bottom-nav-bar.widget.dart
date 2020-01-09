@@ -12,6 +12,7 @@ class BottomNavStyle6 extends StatelessWidget {
   final double navBarHeight;
   final bool isIOS;
   final bool isCurved;
+  final double bottomPadding;
 
   BottomNavStyle6(
       {Key key,
@@ -23,6 +24,7 @@ class BottomNavStyle6 extends StatelessWidget {
       this.navBarHeight = 0.0,
       @required this.items,
       this.onItemSelected,
+      this.bottomPadding,
       this.isCurved,
       this.isIOS = true});
 
@@ -35,54 +37,57 @@ class BottomNavStyle6 extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor,
       ),
-      child: AnimatedContainer(
-        duration: animationDuration,
-        alignment: Alignment.center,
-        height: this.isIOS ? height / 2.0 : height,
-        child: ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
-          children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: isSelected ? (iconSize + 2) : (iconSize - 4.0),
-                        color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
-                    child: item.icon,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                        child: Text(
-                      item.title,
-                      style: TextStyle(
+      child: Transform.scale(
+        scale: isSelected ? 1.2 : 1.0,
+        child: AnimatedContainer(
+          duration: animationDuration,
+          alignment: Alignment.center,
+          height: this.isIOS ? height / 2.0 : height,
+          child: ListView(
+            shrinkWrap: true,
+            physics: NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.horizontal,
+            children: <Widget>[
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: IconTheme(
+                      data: IconThemeData(
+                          size: iconSize,
                           color: isSelected
                               ? (item.activeContentColor == null
                                   ? item.activeColor
                                   : item.activeContentColor)
-                              : item.inactiveColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: item.titleFontSize),
-                    )),
+                              : item.inactiveColor == null
+                                  ? item.activeColor
+                                  : item.inactiveColor),
+                      child: item.icon,
+                    ),
                   ),
-                )
-              ],
-            )
-          ],
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: FittedBox(
+                          child: Text(
+                        item.title,
+                        style: TextStyle(
+                            color: isSelected
+                                ? (item.activeContentColor == null
+                                    ? item.activeColor
+                                    : item.activeContentColor)
+                                : item.inactiveColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: item.titleFontSize),
+                      )),
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -90,16 +95,6 @@ class BottomNavStyle6 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _navBarHeight = 0.0;
-    if (this.navBarHeight == 0.0) {
-      if (this.isIOS) {
-        _navBarHeight = 90.0;
-      } else {
-        _navBarHeight = 50.0;
-      }
-    } else {
-      _navBarHeight = this.navBarHeight;
-    }
     return Container(
       decoration: getNavBarDecoration(
         backgroundColor:
@@ -109,19 +104,22 @@ class BottomNavStyle6 extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        height: _navBarHeight,
+        height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.12,
-                bottom: _navBarHeight * 0.38,
-              )
+                top: this.navBarHeight * 0.12,
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.38
+                    : this.bottomPadding)
             : EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.15,
-              ),
+                top: this.navBarHeight * 0.15,
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.12
+                    : this.bottomPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment:
@@ -133,7 +131,8 @@ class BottomNavStyle6 extends StatelessWidget {
                 onTap: () {
                   this.onItemSelected(index);
                 },
-                child: _buildItem(item, selectedIndex == index, _navBarHeight),
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
             );
           }).toList(),

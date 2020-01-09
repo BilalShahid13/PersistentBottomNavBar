@@ -12,6 +12,7 @@ class BottomNavStyle4 extends StatelessWidget {
   final double navBarHeight;
   final bool isIOS;
   final bool isCurved;
+  final double bottomPadding;
 
   BottomNavStyle4(
       {Key key,
@@ -23,6 +24,7 @@ class BottomNavStyle4 extends StatelessWidget {
       this.navBarHeight = 0.0,
       @required this.items,
       this.onItemSelected,
+      this.bottomPadding,
       this.isCurved,
       this.isIOS = true});
 
@@ -93,16 +95,6 @@ class BottomNavStyle4 extends StatelessWidget {
     Color selectedItemActiveColor = items[selectedIndex].activeColor;
     double itemWidth = (MediaQuery.of(context).size.width / items.length) -
         ((MediaQuery.of(context).size.width * 0.03) / 3);
-    double _navBarHeight = 0.0;
-    if (this.navBarHeight == 0.0) {
-      if (this.isIOS) {
-        _navBarHeight = 90.0;
-      } else {
-        _navBarHeight = 50.0;
-      }
-    } else {
-      _navBarHeight = this.navBarHeight;
-    }
     return Container(
       decoration: getNavBarDecoration(
         backgroundColor:
@@ -112,19 +104,21 @@ class BottomNavStyle4 extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        height: _navBarHeight,
+        height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
                 top: 1.0,
-                bottom: _navBarHeight * 0.34,
-              )
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.34
+                    : this.bottomPadding)
             : EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                bottom: _navBarHeight * 0.02,
-              ),
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.02
+                    : this.bottomPadding),
         child: Column(
           children: <Widget>[
             Row(
@@ -172,7 +166,7 @@ class BottomNavStyle4 extends StatelessWidget {
                           this.onItemSelected(index);
                         },
                         child: _buildItem(
-                            item, selectedIndex == index, _navBarHeight),
+                            item, selectedIndex == index, this.navBarHeight),
                       ),
                     );
                   }).toList(),

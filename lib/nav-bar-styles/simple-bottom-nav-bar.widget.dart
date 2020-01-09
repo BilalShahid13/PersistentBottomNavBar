@@ -12,6 +12,7 @@ class BottomNavSimple extends StatelessWidget {
   final double navBarHeight;
   final bool isIOS;
   final bool isCurved;
+  final double bottomPadding;
 
   BottomNavSimple(
       {Key key,
@@ -23,6 +24,7 @@ class BottomNavSimple extends StatelessWidget {
       this.navBarHeight = 0.0,
       @required this.items,
       this.onItemSelected,
+      this.bottomPadding,
       this.isCurved,
       this.isIOS = true});
 
@@ -90,16 +92,6 @@ class BottomNavSimple extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double _navBarHeight = 0.0;
-    if (this.navBarHeight == 0.0) {
-      if (this.isIOS) {
-        _navBarHeight = 90.0;
-      } else {
-        _navBarHeight = 50.0;
-      }
-    } else {
-      _navBarHeight = this.navBarHeight;
-    }
     return Container(
       decoration: getNavBarDecoration(
         backgroundColor:
@@ -109,19 +101,23 @@ class BottomNavSimple extends StatelessWidget {
       ),
       child: Container(
         width: double.infinity,
-        height: _navBarHeight,
+        height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.12,
-                bottom: _navBarHeight * 0.38,
+                top: this.navBarHeight * 0.12,
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.38
+                    : this.bottomPadding,
               )
             : EdgeInsets.only(
                 left: MediaQuery.of(context).size.width * 0.05,
                 right: MediaQuery.of(context).size.width * 0.05,
-                top: _navBarHeight * 0.2,
-              ),
+                top: this.navBarHeight * 0.15,
+                bottom: this.bottomPadding == null
+                    ? this.navBarHeight * 0.12
+                    : this.bottomPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment:
@@ -133,7 +129,8 @@ class BottomNavSimple extends StatelessWidget {
                 onTap: () {
                   this.onItemSelected(index);
                 },
-                child: _buildItem(item, selectedIndex == index, _navBarHeight),
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
             );
           }).toList(),

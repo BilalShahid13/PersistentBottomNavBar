@@ -1,6 +1,7 @@
 import '../persistent-tab-view.dart';
 
 class PersistentTabController extends ChangeNotifier {
+  ///TabBar Controller for `persistent_bottom_navigation_bar`.
   PersistentTabController({int initialIndex = 0})
       : _index = initialIndex,
         assert(initialIndex != null),

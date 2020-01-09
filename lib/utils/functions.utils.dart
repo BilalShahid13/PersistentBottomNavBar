@@ -58,3 +58,7 @@ BoxDecoration getNavBarDecoration(
                   color: backgroundColor,
                 );
 }
+
+bool isIOS(BuildContext context) =>
+    (Theme.of(context).platform == TargetPlatform.iOS &&
+        (Device.get().isIphoneX || Device.get().isTablet));
