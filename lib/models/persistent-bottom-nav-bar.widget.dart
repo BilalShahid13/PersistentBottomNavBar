@@ -13,6 +13,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.navBarHeight,
       this.onItemSelected,
       this.isCurved,
+      this.bottomPadding,
       this.navBarStyle})
       : super(key: key);
 
@@ -26,6 +27,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final bool isIOS;
   final String navBarStyle;
   final bool isCurved;
+  final double bottomPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -40,6 +42,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style2) {
       return BottomNavStyle2(
@@ -52,6 +55,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style3) {
       return BottomNavStyle3(
@@ -64,6 +68,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style4) {
       return BottomNavStyle4(
@@ -76,6 +81,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style5) {
       return BottomNavStyle5(
@@ -88,6 +94,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style6) {
       return BottomNavStyle6(
@@ -100,6 +107,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else if (navBarStyle == NavBarStyle.style7) {
       return BottomNavStyle7(
@@ -112,6 +120,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     } else {
       return BottomNavSimple(
@@ -124,6 +133,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
         isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
       );
     }
   }
@@ -139,6 +149,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     double navBarHeight,
     String navBarStyle,
     bool isCurved,
+    double bottomPadding
   }) {
     return PersistentBottomNavBar(
         selectedIndex: selectedIndex ?? this.selectedIndex,
@@ -150,6 +161,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: navBarHeight ?? this.navBarHeight,
         isIOS: isIOS ?? this.isIOS,
         navBarStyle: navBarStyle ?? this.navBarStyle,
+        bottomPadding: bottomPadding ?? this.bottomPadding,
         isCurved: isCurved ?? this.isCurved);
   }
 }

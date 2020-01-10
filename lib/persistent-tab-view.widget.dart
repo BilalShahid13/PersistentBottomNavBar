@@ -71,6 +71,7 @@ class PersistentTabView extends StatelessWidget {
         selectedIndex: this.selectedIndex,
         isIOS: isIOS(context),
         isCurved: isCurved,
+        bottomPadding: this.bottomPadding,
         navBarStyle: this.navBarStyle,
         onItemSelected: (int index) {
           this.onItemSelected(index);
