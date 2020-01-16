@@ -107,4 +107,17 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
 
 ```
 
+If you are pushing a new `modal` screen, use the following function:
+
+```dart
+
+    pushDynamicScreen(
+        context: context,
+        screen: HomeModalScreen(),
+        platformSpecific: false,
+        withNavBar: true,
+    );
+
+```
+
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.

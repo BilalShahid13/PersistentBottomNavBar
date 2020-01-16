@@ -15,6 +15,19 @@ pushNewScreen(
       CupertinoPageRoute<void>(builder: (BuildContext context) => screen));
 }
 
+pushDynamicScreen(
+    {BuildContext context,
+    dynamic screen,
+    bool withNavBar,
+    bool platformSpecific = false}) {
+  if (platformSpecific && withNavBar == null) {
+    withNavBar = Platform.isAndroid ? false : true;
+  } else if (withNavBar == null) {
+    withNavBar = true;
+  }
+  return Navigator.of(context, rootNavigator: !withNavBar).push(screen);
+}
+
 pushNewScreenWithRouteSettings(
     {BuildContext context,
     Widget screen,
