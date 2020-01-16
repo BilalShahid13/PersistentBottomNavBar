@@ -17,6 +17,7 @@ class PersistentTabView extends StatelessWidget {
       this.onItemSelected,
       this.isCurved = false,
       this.bottomPadding,
+      this.horizontalPadding,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
     assert(items != null);
@@ -54,8 +55,11 @@ class PersistentTabView extends StatelessWidget {
   ///Style for persistent bottom navigation bar. Accepts `NavBarStyle` to determine the theme.
   final String navBarStyle;
 
-  ///Bottom `padding` for the persistent navigation bar items.
+  ///Bottom `padding` for the persistent navigation bar items. \n\n`USE WITH CAUTION, CAN BREAK THE NAV BAR`.
   final double bottomPadding;
+
+  ///Horizontal `padding` for the persistent navigation bar items. \n\n`USE WITH CAUTION, CAN BREAK THE NAV BAR`.
+  final double horizontalPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -72,6 +76,7 @@ class PersistentTabView extends StatelessWidget {
         isIOS: isIOS(context),
         isCurved: isCurved,
         bottomPadding: this.bottomPadding,
+        horizontalPadding: this.horizontalPadding,
         navBarStyle: this.navBarStyle,
         onItemSelected: (int index) {
           this.onItemSelected(index);

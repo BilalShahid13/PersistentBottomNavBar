@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-class BottomNavSimple extends StatelessWidget {
+class BottomNavStyle8 extends StatelessWidget {
   final int selectedIndex;
   final double iconSize;
   final Color backgroundColor;
@@ -15,7 +15,7 @@ class BottomNavSimple extends StatelessWidget {
   final double bottomPadding;
   final double horizontalPadding;
 
-  BottomNavSimple(
+  BottomNavStyle8(
       {Key key,
       this.selectedIndex,
       this.showElevation = false,
@@ -26,8 +26,8 @@ class BottomNavSimple extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
-      this.isCurved,
       this.horizontalPadding,
+      this.isCurved,
       this.isIOS = true});
 
   Widget _buildItem(
@@ -42,7 +42,7 @@ class BottomNavSimple extends StatelessWidget {
       child: AnimatedContainer(
         duration: animationDuration,
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.3 : height,
+        height: this.isIOS ? height / 2.0 : height,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -66,22 +66,25 @@ class BottomNavSimple extends StatelessWidget {
                     child: item.icon,
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                        child: Text(
-                      item.title,
-                      style: TextStyle(
-                          color: isSelected
-                              ? (item.activeContentColor == null
-                                  ? item.activeColor
-                                  : item.activeContentColor)
-                              : item.inactiveColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: item.titleFontSize),
-                    )),
+                Transform.scale(
+                  scale: isSelected ? 1.2 : 1.0,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: FittedBox(
+                          child: Text(
+                        item.title,
+                        style: TextStyle(
+                            color: isSelected
+                                ? (item.activeContentColor == null
+                                    ? item.activeColor
+                                    : item.activeContentColor)
+                                : item.inactiveColor,
+                            fontWeight: FontWeight.w400,
+                            fontSize: item.titleFontSize),
+                      )),
+                    ),
                   ),
                 )
               ],
@@ -115,8 +118,7 @@ class BottomNavSimple extends StatelessWidget {
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.38
-                    : this.bottomPadding,
-              )
+                    : this.bottomPadding)
             : EdgeInsets.only(
                 left: this.horizontalPadding == null
                     ? MediaQuery.of(context).size.width * 0.04

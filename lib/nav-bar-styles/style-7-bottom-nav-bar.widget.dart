@@ -13,12 +13,14 @@ class BottomNavStyle7 extends StatelessWidget {
   final bool isIOS;
   final bool isCurved;
   final double bottomPadding;
+  final double horizontalPadding;
 
   BottomNavStyle7(
       {Key key,
       this.selectedIndex,
       this.showElevation = false,
       this.iconSize,
+      this.horizontalPadding,
       this.backgroundColor,
       this.animationDuration = const Duration(milliseconds: 270),
       this.navBarHeight = 0.0,
@@ -106,8 +108,12 @@ class BottomNavStyle7 extends StatelessWidget {
         height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.07,
-                right: MediaQuery.of(context).size.width * 0.07,
+                left: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
+                right: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.38
@@ -119,8 +125,12 @@ class BottomNavStyle7 extends StatelessWidget {
                   )
                 : EdgeInsets.only(
                     top: this.navBarHeight * 0.15,
-                    left: MediaQuery.of(context).size.width * 0.07,
-                    right: MediaQuery.of(context).size.width * 0.07,
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.07
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.07
+                        : this.horizontalPadding,
                     bottom: this.bottomPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

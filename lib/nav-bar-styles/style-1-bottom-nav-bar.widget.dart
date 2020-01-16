@@ -13,6 +13,7 @@ class BottomNavStyle1 extends StatelessWidget {
   final bool isIOS;
   final bool isCurved;
   final double bottomPadding;
+  final double horizontalPadding;
 
   BottomNavStyle1(
       {Key key,
@@ -26,6 +27,7 @@ class BottomNavStyle1 extends StatelessWidget {
       this.onItemSelected,
       this.bottomPadding,
       this.isCurved,
+      this.horizontalPadding,
       this.isIOS = true});
 
   Widget _buildItem(
@@ -106,21 +108,31 @@ class BottomNavStyle1 extends StatelessWidget {
         height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.07,
-                right: MediaQuery.of(context).size.width * 0.07,
+                left: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
+                right: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.38
                     : this.bottomPadding)
             : this.bottomPadding == null
                 ? EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.07,
+                    horizontal: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.07
+                        : this.horizontalPadding,
                     vertical: this.navBarHeight * 0.15,
                   )
                 : EdgeInsets.only(
                     top: this.navBarHeight * 0.15,
-                    left: MediaQuery.of(context).size.width * 0.07,
-                    right: MediaQuery.of(context).size.width * 0.07,
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.07
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.07
+                        : this.horizontalPadding,
                     bottom: this.bottomPadding),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,

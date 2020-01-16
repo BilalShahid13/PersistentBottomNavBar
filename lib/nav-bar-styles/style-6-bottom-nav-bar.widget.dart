@@ -13,6 +13,7 @@ class BottomNavStyle6 extends StatelessWidget {
   final bool isIOS;
   final bool isCurved;
   final double bottomPadding;
+  final double horizontalPadding;
 
   BottomNavStyle6(
       {Key key,
@@ -25,6 +26,7 @@ class BottomNavStyle6 extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
+      this.horizontalPadding,
       this.isCurved,
       this.isIOS = true});
 
@@ -107,15 +109,23 @@ class BottomNavStyle6 extends StatelessWidget {
         height: this.navBarHeight,
         padding: this.isIOS
             ? EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
+                left: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.04
+                    : this.horizontalPadding,
+                right: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.04
+                    : this.horizontalPadding,
                 top: this.navBarHeight * 0.12,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.38
                     : this.bottomPadding)
             : EdgeInsets.only(
-                left: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
+                left: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.04
+                    : this.horizontalPadding,
+                right: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.04
+                    : this.horizontalPadding,
                 top: this.navBarHeight * 0.15,
                 bottom: this.bottomPadding == null
                     ? this.navBarHeight * 0.12
