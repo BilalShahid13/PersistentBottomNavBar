@@ -11,8 +11,8 @@ Future<T> pushNewScreen<T extends Object>(
   } else if (withNavBar == null) {
     withNavBar = true;
   }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(
-      CupertinoPageRoute(builder: (BuildContext context) => screen));
+  return Navigator.of(context, rootNavigator: !withNavBar)
+      .push(CupertinoPageRoute(builder: (BuildContext context) => screen));
 }
 
 Future<T> pushDynamicScreen<T extends Object>(
