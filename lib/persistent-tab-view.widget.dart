@@ -1,9 +1,12 @@
-// Developed by Bilal Shahid
+// Author: Bilal Shahid
 // For queries, contact: bilalscheema@gmail.com
 
 import 'package:flutter/material.dart';
 import 'persistent-tab-view.dart';
 
+///A highly customizable persistent navigation bar for flutter.
+///
+///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
 class PersistentTabView extends StatelessWidget {
   PersistentTabView(
       {Key key,
@@ -41,6 +44,8 @@ class PersistentTabView extends StatelessWidget {
   final bool showElevation;
 
   ///Icon size for the `persistent bottom navigation bar items`. `26.0` by default.
+  ///
+  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double iconSize;
 
   ///Index of the page to be selected. `0` by default.
@@ -55,10 +60,14 @@ class PersistentTabView extends StatelessWidget {
   ///Style for persistent bottom navigation bar. Accepts `NavBarStyle` to determine the theme.
   final String navBarStyle;
 
-  ///Bottom `padding` for the persistent navigation bar items. \n\n`USE WITH CAUTION, CAN BREAK THE NAV BAR`.
+  ///Bottom `padding` for the persistent navigation bar items.
+  ///
+  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double bottomPadding;
 
-  ///Horizontal `padding` for the persistent navigation bar items. \n\n`USE WITH CAUTION, CAN BREAK THE NAV BAR`.
+  ///Horizontal `padding` for the persistent navigation bar items.
+  ///
+  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double horizontalPadding;
 
   @override

@@ -1,5 +1,6 @@
 import '../persistent-tab-view.dart';
 
+///An item widget for the `PersistentTabView`.
 class PersistentBottomNavBarItem {
   ///Icon for the bar item.
   final Widget icon;
@@ -17,9 +18,13 @@ class PersistentBottomNavBarItem {
   final Color activeContentColor;
 
   ///Padding of the navigation bar item. Applies on all sides. `5.0` by default.
+  ///
+  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double contentPadding;
 
   ///`title` property's font size. `12.0` by default.
+  ///
+  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double titleFontSize;
 
   PersistentBottomNavBarItem(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-pushNewScreen(
+Future<T> pushNewScreen<T extends Object>(
     {BuildContext context,
     Widget screen,
     bool withNavBar,
@@ -12,10 +12,10 @@ pushNewScreen(
     withNavBar = true;
   }
   return Navigator.of(context, rootNavigator: !withNavBar).push(
-      CupertinoPageRoute<void>(builder: (BuildContext context) => screen));
+      CupertinoPageRoute(builder: (BuildContext context) => screen));
 }
 
-pushDynamicScreen(
+Future<T> pushDynamicScreen<T extends Object>(
     {BuildContext context,
     dynamic screen,
     bool withNavBar,
@@ -28,7 +28,7 @@ pushDynamicScreen(
   return Navigator.of(context, rootNavigator: !withNavBar).push(screen);
 }
 
-pushNewScreenWithRouteSettings(
+Future<T> pushNewScreenWithRouteSettings<T extends Object>(
     {BuildContext context,
     Widget screen,
     RouteSettings settings,
@@ -40,7 +40,7 @@ pushNewScreenWithRouteSettings(
     withNavBar = true;
   }
   return Navigator.of(context, rootNavigator: !withNavBar).push(
-      CupertinoPageRoute<void>(
+      CupertinoPageRoute(
           settings: settings, builder: (BuildContext context) => screen));
 }
 
