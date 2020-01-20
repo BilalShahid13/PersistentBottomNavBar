@@ -7,7 +7,7 @@ A persistent bottom navigation bar for Flutter.
 - Highly customizable `persistent` bottom navigation bar.
 - Ability to push new screens with or without bottom navigation bar.
 - Includes platform specific behavior as an option (specify it in the two navigator functions).
-- 8 styles for the bottom navigation bar (includes BottomNavyBar style).
+- 11 styles for the bottom navigation bar (includes BottomNavyBar style).
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 

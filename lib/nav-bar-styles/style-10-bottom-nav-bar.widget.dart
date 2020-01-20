@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-class BottomNavStyle9 extends StatelessWidget {
+class BottomNavStyle10 extends StatelessWidget {
   final int selectedIndex;
   final double iconSize;
   final Color backgroundColor;
@@ -15,11 +15,12 @@ class BottomNavStyle9 extends StatelessWidget {
   final double bottomPadding;
   final double horizontalPadding;
 
-  BottomNavStyle9(
+  BottomNavStyle10(
       {Key key,
       this.selectedIndex,
       this.showElevation = false,
       this.iconSize,
+      this.horizontalPadding,
       this.backgroundColor,
       this.animationDuration = const Duration(milliseconds: 270),
       this.navBarHeight = 0.0,
@@ -27,24 +28,22 @@ class BottomNavStyle9 extends StatelessWidget {
       this.onItemSelected,
       this.bottomPadding,
       this.isCurved,
-      this.horizontalPadding,
       this.isIOS = true});
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
-      width: isSelected ? 120 : 50,
+      width: isSelected ? 140 : 50,
       height: this.isIOS ? height / 2.1 : height / 1.5,
       duration: animationDuration,
       padding: EdgeInsets.all(item.contentPadding),
       decoration: BoxDecoration(
-        color:
-            isSelected ? item.activeColor.withOpacity(0.15) : backgroundColor,
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        color: isSelected ? item.activeColor : backgroundColor,
+        borderRadius: BorderRadius.all(Radius.circular(50)),
       ),
       child: Container(
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.3 : height / 1.6,
+        height: this.isIOS ? height / 2.1 : height / 1.5,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -121,9 +120,7 @@ class BottomNavStyle9 extends StatelessWidget {
                     : this.bottomPadding)
             : this.bottomPadding == null
                 ? EdgeInsets.symmetric(
-                    horizontal: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.07
-                        : this.horizontalPadding,
+                    horizontal: MediaQuery.of(context).size.width * 0.07,
                     vertical: this.navBarHeight * 0.15,
                   )
                 : EdgeInsets.only(

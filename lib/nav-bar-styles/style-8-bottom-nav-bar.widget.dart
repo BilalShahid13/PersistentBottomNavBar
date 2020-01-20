@@ -67,7 +67,7 @@ class BottomNavStyle8 extends StatelessWidget {
                   ),
                 ),
                 Transform.scale(
-                  scale: isSelected ? 1.1 : 1.0,
+                  scale: isSelected ? 1.14 : 1.0,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Material(

@@ -7,4 +7,5 @@ export 'style-6-bottom-nav-bar.widget.dart';
 export 'style-7-bottom-nav-bar.widget.dart';
 export 'style-8-bottom-nav-bar.widget.dart';
 export 'style-9-bottom-nav-bar.widget.dart';
+export 'style-10-bottom-nav-bar.widget.dart';
 export 'simple-bottom-nav-bar.widget.dart';
