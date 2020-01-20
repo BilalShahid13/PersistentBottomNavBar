@@ -39,7 +39,7 @@ class BottomNavStyle10 extends StatelessWidget {
       padding: EdgeInsets.all(item.contentPadding),
       decoration: BoxDecoration(
         color: isSelected ? item.activeColor : backgroundColor,
-        borderRadius: BorderRadius.all(Radius.circular(50)),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
       ),
       child: Container(
         alignment: Alignment.center,
