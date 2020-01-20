@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
 Future<T> pushNewScreen<T extends Object>(
-    {BuildContext context,
+    BuildContext context,
     Widget screen,
-    bool withNavBar,
+    {bool withNavBar,
     bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
@@ -16,9 +16,9 @@ Future<T> pushNewScreen<T extends Object>(
 }
 
 Future<T> pushDynamicScreen<T extends Object>(
-    {BuildContext context,
+    BuildContext context,
     dynamic screen,
-    bool withNavBar,
+    {bool withNavBar,
     bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
@@ -29,10 +29,10 @@ Future<T> pushDynamicScreen<T extends Object>(
 }
 
 Future<T> pushNewScreenWithRouteSettings<T extends Object>(
-    {BuildContext context,
+    BuildContext context,
     Widget screen,
     RouteSettings settings,
-    bool withNavBar,
+    {bool withNavBar,
     bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
