@@ -87,7 +87,7 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
 ```dart
 
     pushNewScreen(
-        context: context,
+        context,
         screen: HomeScreen(),
         platformSpecific: false, // OPTIONAL VALUE. False by default, which means the bottom nav bar will persist
         withNavBar: true, // OPTIONAL VALUE. True by default.
@@ -98,8 +98,8 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
 ```dart
 
     pushNewScreenWithRouteSettings(
+        context,
         settings: RouteSettings(name: HomeScreen.routeName),
-        context: context,
         screen: HomeScreen(),
         platformSpecific: false,
         withNavBar: true,
@@ -112,7 +112,7 @@ If you are pushing a new `modal` screen, use the following function:
 ```dart
 
     pushDynamicScreen(
-        context: context,
+        context,
         screen: HomeModalScreen(),
         platformSpecific: false,
         withNavBar: true,
