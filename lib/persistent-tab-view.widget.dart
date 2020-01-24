@@ -87,13 +87,17 @@ class PersistentTabView extends StatelessWidget {
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
         navBarStyle: this.navBarStyle,
-        onItemSelected: (int index) {
-          this.onItemSelected(index);
-        },
+        onItemSelected: onItemSelected != null
+            ? (int index) {
+                this.onItemSelected(index);
+              }
+            : (int index) {
+                //DO NOTHING
+              },
       ),
       tabBuilder: (BuildContext context, int index) {
         return CupertinoTabView(builder: (BuildContext context) {
-          return screens[index];
+          return Material(child: screens[index]);
         });
       },
     );

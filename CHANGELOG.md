@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.8] - 2020-01-24
+
+- Fixed error thrown if `onItemSelected` was not declared.
+- Wrapped screens with `Material` for material elements.
+
 ## [1.0.7+4] - 2020-01-23
 
 - Updated README file.
@@ -27,7 +32,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.6+1] - 2020-01-20
 
-- Updated navigator functions' arguments.
+- Updated navigator functions' arguments `BREAKING CHANGE`.
 
 ## [1.0.6] - 2020-01-20
 
