@@ -63,10 +63,12 @@ class PersistentTabScaffold extends StatefulWidget {
 
 class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   PersistentTabController _controller;
+  int _selectedIndex;
 
   @override
   void initState() {
     super.initState();
+    _selectedIndex = 0;
     _updateTabController();
   }
 
@@ -127,7 +129,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
           EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
-    if (!widget.tabBar.opaque()) {
+    if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
     } else if (widget.tabBar.isCurved) {
       if (widget.isIOS) {
@@ -198,6 +200,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                   _controller.index = newIndex;
                   if (widget.tabBar.onItemSelected != null) {
                     setState(() {
+                      _selectedIndex = newIndex;
                       widget.tabBar.onItemSelected(newIndex);
                     });
                   }
