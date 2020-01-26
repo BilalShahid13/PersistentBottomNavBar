@@ -111,11 +111,8 @@ class BottomNavStyle4 extends StatelessWidget {
         filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
         child: Container(
           decoration: getNavBarDecoration(
-            backgroundColor: opaque()
-                ? (backgroundColor == null) ? Colors.white : backgroundColor
-                : (backgroundColor == null)
-                    ? Colors.white.withOpacity(0.7)
-                    : backgroundColor.withOpacity(0.7),
+            backgroundColor:
+                (backgroundColor == null) ? Colors.white : backgroundColor,
             isCurved: this.isCurved,
             showElevation: this.showElevation,
           ),
