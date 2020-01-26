@@ -68,7 +68,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   @override
   void initState() {
     super.initState();
-    _selectedIndex = 0;
+    _selectedIndex = widget.controller.index;
     _updateTabController();
   }
 
