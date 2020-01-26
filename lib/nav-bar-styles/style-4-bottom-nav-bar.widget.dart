@@ -105,97 +105,98 @@ class BottomNavStyle4 extends StatelessWidget {
     Color selectedItemActiveColor = items[selectedIndex].activeColor;
     double itemWidth = (MediaQuery.of(context).size.width / items.length) -
         ((MediaQuery.of(context).size.width * 0.03) / 3);
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-        child: Container(
-          decoration: getNavBarDecoration(
-            backgroundColor:
-                (backgroundColor == null) ? Colors.white : backgroundColor,
-            isCurved: this.isCurved,
-            showElevation: this.showElevation,
-          ),
+    return Container(
+      decoration: getNavBarDecoration(
+        isCurved: this.isCurved,
+        showElevation: this.showElevation,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            width: double.infinity,
-            height: this.navBarHeight,
-            padding: this.isIOS
-                ? EdgeInsets.only(
-                    left: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    right: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    top: 1.0,
-                    bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.34
-                        : this.bottomPadding)
-                : EdgeInsets.only(
-                    left: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    right: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.1
-                        : this.bottomPadding),
-            child: Column(
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    AnimatedContainer(
-                      duration: Duration(milliseconds: 300),
-                      color: backgroundColor,
-                      width: (selectedIndex == 0
-                          ? MediaQuery.of(context).size.width * 0.0
-                          : itemWidth * (selectedIndex) -
-                              MediaQuery.of(context).size.width * 0.025),
-                      height: 4.0,
-                    ),
-                    Flexible(
-                      child: AnimatedContainer(
+            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            child: Container(
+              width: double.infinity,
+              height: this.navBarHeight,
+              padding: this.isIOS
+                  ? EdgeInsets.only(
+                      left: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      right: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      top: 1.0,
+                      bottom: this.bottomPadding == null
+                          ? this.navBarHeight * 0.34
+                          : this.bottomPadding)
+                  : EdgeInsets.only(
+                      left: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      right: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      bottom: this.bottomPadding == null
+                          ? this.navBarHeight * 0.1
+                          : this.bottomPadding),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        width: itemWidth,
+                        color: backgroundColor,
+                        width: (selectedIndex == 0
+                            ? MediaQuery.of(context).size.width * 0.0
+                            : itemWidth * (selectedIndex) -
+                                MediaQuery.of(context).size.width * 0.025),
                         height: 4.0,
-                        alignment: Alignment.center,
-                        child: Container(
+                      ),
+                      Flexible(
+                        child: AnimatedContainer(
+                          duration: Duration(milliseconds: 300),
+                          width: itemWidth,
                           height: 4.0,
-                          width: itemWidth * 1.0,
-                          decoration: BoxDecoration(
-                            color: selectedItemActiveColor,
-                            borderRadius: BorderRadius.circular(100.0),
+                          alignment: Alignment.center,
+                          child: Container(
+                            height: 4.0,
+                            width: itemWidth * 1.0,
+                            decoration: BoxDecoration(
+                              color: selectedItemActiveColor,
+                              borderRadius: BorderRadius.circular(100.0),
+                            ),
                           ),
                         ),
+                      )
+                    ],
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 5.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: this.isIOS
+                            ? CrossAxisAlignment.start
+                            : CrossAxisAlignment.center,
+                        children: items.map((item) {
+                          var index = items.indexOf(item);
+                          return Flexible(
+                            child: GestureDetector(
+                              onTap: () {
+                                this.onItemSelected(index);
+                              },
+                              child: _buildItem(item, selectedIndex == index,
+                                  this.navBarHeight),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    )
-                  ],
-                ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 5.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: this.isIOS
-                          ? CrossAxisAlignment.start
-                          : CrossAxisAlignment.center,
-                      children: items.map((item) {
-                        var index = items.indexOf(item);
-                        return Flexible(
-                          child: GestureDetector(
-                            onTap: () {
-                              this.onItemSelected(index);
-                            },
-                            child: _buildItem(item, selectedIndex == index,
-                                this.navBarHeight),
-                          ),
-                        );
-                      }).toList(),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

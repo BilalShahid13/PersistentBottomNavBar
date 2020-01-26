@@ -95,60 +95,61 @@ class BottomNavStyle5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-        child: Container(
-          decoration: getNavBarDecoration(
-            backgroundColor:
-                (backgroundColor == null) ? Colors.white : backgroundColor,
-            isCurved: this.isCurved,
-            showElevation: this.showElevation,
-          ),
+    return Container(
+      decoration: getNavBarDecoration(
+        isCurved: this.isCurved,
+        showElevation: this.showElevation,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            width: double.infinity,
-            height: this.navBarHeight,
-            padding: this.isIOS
-                ? EdgeInsets.only(
-                    left: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    right: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    top: this.navBarHeight * 0.12,
-                    bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.04
-                        : this.bottomPadding)
-                : EdgeInsets.only(
-                    left: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    right: this.horizontalPadding == null
-                        ? MediaQuery.of(context).size.width * 0.05
-                        : this.horizontalPadding,
-                    top: this.navBarHeight * 0.06,
-                    bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.16
-                        : this.bottomPadding),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: this.isIOS
-                  ? CrossAxisAlignment.start
-                  : CrossAxisAlignment.center,
-              children: items.map((item) {
-                var index = items.indexOf(item);
-                return Flexible(
-                  child: GestureDetector(
-                    onTap: () {
-                      this.onItemSelected(index);
-                    },
-                    child: _buildItem(
-                        item, selectedIndex == index, this.navBarHeight),
-                  ),
-                );
-              }).toList(),
+            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            child: Container(
+              width: double.infinity,
+              height: this.navBarHeight,
+              padding: this.isIOS
+                  ? EdgeInsets.only(
+                      left: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      right: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      top: this.navBarHeight * 0.12,
+                      bottom: this.bottomPadding == null
+                          ? this.navBarHeight * 0.04
+                          : this.bottomPadding)
+                  : EdgeInsets.only(
+                      left: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      right: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.05
+                          : this.horizontalPadding,
+                      top: this.navBarHeight * 0.06,
+                      bottom: this.bottomPadding == null
+                          ? this.navBarHeight * 0.16
+                          : this.bottomPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: this.isIOS
+                    ? CrossAxisAlignment.start
+                    : CrossAxisAlignment.center,
+                children: items.map((item) {
+                  var index = items.indexOf(item);
+                  return Flexible(
+                    child: GestureDetector(
+                      onTap: () {
+                        this.onItemSelected(index);
+                      },
+                      child: _buildItem(
+                          item, selectedIndex == index, this.navBarHeight),
+                    ),
+                  );
+                }).toList(),
+              ),
             ),
           ),
         ),

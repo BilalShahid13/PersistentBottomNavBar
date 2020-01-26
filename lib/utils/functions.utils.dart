@@ -38,31 +38,24 @@ Future<T> pushNewScreenWithRouteSettings<T extends Object>(BuildContext context,
 }
 
 BoxDecoration getNavBarDecoration(
-    {bool showElevation = true,
-    bool isCurved = false,
-    @required Color backgroundColor}) {
+    {bool showElevation = true, bool isCurved = false}) {
   return isCurved && showElevation
       ? BoxDecoration(
-          color: backgroundColor,
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
         )
       : isCurved && !showElevation
           ? BoxDecoration(
-              color: backgroundColor,
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15.0),
                   topRight: Radius.circular(15.0)),
             )
           : !isCurved && showElevation
               ? BoxDecoration(
-                  color: backgroundColor,
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
                 )
-              : BoxDecoration(
-                  color: backgroundColor,
-                );
+              : BoxDecoration();
 }
 
 bool isIOS(BuildContext context) =>
