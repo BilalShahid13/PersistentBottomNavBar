@@ -27,7 +27,7 @@ class PersistentBottomNavBarItem {
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double titleFontSize;
 
-  ///Enables transparency effect when this tab is selected. 
+  ///Enables transparency effect when this tab is selected.
   ///
   ///`Warning: Removes bottomPadding`
   final bool isTranslucent;

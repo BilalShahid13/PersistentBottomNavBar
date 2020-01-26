@@ -127,10 +127,9 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
           EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
-    if(!widget.tabBar.opaque()) {
+    if (!widget.tabBar.opaque()) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
-    }
-    else if (widget.tabBar.isCurved) {
+    } else if (widget.tabBar.isCurved) {
       if (widget.isIOS) {
         if (widget.tabBar != null &&
             (!widget.resizeToAvoidBottomInset ||

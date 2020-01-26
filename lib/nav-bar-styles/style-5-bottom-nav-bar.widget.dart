@@ -32,7 +32,8 @@ class BottomNavStyle5 extends StatelessWidget {
       this.isCurved,
       this.isIOS = true});
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height) {
+  Widget _buildItem(
+      PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 150.0,
       height: this.isIOS ? height / 2.0 : height / 1,
@@ -55,8 +56,12 @@ class BottomNavStyle5 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
-                            : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
+                            : item.inactiveColor == null
+                                ? item.activeColor
+                                : item.inactiveColor),
                     child: item.icon,
                   ),
                 ),
@@ -65,7 +70,11 @@ class BottomNavStyle5 extends StatelessWidget {
                   width: 5.0,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(100.0),
-                      color: isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : Colors.transparent),
+                      color: isSelected
+                          ? (item.activeContentColor == null
+                              ? item.activeColor
+                              : item.activeContentColor)
+                          : Colors.transparent),
                 ),
               ],
             )
@@ -94,7 +103,9 @@ class BottomNavStyle5 extends StatelessWidget {
           decoration: getNavBarDecoration(
             backgroundColor: opaque()
                 ? (backgroundColor == null) ? Colors.white : backgroundColor
-                : (backgroundColor == null) ? Colors.white.withOpacity(0.7) : backgroundColor.withOpacity(0.7),
+                : (backgroundColor == null)
+                    ? Colors.white.withOpacity(0.7)
+                    : backgroundColor.withOpacity(0.7),
             isCurved: this.isCurved,
             showElevation: this.showElevation,
           ),
@@ -103,18 +114,32 @@ class BottomNavStyle5 extends StatelessWidget {
             height: this.navBarHeight,
             padding: this.isIOS
                 ? EdgeInsets.only(
-                    left: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                    right: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
                     top: this.navBarHeight * 0.12,
-                    bottom: this.bottomPadding == null ? this.navBarHeight * 0.04 : this.bottomPadding)
+                    bottom: this.bottomPadding == null
+                        ? this.navBarHeight * 0.04
+                        : this.bottomPadding)
                 : EdgeInsets.only(
-                    left: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                    right: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
                     top: this.navBarHeight * 0.06,
-                    bottom: this.bottomPadding == null ? this.navBarHeight * 0.16 : this.bottomPadding),
+                    bottom: this.bottomPadding == null
+                        ? this.navBarHeight * 0.16
+                        : this.bottomPadding),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: this.isIOS ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+              crossAxisAlignment: this.isIOS
+                  ? CrossAxisAlignment.start
+                  : CrossAxisAlignment.center,
               children: items.map((item) {
                 var index = items.indexOf(item);
                 return Flexible(
@@ -122,7 +147,8 @@ class BottomNavStyle5 extends StatelessWidget {
                     onTap: () {
                       this.onItemSelected(index);
                     },
-                    child: _buildItem(item, selectedIndex == index, this.navBarHeight),
+                    child: _buildItem(
+                        item, selectedIndex == index, this.navBarHeight),
                   ),
                 );
               }).toList(),

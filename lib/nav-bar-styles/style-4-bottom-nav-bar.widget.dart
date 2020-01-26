@@ -32,7 +32,8 @@ class BottomNavStyle4 extends StatelessWidget {
       this.isCurved,
       this.isIOS = true});
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height) {
+  Widget _buildItem(
+      PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 100.0,
       height: this.isIOS ? height / 2.0 : height,
@@ -55,8 +56,12 @@ class BottomNavStyle4 extends StatelessWidget {
                     data: IconThemeData(
                         size: iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
-                            : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
+                            : item.inactiveColor == null
+                                ? item.activeColor
+                                : item.inactiveColor),
                     child: item.icon,
                   ),
                 ),
@@ -66,10 +71,15 @@ class BottomNavStyle4 extends StatelessWidget {
                     type: MaterialType.transparency,
                     child: DefaultTextStyle.merge(
                       style: TextStyle(
-                          color: isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : item.inactiveColor,
+                          color: isSelected
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
+                              : item.inactiveColor,
                           fontWeight: FontWeight.w400,
                           fontSize: item.titleFontSize),
-                      child: FittedBox(child: Text(isSelected ? item.title : " ")),
+                      child:
+                          FittedBox(child: Text(isSelected ? item.title : " ")),
                     ),
                   ),
                 ),
@@ -93,7 +103,8 @@ class BottomNavStyle4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color selectedItemActiveColor = items[selectedIndex].activeColor;
-    double itemWidth = (MediaQuery.of(context).size.width / items.length) - ((MediaQuery.of(context).size.width * 0.03) / 3);
+    double itemWidth = (MediaQuery.of(context).size.width / items.length) -
+        ((MediaQuery.of(context).size.width * 0.03) / 3);
     return ClipRRect(
       borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
       child: BackdropFilter(
@@ -102,7 +113,9 @@ class BottomNavStyle4 extends StatelessWidget {
           decoration: getNavBarDecoration(
             backgroundColor: opaque()
                 ? (backgroundColor == null) ? Colors.white : backgroundColor
-                : (backgroundColor == null) ? Colors.white.withOpacity(0.7) : backgroundColor.withOpacity(0.7),
+                : (backgroundColor == null)
+                    ? Colors.white.withOpacity(0.7)
+                    : backgroundColor.withOpacity(0.7),
             isCurved: this.isCurved,
             showElevation: this.showElevation,
           ),
@@ -111,14 +124,26 @@ class BottomNavStyle4 extends StatelessWidget {
             height: this.navBarHeight,
             padding: this.isIOS
                 ? EdgeInsets.only(
-                    left: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                    right: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
                     top: 1.0,
-                    bottom: this.bottomPadding == null ? this.navBarHeight * 0.34 : this.bottomPadding)
+                    bottom: this.bottomPadding == null
+                        ? this.navBarHeight * 0.34
+                        : this.bottomPadding)
                 : EdgeInsets.only(
-                    left: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                    right: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                    bottom: this.bottomPadding == null ? this.navBarHeight * 0.02 : this.bottomPadding),
+                    left: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
+                    right: this.horizontalPadding == null
+                        ? MediaQuery.of(context).size.width * 0.05
+                        : this.horizontalPadding,
+                    bottom: this.bottomPadding == null
+                        ? this.navBarHeight * 0.02
+                        : this.bottomPadding),
             child: Column(
               children: <Widget>[
                 Row(
@@ -128,7 +153,8 @@ class BottomNavStyle4 extends StatelessWidget {
                       color: backgroundColor,
                       width: (selectedIndex == 0
                           ? MediaQuery.of(context).size.width * 0.0
-                          : itemWidth * (selectedIndex) - MediaQuery.of(context).size.width * 0.025),
+                          : itemWidth * (selectedIndex) -
+                              MediaQuery.of(context).size.width * 0.025),
                       height: 4.0,
                     ),
                     Flexible(
@@ -154,7 +180,9 @@ class BottomNavStyle4 extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 5.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      crossAxisAlignment: this.isIOS ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                      crossAxisAlignment: this.isIOS
+                          ? CrossAxisAlignment.start
+                          : CrossAxisAlignment.center,
                       children: items.map((item) {
                         var index = items.indexOf(item);
                         return Flexible(
@@ -162,7 +190,8 @@ class BottomNavStyle4 extends StatelessWidget {
                             onTap: () {
                               this.onItemSelected(index);
                             },
-                            child: _buildItem(item, selectedIndex == index, this.navBarHeight),
+                            child: _buildItem(item, selectedIndex == index,
+                                this.navBarHeight),
                           ),
                         );
                       }).toList(),
