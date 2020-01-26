@@ -27,11 +27,17 @@ class PersistentBottomNavBarItem {
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double titleFontSize;
 
+  ///Enables transparency effect when this tab is selected. 
+  ///
+  ///`Warning: Removes bottomPadding`
+  final bool isTranslucent;
+
   PersistentBottomNavBarItem(
       {@required this.icon,
       @required this.title,
       this.titleFontSize = 12.0,
       this.contentPadding = 5.0,
+      this.isTranslucent = false,
       this.activeColor = CupertinoColors.activeBlue,
       this.activeContentColor,
       this.inactiveColor}) {

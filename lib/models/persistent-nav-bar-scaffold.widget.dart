@@ -127,7 +127,10 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
           EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
-    if (widget.tabBar.isCurved) {
+    if(!widget.tabBar.opaque()) {
+      contentPadding = EdgeInsets.only(bottom: 0.0);
+    }
+    else if (widget.tabBar.isCurved) {
       if (widget.isIOS) {
         if (widget.tabBar != null &&
             (!widget.resizeToAvoidBottomInset ||
@@ -182,7 +185,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                 topRight: Radius.circular(15.0),
               ),
             )
-          : BoxDecoration(color: CupertinoColors.white),
+          : BoxDecoration(color: CupertinoColors.white.withOpacity(0.0)),
       child: Stack(
         children: <Widget>[
           content,

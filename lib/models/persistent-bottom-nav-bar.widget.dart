@@ -31,6 +31,10 @@ class PersistentBottomNavBar extends StatelessWidget {
   final double bottomPadding;
   final double horizontalPadding;
 
+  bool opaque() {
+    return !items[selectedIndex].isTranslucent;
+  }
+
   @override
   Widget build(BuildContext context) {
     if (navBarStyle == NavBarStyle.style1) {
