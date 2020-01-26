@@ -36,12 +36,12 @@ class BottomNavStyle4 extends StatelessWidget {
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 100.0,
-      height: this.isIOS ? height / 2.0 : height,
+      height: this.isIOS ? height / 1.8 : height,
       duration: animationDuration,
       child: AnimatedContainer(
         duration: animationDuration,
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.0 : height / 1.6,
+        height: this.isIOS ? height / 1.8 : height / 1.6,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -139,7 +139,7 @@ class BottomNavStyle4 extends StatelessWidget {
                         ? MediaQuery.of(context).size.width * 0.05
                         : this.horizontalPadding,
                     bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.02
+                        ? this.navBarHeight * 0.1
                         : this.bottomPadding),
             child: Column(
               children: <Widget>[

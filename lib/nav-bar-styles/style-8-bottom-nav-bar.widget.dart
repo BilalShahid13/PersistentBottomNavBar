@@ -36,10 +36,10 @@ class BottomNavStyle8 extends StatelessWidget {
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return Container(
       width: 150.0,
-      height: this.isIOS ? height / 2.0 : height,
+      height: this.isIOS ? height / 2.2 : height,
       child: Container(
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.0 : height,
+        height: this.isIOS ? height / 2.2 : height,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -64,7 +64,7 @@ class BottomNavStyle8 extends StatelessWidget {
                   ),
                 ),
                 Transform.scale(
-                  scale: isSelected ? 1.16 : 0.95,
+                  scale: isSelected ? 1.2 : 0.95,
                   child: Padding(
                     padding: const EdgeInsets.only(top: 15.0),
                     child: Material(
@@ -127,7 +127,7 @@ class BottomNavStyle8 extends StatelessWidget {
                         : this.horizontalPadding,
                     top: this.navBarHeight * 0.12,
                     bottom: this.bottomPadding == null
-                        ? this.navBarHeight * 0.38
+                        ? this.navBarHeight * 0.36
                         : this.bottomPadding)
                 : EdgeInsets.only(
                     left: this.horizontalPadding == null

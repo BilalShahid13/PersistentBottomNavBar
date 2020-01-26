@@ -45,14 +45,14 @@ class BottomNavStyle6 extends StatelessWidget {
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 150.0,
-      height: this.isIOS ? height / 2.0 : height,
+      height: this.isIOS ? height / 1.5 : height,
       duration: animationDuration,
       child: Transform.scale(
-        scale: isSelected ? 1.2 : 0.95,
+        scale: isSelected ? 1.18 : 0.95,
         child: AnimatedContainer(
           duration: animationDuration,
           alignment: Alignment.center,
-          height: this.isIOS ? height / 2.0 : height,
+          height: this.isIOS ? height / 1.5 : height,
           child: ListView(
             shrinkWrap: true,
             physics: NeverScrollableScrollPhysics(),

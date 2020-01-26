@@ -36,12 +36,12 @@ class BottomNavSimple extends StatelessWidget {
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 150.0,
-      height: this.isIOS ? height / 2.0 : height,
+      height: this.isIOS ? height / 1.8 : height,
       duration: animationDuration,
       child: AnimatedContainer(
         duration: animationDuration,
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.3 : height,
+        height: this.isIOS ? height / 1.8 : height,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
