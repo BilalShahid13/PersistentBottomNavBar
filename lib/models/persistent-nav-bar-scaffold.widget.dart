@@ -196,8 +196,11 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                 selectedIndex: _controller.index,
                 onItemSelected: (int newIndex) {
                   _controller.index = newIndex;
-                  if (widget.tabBar.onItemSelected != null)
-                    widget.tabBar.onItemSelected(newIndex);
+                  if (widget.tabBar.onItemSelected != null) {
+                    setState(() {
+                      widget.tabBar.onItemSelected(newIndex);
+                    });
+                  }
                 },
               ),
             ),
