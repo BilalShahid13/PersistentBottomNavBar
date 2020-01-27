@@ -64,11 +64,13 @@ class PersistentTabScaffold extends StatefulWidget {
 class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   PersistentTabController _controller;
   int _selectedIndex;
+  bool _isTapAction;
 
   @override
   void initState() {
     super.initState();
     _selectedIndex = widget.controller.index;
+    _isTapAction = false;
     _updateTabController();
   }
 
@@ -114,7 +116,11 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   Widget build(BuildContext context) {
     final MediaQueryData existingMediaQuery = MediaQuery.of(context);
     MediaQueryData newMediaQuery = MediaQuery.of(context);
-
+    if (_isTapAction) {
+      _isTapAction = false;
+    } else {
+      _selectedIndex = widget.tabBar.selectedIndex;
+    }
     Widget content = _TabSwitchingView(
       currentTabIndex: _controller.index,
       tabCount: widget.tabBar.items.length,
@@ -201,6 +207,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                   if (widget.tabBar.onItemSelected != null) {
                     setState(() {
                       _selectedIndex = newIndex;
+                      _isTapAction = true;
                       widget.tabBar.onItemSelected(newIndex);
                     });
                   }
