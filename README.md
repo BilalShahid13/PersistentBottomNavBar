@@ -38,8 +38,7 @@ A persistent bottom navigation bar for Flutter.
 
 ![neumorphic1](gifs/neumorphic2.gif)
 
-
-`Note: These doesn't include all style variations.`
+Note: These doesn't include all style variations.
 
 ## Features
 
