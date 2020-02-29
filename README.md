@@ -1,5 +1,7 @@
 # persistent_bottom_nav_bar
 
+[![pub package](https://pub.dev/packages/persistent_bottom_nav_bar)](https://pub.dev/packages/persistent_bottom_nav_bar)
+
 A persistent bottom navigation bar for Flutter.
 
 ![Persistent Behavior](gifs/persistent.gif)
