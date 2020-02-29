@@ -2,14 +2,28 @@
 
 A persistent bottom navigation bar for Flutter.
 
+![Persistent Behavior](horizontal.gif)
+
+## Styles
+
+![neumorphic2](neumorphic2.gif)\
+![style1](style1.gif)\
+![style3](style3.gif)\
+![style5](style5.gif)\
+![style6](style6.gif)\
+![style7](style7.gif)\
+![style8](style8.gif)\
+![neumorphic1](neumorphic2.gif)\
+
 ## Features
 
 - Highly customizable `persistent` bottom navigation bar.
 - Ability to push new screens with or without bottom navigation bar.
 - Includes platform specific behavior as an option (specify it in the two navigator functions).
-- 11 styles for the bottom navigation bar (includes BottomNavyBar style).
+- 11 styles for the bottom navigation bar (includes `BottomNavyBar` and `Neumorphic` style).
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
+- Can be `translucent` for a particular tab.
 
 ## Usage
 

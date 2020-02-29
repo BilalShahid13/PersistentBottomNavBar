@@ -15,6 +15,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.isCurved,
       this.bottomPadding,
       this.horizontalPadding,
+      this.neumorphicProperties = const NeumorphicProperties(),
       this.navBarStyle})
       : super(key: key);
 
@@ -26,10 +27,11 @@ class PersistentBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final bool isIOS;
-  final String navBarStyle;
+  final NavBarStyle navBarStyle;
   final bool isCurved;
   final double bottomPadding;
   final double horizontalPadding;
+  final NeumorphicProperties neumorphicProperties;
 
   bool opaque(int index) {
     return !items[index].isTranslucent;
@@ -177,6 +179,21 @@ class PersistentBottomNavBar extends StatelessWidget {
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
+    } else if (navBarStyle == NavBarStyle.neumorphic) {
+      return NeumorphicBottomNavBar(
+        items: this.items,
+        backgroundColor: this.backgroundColor,
+        iconSize: this.iconSize,
+        isIOS: this.isIOS,
+        navBarHeight: this.navBarHeight,
+        onItemSelected: this.onItemSelected,
+        selectedIndex: this.selectedIndex,
+        showElevation: this.showElevation,
+        isCurved: this.isCurved,
+        bottomPadding: this.bottomPadding,
+        horizontalPadding: this.horizontalPadding,
+        neumorphicProperties: this.neumorphicProperties,
+      );
     } else {
       return BottomNavSimple(
         items: this.items,
@@ -203,9 +220,10 @@ class PersistentBottomNavBar extends StatelessWidget {
       List<PersistentBottomNavBarItem> items,
       ValueChanged<int> onItemSelected,
       double navBarHeight,
-      String navBarStyle,
+      NavBarStyle navBarStyle,
       bool isCurved,
       double horizontalPadding,
+      NeumorphicProperties neumorphicProperties,
       double bottomPadding}) {
     return PersistentBottomNavBar(
         selectedIndex: selectedIndex ?? this.selectedIndex,
@@ -216,6 +234,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: onItemSelected ?? this.onItemSelected,
         navBarHeight: navBarHeight ?? this.navBarHeight,
         isIOS: isIOS ?? this.isIOS,
+        neumorphicProperties: neumorphicProperties ?? this.neumorphicProperties,
         navBarStyle: navBarStyle ?? this.navBarStyle,
         bottomPadding: bottomPadding ?? this.bottomPadding,
         horizontalPadding: horizontalPadding ?? this.horizontalPadding,

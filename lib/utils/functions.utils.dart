@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
 Future<T> pushNewScreen<T extends Object>(BuildContext context,
-    {Widget screen, bool withNavBar, bool platformSpecific = false}) {
+    {@required Widget screen, bool withNavBar, bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else if (withNavBar == null) {
@@ -13,7 +13,7 @@ Future<T> pushNewScreen<T extends Object>(BuildContext context,
 }
 
 Future<T> pushDynamicScreen<T extends Object>(BuildContext context,
-    {dynamic screen, bool withNavBar, bool platformSpecific = false}) {
+    {@required dynamic screen, bool withNavBar, bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else if (withNavBar == null) {
@@ -23,8 +23,8 @@ Future<T> pushDynamicScreen<T extends Object>(BuildContext context,
 }
 
 Future<T> pushNewScreenWithRouteSettings<T extends Object>(BuildContext context,
-    {Widget screen,
-    RouteSettings settings,
+    {@required Widget screen,
+    @required RouteSettings settings,
     bool withNavBar,
     bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
@@ -61,3 +61,37 @@ BoxDecoration getNavBarDecoration(
 bool isIOS(BuildContext context) =>
     (Theme.of(context).platform == TargetPlatform.iOS &&
         (Device.get().isIphoneX || Device.get().isTablet));
+
+bool isColorOpaque(BuildContext context, Color color) {
+    final Color backgroundColor =
+        color ?? CupertinoTheme.of(context).barBackgroundColor;
+    return CupertinoDynamicColor.resolve(backgroundColor, context).alpha == 0xFF;
+  }
+
+bool opaque(List<PersistentBottomNavBarItem> items, int selectedIndex) {
+    for (int i = 0; i < items.length; ++i) {
+      if (items[i].isTranslucent && i == selectedIndex) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  double getTranslucencyAmount(List<PersistentBottomNavBarItem> items, int selectedIndex) {
+    for (int i = 0; i < items.length; ++i) {
+      if (items[i].isTranslucent && i == selectedIndex) {
+        return items[i].translucencyPercentage / 100.0;
+      }
+    }
+    return 1.0;
+  }
+
+  Color getBackgroundColor(BuildContext context, List<PersistentBottomNavBarItem> items, Color color, int selectedIndex) {
+    if (color == null) {
+      return Colors.white;
+    } else if (!opaque(items, selectedIndex) && isColorOpaque(context, color)) {
+      return color.withOpacity(getTranslucencyAmount(items, selectedIndex));
+    } else {
+      return color;
+    }
+  }

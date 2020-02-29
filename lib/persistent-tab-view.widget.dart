@@ -21,10 +21,12 @@ class PersistentTabView extends StatelessWidget {
       this.isCurved = false,
       this.bottomPadding,
       this.horizontalPadding,
+      this.neumorphicProperties,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
     assert(items != null);
     assert(screens != null);
+    assert(items.length == screens.length);
     assert(items.length >= 2 && items.length <= 5);
   }
 
@@ -58,7 +60,7 @@ class PersistentTabView extends StatelessWidget {
   final bool isCurved;
 
   ///Style for persistent bottom navigation bar. Accepts `NavBarStyle` to determine the theme.
-  final String navBarStyle;
+  final NavBarStyle navBarStyle;
 
   ///Bottom `padding` for the persistent navigation bar items.
   ///
@@ -69,6 +71,11 @@ class PersistentTabView extends StatelessWidget {
   ///
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double horizontalPadding;
+
+  ///Style the `neumorphic` navigation bar item. 
+  ///
+  ///Works only with style `neumorphic`.
+  final NeumorphicProperties neumorphicProperties;
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +94,7 @@ class PersistentTabView extends StatelessWidget {
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
         navBarStyle: this.navBarStyle,
+        neumorphicProperties: this.neumorphicProperties,
         onItemSelected: onItemSelected != null
             ? (int index) {
                 this.onItemSelected(index);

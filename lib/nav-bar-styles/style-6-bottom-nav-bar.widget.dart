@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-class BottomNavStyle6 extends StatelessWidget {
+class BottomNavStyle6 extends StatefulWidget {
   final int selectedIndex;
   final double iconSize;
   final Color backgroundColor;
@@ -32,71 +32,77 @@ class BottomNavStyle6 extends StatelessWidget {
       this.isCurved,
       this.isIOS = true});
 
-  bool opaque() {
-    for (int i = 0; i < items.length; ++i) {
-      if (items[i].isTranslucent) {
-        return false;
-      }
+  @override
+  _BottomNavStyle6State createState() => _BottomNavStyle6State();
+}
+
+class _BottomNavStyle6State extends State<BottomNavStyle6> with TickerProviderStateMixin {
+  List<AnimationController> _animationControllerList;
+  List<Animation<double>> _animationList;
+
+  int _lastSelectedIndex;
+  int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _lastSelectedIndex = 0;
+    _selectedIndex = 0;
+    _animationControllerList = List<AnimationController>();
+    _animationList = List<Animation<double>>();
+
+    for (int i = 0; i < widget.items.length; ++i) {
+      _animationControllerList.add(AnimationController(duration: Duration(milliseconds: 400), vsync: this));
+      _animationList.add(Tween(begin: 0.95, end: 1.18).chain(CurveTween(curve: Curves.ease)).animate(_animationControllerList[i]));
     }
-    return true;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationControllerList[_selectedIndex].forward();
+    });
   }
 
-  Widget _buildItem(
-      PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return AnimatedContainer(
-      width: 150.0,
-      height: this.isIOS ? height / 1.5 : height,
-      duration: animationDuration,
-      child: Transform.scale(
-        scale: isSelected ? 1.18 : 0.95,
-        child: AnimatedContainer(
-          duration: animationDuration,
-          alignment: Alignment.center,
-          height: this.isIOS ? height / 1.5 : height,
-          child: ListView(
-            shrinkWrap: true,
-            physics: NeverScrollableScrollPhysics(),
-            scrollDirection: Axis.horizontal,
-            children: <Widget>[
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: IconTheme(
-                      data: IconThemeData(
-                          size: iconSize,
-                          color: isSelected
-                              ? (item.activeContentColor == null
-                                  ? item.activeColor
-                                  : item.activeContentColor)
-                              : item.inactiveColor == null
-                                  ? item.activeColor
-                                  : item.inactiveColor),
-                      child: item.icon,
-                    ),
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height, int itemIndex) {
+    return AnimatedBuilder(
+      animation: _animationList[itemIndex],
+      builder: (context, child) => Transform.scale(
+        scale: _animationList[itemIndex].value,
+        child: Container(
+          width: 150.0,
+          height: widget.isIOS ? height / 1.8 : height,
+          child: Container(
+            alignment: Alignment.center,
+            height: widget.isIOS ? height / 1.8 : height,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: IconTheme(
+                    data: IconThemeData(
+                        size: widget.iconSize,
+                        color: isSelected
+                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
+                    child: item.icon,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    child: Material(
-                      type: MaterialType.transparency,
-                      child: FittedBox(
-                          child: Text(
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0),
+                  child: Material(
+                    type: MaterialType.transparency,
+                    child: FittedBox(
+                      child: Text(
                         item.title,
                         style: TextStyle(
-                            color: isSelected
-                                ? (item.activeContentColor == null
-                                    ? item.activeColor
-                                    : item.activeContentColor)
-                                : item.inactiveColor,
+                            color: isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : item.inactiveColor,
                             fontWeight: FontWeight.w400,
                             fontSize: item.titleFontSize),
-                      )),
+                      ),
                     ),
-                  )
-                ],
-              )
-            ],
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,55 +113,44 @@ class BottomNavStyle6 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: getNavBarDecoration(
-        isCurved: this.isCurved,
-        showElevation: this.showElevation,
+        isCurved: widget.isCurved,
+        showElevation: widget.showElevation,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
+        borderRadius: BorderRadius.circular(widget.isCurved ? 15.0 : 0.0),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            color: getBackgroundColor(context, widget.items, widget.backgroundColor, widget.selectedIndex),
             child: Container(
               width: double.infinity,
-              height: this.navBarHeight,
-              padding: this.isIOS
+              height: widget.navBarHeight,
+              padding: widget.isIOS
                   ? EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.12,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.38
-                          : this.bottomPadding)
+                      left: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                      right: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                      top: widget.navBarHeight * 0.12,
+                      bottom: widget.bottomPadding == null ? widget.navBarHeight * 0.36 : widget.bottomPadding)
                   : EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.15,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.12
-                          : this.bottomPadding),
+                      left: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                      right: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                      top: widget.navBarHeight * 0.15,
+                      bottom: widget.bottomPadding == null ? widget.navBarHeight * 0.12 : widget.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: this.isIOS
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
+                crossAxisAlignment: widget.isIOS ? CrossAxisAlignment.start : CrossAxisAlignment.center,
+                children: widget.items.map((item) {
+                  var index = widget.items.indexOf(item);
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        this.onItemSelected(index);
+                        _lastSelectedIndex = _selectedIndex;
+                        _selectedIndex = index;
+                        _animationControllerList[_selectedIndex].forward();
+                        _animationControllerList[_lastSelectedIndex].reverse();
+                        widget.onItemSelected(index);
                       },
-                      child: _buildItem(
-                          item, selectedIndex == index, this.navBarHeight),
+                      child: _buildItem(item, widget.selectedIndex == index, widget.navBarHeight, index),
                     ),
                   );
                 }).toList(),

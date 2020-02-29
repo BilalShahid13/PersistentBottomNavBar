@@ -29,8 +29,13 @@ class PersistentBottomNavBarItem {
 
   ///Enables transparency effect when this tab is selected.
   ///
-  ///`Warning: Removes bottomPadding`
+  ///`Warning: Screen will cover the entire extent of the display`
   final bool isTranslucent;
+
+  ///Controls the amount of translucency.
+  ///
+  ///`isTranslucent` must be set to `true` to make the effect visible.
+  final double translucencyPercentage;
 
   PersistentBottomNavBarItem(
       {@required this.icon,
@@ -40,8 +45,10 @@ class PersistentBottomNavBarItem {
       this.isTranslucent = false,
       this.activeColor = CupertinoColors.activeBlue,
       this.activeContentColor,
+      this.translucencyPercentage = 75.0,
       this.inactiveColor}) {
     assert(icon != null);
+    assert(translucencyPercentage >= 0 && translucencyPercentage <= 100);
     assert(title != null);
   }
 }

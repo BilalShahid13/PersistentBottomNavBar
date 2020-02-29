@@ -91,15 +91,6 @@ class BottomNavSimple extends StatelessWidget {
     );
   }
 
-  bool opaque() {
-    for (int i = 0; i < items.length; ++i) {
-      if (items[i].isTranslucent) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -112,7 +103,7 @@ class BottomNavSimple extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,

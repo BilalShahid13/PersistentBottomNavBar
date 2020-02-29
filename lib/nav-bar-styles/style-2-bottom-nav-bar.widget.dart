@@ -42,60 +42,44 @@ class BottomNavStyle2 extends StatelessWidget {
         duration: animationDuration,
         alignment: Alignment.center,
         height: this.isIOS ? height / 1.8 : height / 1,
-        child: ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: iconSize,
-                        color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
-                    child: item.icon,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                        child: Text(
-                      isSelected ? item.title : " ",
-                      style: TextStyle(
-                          color: (item.activeContentColor == null
-                              ? item.activeColor
-                              : item.activeContentColor),
-                          fontWeight: FontWeight.w400,
-                          fontSize: item.titleFontSize),
-                    )),
-                  ),
-                )
-              ],
+            Expanded(
+              child: IconTheme(
+                data: IconThemeData(
+                    size: iconSize,
+                    color: isSelected
+                        ? (item.activeContentColor == null
+                            ? item.activeColor
+                            : item.activeContentColor)
+                        : item.inactiveColor == null
+                            ? item.activeColor
+                            : item.inactiveColor),
+                child: item.icon,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Material(
+                type: MaterialType.transparency,
+                child: FittedBox(
+                    child: Text(
+                  isSelected ? item.title : " ",
+                  style: TextStyle(
+                      color: (item.activeContentColor == null
+                          ? item.activeColor
+                          : item.activeContentColor),
+                      fontWeight: FontWeight.w400,
+                      fontSize: item.titleFontSize),
+                )),
+              ),
             )
           ],
         ),
       ),
     );
-  }
-
-  bool opaque() {
-    for (int i = 0; i < items.length; ++i) {
-      if (items[i].isTranslucent) {
-        return false;
-      }
-    }
-    return true;
   }
 
   @override
@@ -110,7 +94,7 @@ class BottomNavStyle2 extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,

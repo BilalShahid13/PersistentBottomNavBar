@@ -42,62 +42,46 @@ class BottomNavStyle4 extends StatelessWidget {
         duration: animationDuration,
         alignment: Alignment.center,
         height: this.isIOS ? height / 1.8 : height / 1.6,
-        child: ListView(
-          shrinkWrap: true,
-          physics: NeverScrollableScrollPhysics(),
-          scrollDirection: Axis.horizontal,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: iconSize,
-                        color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
-                    child: item.icon,
-                  ),
+            Expanded(
+              child: IconTheme(
+                data: IconThemeData(
+                    size: iconSize,
+                    color: isSelected
+                        ? (item.activeContentColor == null
+                            ? item.activeColor
+                            : item.activeContentColor)
+                        : item.inactiveColor == null
+                            ? item.activeColor
+                            : item.inactiveColor),
+                child: item.icon,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 15.0),
+              child: Material(
+                type: MaterialType.transparency,
+                child: DefaultTextStyle.merge(
+                  style: TextStyle(
+                      color: isSelected
+                          ? (item.activeContentColor == null
+                              ? item.activeColor
+                              : item.activeContentColor)
+                          : item.inactiveColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: item.titleFontSize),
+                  child:
+                      FittedBox(child: Text(isSelected ? item.title : " ")),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: DefaultTextStyle.merge(
-                      style: TextStyle(
-                          color: isSelected
-                              ? (item.activeContentColor == null
-                                  ? item.activeColor
-                                  : item.activeContentColor)
-                              : item.inactiveColor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: item.titleFontSize),
-                      child:
-                          FittedBox(child: Text(isSelected ? item.title : " ")),
-                    ),
-                  ),
-                ),
-              ],
-            )
+              ),
+            ),
           ],
         ),
       ),
     );
-  }
-
-  bool opaque() {
-    for (int i = 0; i < items.length; ++i) {
-      if (items[i].isTranslucent) {
-        return false;
-      }
-    }
-    return true;
   }
 
   @override
@@ -115,7 +99,7 @@ class BottomNavStyle4 extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: (backgroundColor == null) ? Colors.white : backgroundColor,
+            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
@@ -147,7 +131,7 @@ class BottomNavStyle4 extends StatelessWidget {
                     children: <Widget>[
                       AnimatedContainer(
                         duration: Duration(milliseconds: 300),
-                        color: backgroundColor,
+                        color: Colors.transparent,
                         width: (selectedIndex == 0
                             ? MediaQuery.of(context).size.width * 0.0
                             : itemWidth * (selectedIndex) -
