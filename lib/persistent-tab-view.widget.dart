@@ -72,7 +72,7 @@ class PersistentTabView extends StatelessWidget {
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double horizontalPadding;
 
-  ///Style the `neumorphic` navigation bar item. 
+  ///Style the `neumorphic` navigation bar item.
   ///
   ///Works only with style `neumorphic`.
   final NeumorphicProperties neumorphicProperties;

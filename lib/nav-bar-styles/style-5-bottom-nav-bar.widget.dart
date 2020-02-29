@@ -89,7 +89,8 @@ class BottomNavStyle5 extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+            color: getBackgroundColor(
+                context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,

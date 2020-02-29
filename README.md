@@ -8,7 +8,7 @@ A persistent bottom navigation bar for Flutter.
 
 `Neumorphic`
 
-![neumorphic2](gifs/neumorphic2.gif)
+![neumorphic2](gifs/neumorphic1.gif)
 
 `Style1`
 

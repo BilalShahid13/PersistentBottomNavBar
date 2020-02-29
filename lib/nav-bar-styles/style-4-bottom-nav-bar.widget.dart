@@ -73,8 +73,7 @@ class BottomNavStyle4 extends StatelessWidget {
                           : item.inactiveColor,
                       fontWeight: FontWeight.w400,
                       fontSize: item.titleFontSize),
-                  child:
-                      FittedBox(child: Text(isSelected ? item.title : " ")),
+                  child: FittedBox(child: Text(isSelected ? item.title : " ")),
                 ),
               ),
             ),
@@ -99,7 +98,8 @@ class BottomNavStyle4 extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+            color: getBackgroundColor(
+                context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
