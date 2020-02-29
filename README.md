@@ -6,28 +6,28 @@ A persistent bottom navigation bar for Flutter.
 
 ## Styles
 
-`Neumorphic`
-![neumorphic2](neumorphic2.gif)\
+`Neumorphic`\
+![neumorphic2](gifs/neumorphic2.gif)\
 
-`Style1`
+`Style1`\
 ![style1](gifs/style1.gif)\
 
-`Style3`
+`Style3`\
 ![style3](gifs/style3.gif)\
 
-`Style5`
+`Style5`\
 ![style5](gifs/style5.gif)\
 
-`Style6`
+`Style6`\
 ![style6](gifs/style6.gif)\
 
-`Style7`
+`Style7`\
 ![style7](gifs/style7.gif)\
 
-`Style8`
+`Style8`\
 ![style8](gifs/style8.gif)\
 
-`Neumorphic without subtitle`
+`Neumorphic without subtitle`\
 ![neumorphic1](gifs/neumorphic2.gif)
 
 `Note: These doesn't include all style variations.`
