@@ -11,15 +11,19 @@ A persistent bottom navigation bar for Flutter.
 ![neumorphic2](gifs/neumorphic2.gif)
 
 `Style1`
+
 ![style1](gifs/style1.gif)
 
 `Style3`
+
 ![style3](gifs/style3.gif)
 
 `Style5`
+
 ![style5](gifs/style5.gif)
 
 `Style6`
+
 ![style6](gifs/style6.gif)
 
 `Style7`
