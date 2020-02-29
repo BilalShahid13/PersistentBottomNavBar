@@ -8,7 +8,7 @@ A persistent bottom navigation bar for Flutter.
 
 `Neumorphic`
 
-![neumorphic1](gifs/neumorphic1.gif)
+![neumorphic1](gifs/neumorphic.gif)
 
 `Style1`
 
@@ -36,7 +36,7 @@ A persistent bottom navigation bar for Flutter.
 
 `Neumorphic without subtitle`
 
-![neumorphic2](gifs/neumorphic2.gif)
+![neumorphic2](gifs/neumorphic-nosubs.gif)
 
 Note: These doesn't include all style variations.
 
