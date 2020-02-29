@@ -45,7 +45,7 @@ Note: These doesn't include all style variations.
 - Highly customizable `persistent` bottom navigation bar.
 - Ability to push new screens with or without bottom navigation bar.
 - Includes platform specific behavior as an option (specify it in the two navigator functions).
-- 11 styles for the bottom navigation bar (includes `BottomNavyBar` and `Neumorphic` style).
+- 12 styles for the bottom navigation bar (includes `BottomNavyBar` and `Neumorphic` style).
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.

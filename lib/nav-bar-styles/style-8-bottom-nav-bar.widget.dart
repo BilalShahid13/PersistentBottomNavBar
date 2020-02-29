@@ -122,13 +122,12 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
     );
   }
 
-  bool opaque() {
+  @override
+  void dispose() {
     for (int i = 0; i < widget.items.length; ++i) {
-      if (widget.items[i].isTranslucent) {
-        return false;
-      }
+      _animationControllerList[i].dispose();
     }
-    return true;
+    super.dispose();
   }
 
   @override

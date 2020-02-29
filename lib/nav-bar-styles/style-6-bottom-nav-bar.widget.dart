@@ -123,6 +123,14 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
   }
 
   @override
+  void dispose() {
+    for (int i = 0; i < widget.items.length; ++i) {
+      _animationControllerList[i].dispose();
+    }
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Container(
       decoration: getNavBarDecoration(

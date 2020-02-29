@@ -32,15 +32,6 @@ class BottomNavStyle7 extends StatelessWidget {
       this.isCurved,
       this.isIOS = true});
 
-  bool opaque() {
-    for (int i = 0; i < items.length; ++i) {
-      if (items[i].isTranslucent) {
-        return false;
-      }
-    }
-    return true;
-  }
-
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
