@@ -34,22 +34,35 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeScreen(), SettingsScreen()];
+    return [HomeScreen(), HomeScreen(), HomeScreen(), HomeScreen()];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.home),
+        icon: Icon(Icons.home),
         title: ("Home"),
-        activeColor: CupertinoColors.activeBlue,
-        inactiveColor: CupertinoColors.systemGrey,
+        activeColor: Colors.blue,
+        inactiveColor: Colors.grey,
+        isTranslucent: false,
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(CupertinoIcons.settings),
+        icon: Icon(Icons.search),
+        title: ("Search"),
+        activeColor: Colors.teal,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.message),
+        title: ("Chat"),
+        activeColor: Colors.deepOrange,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
         title: ("Settings"),
-        activeColor: CupertinoColors.activeBlue,
-        inactiveColor: CupertinoColors.systemGrey,
+        activeColor: Colors.indigo,
+        inactiveColor: Colors.grey,
       ),
     ];
   }
@@ -60,11 +73,12 @@ class _MyHomePageState extends State<MyHomePage> {
       controller: _controller,
       items: _navBarsItems(),
       screens: _buildScreens(),
-      showElevation: true,
+      showElevation: false,
       isCurved: true,
+      backgroundColor: const Color(0xFFEBEEF1),
       iconSize: 26.0,
       navBarStyle:
-          NavBarStyle.style1, // Choose the nav bar style with this property
+          NavBarStyle.style8, // Choose the nav bar style with this property
       onItemSelected: (index) {
         print(index);
       },

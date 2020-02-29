@@ -50,7 +50,14 @@ Note: These doesn't include all style variations.
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
 
-## Usage
+## Getting Started
+
+In your flutter project add the dependency:
+
+```yaml
+dependencies:
+  persistent_bottom_nav_bar: any
+```
 
 Persistent bottom navigation bar uses `PersistentTabController` as its controller. Here is how to declare it:
 
