@@ -2,18 +2,35 @@
 
 A persistent bottom navigation bar for Flutter.
 
-![Persistent Behavior](horizontal.gif)
+![Persistent Behavior](gifs/persistent.gif)
 
 ## Styles
 
+`Neumorphic`
 ![neumorphic2](neumorphic2.gif)\
-![style1](style1.gif)\
-![style3](style3.gif)\
-![style5](style5.gif)\
-![style6](style6.gif)\
-![style7](style7.gif)\
-![style8](style8.gif)\
-![neumorphic1](neumorphic2.gif)\
+
+`Style1`
+![style1](gifs/style1.gif)\
+
+`Style3`
+![style3](gifs/style3.gif)\
+
+`Style5`
+![style5](gifs/style5.gif)\
+
+`Style6`
+![style6](gifs/style6.gif)\
+
+`Style7`
+![style7](gifs/style7.gif)\
+
+`Style8`
+![style8](gifs/style8.gif)\
+
+`Neumorphic without subtitle`
+![neumorphic1](gifs/neumorphic2.gif)
+
+`Note: These doesn't include all style variations.`
 
 ## Features
 
