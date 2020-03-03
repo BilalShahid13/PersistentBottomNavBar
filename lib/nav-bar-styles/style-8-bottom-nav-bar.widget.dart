@@ -68,56 +68,53 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
       double height, int itemIndex) {
     return Container(
-      width: 150.0,
+      alignment: Alignment.center,
       height: widget.isIOS ? height / 1.8 : height,
-      child: Container(
-        alignment: Alignment.center,
-        height: widget.isIOS ? height / 1.8 : height,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: IconTheme(
-                data: IconThemeData(
-                    size: widget.iconSize,
-                    color: isSelected
-                        ? (item.activeContentColor == null
-                            ? item.activeColor
-                            : item.activeContentColor)
-                        : item.inactiveColor == null
-                            ? item.activeColor
-                            : item.inactiveColor),
-                child: item.icon,
-              ),
+      width: double.maxFinite,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Expanded(
+            child: IconTheme(
+              data: IconThemeData(
+                  size: widget.iconSize,
+                  color: isSelected
+                      ? (item.activeContentColor == null
+                          ? item.activeColor
+                          : item.activeContentColor)
+                      : item.inactiveColor == null
+                          ? item.activeColor
+                          : item.inactiveColor),
+              child: item.icon,
             ),
-            AnimatedBuilder(
-              animation: _animationList[itemIndex],
-              builder: (context, child) => Transform.scale(
-                scale: _animationList[itemIndex].value,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                      child: Text(
-                        item.title,
-                        style: TextStyle(
-                            color: isSelected
-                                ? (item.activeContentColor == null
-                                    ? item.activeColor
-                                    : item.activeContentColor)
-                                : item.inactiveColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: item.titleFontSize),
-                      ),
+          ),
+          AnimatedBuilder(
+            animation: _animationList[itemIndex],
+            builder: (context, child) => Transform.scale(
+              scale: _animationList[itemIndex].value,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 15.0),
+                child: Material(
+                  type: MaterialType.transparency,
+                  child: FittedBox(
+                    child: Text(
+                      item.title,
+                      style: TextStyle(
+                          color: isSelected
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
+                              : item.inactiveColor,
+                          fontWeight: FontWeight.w400,
+                          fontSize: item.titleFontSize),
                     ),
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
@@ -184,8 +181,8 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                 children: widget.items.map((item) {
                   var index = widget.items.indexOf(item);
                   return Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: FlatButton(
+                      onPressed: () {
                         if (index != _selectedIndex) {
                           _lastSelectedIndex = _selectedIndex;
                           _selectedIndex = index;
@@ -195,6 +192,8 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                         }
                         widget.onItemSelected(index);
                       },
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       child: _buildItem(item, widget.selectedIndex == index,
                           widget.navBarHeight, index),
                     ),

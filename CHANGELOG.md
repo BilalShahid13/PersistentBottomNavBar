@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.5] - 2020-03-04
+
+- Fixed issue for style 6 and 8 where a tap would not be registered occasionally.
+
 ## [1.1.4] - 2020-03-03
 
 - Bug fixes and improvements for style 6 and 8.

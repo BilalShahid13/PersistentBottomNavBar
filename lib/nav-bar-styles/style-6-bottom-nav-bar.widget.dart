@@ -184,8 +184,8 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
                 children: widget.items.map((item) {
                   var index = widget.items.indexOf(item);
                   return Expanded(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: FlatButton(
+                      onPressed: () {
                         if (index != _selectedIndex) {
                           _lastSelectedIndex = _selectedIndex;
                           _selectedIndex = index;
@@ -195,6 +195,8 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
                         }
                         widget.onItemSelected(index);
                       },
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
                       child: _buildItem(item, widget.selectedIndex == index,
                           widget.navBarHeight, index),
                     ),
