@@ -180,10 +180,13 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        _lastSelectedIndex = _selectedIndex;
-                        _selectedIndex = index;
-                        _animationControllerList[_selectedIndex].forward();
-                        _animationControllerList[_lastSelectedIndex].reverse();
+                        if (index != _selectedIndex) {
+                          _lastSelectedIndex = _selectedIndex;
+                          _selectedIndex = index;
+                          _animationControllerList[_selectedIndex].forward();
+                          _animationControllerList[_lastSelectedIndex]
+                              .reverse();
+                        }
                         widget.onItemSelected(index);
                       },
                       child: _buildItem(item, widget.selectedIndex == index,

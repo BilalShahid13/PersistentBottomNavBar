@@ -38,7 +38,8 @@ class NeumorphicBottomNavBar extends StatelessWidget {
 
   Widget _getNavItem(
           PersistentBottomNavBarItem item, bool isSelected, double height) =>
-      this.neumorphicProperties.showSubtitleText
+      this.neumorphicProperties.showSubtitleText != null &&
+              this.neumorphicProperties.showSubtitleText
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
