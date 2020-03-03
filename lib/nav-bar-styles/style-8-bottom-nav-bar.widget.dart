@@ -132,6 +132,12 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.selectedIndex != _selectedIndex) {
+      _lastSelectedIndex = _selectedIndex;
+      _selectedIndex = widget.selectedIndex;
+      _animationControllerList[_selectedIndex].forward();
+      _animationControllerList[_lastSelectedIndex].reverse();
+    }
     return Container(
       decoration: getNavBarDecoration(
         isCurved: widget.isCurved,
@@ -177,7 +183,7 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                     : CrossAxisAlignment.center,
                 children: widget.items.map((item) {
                   var index = widget.items.indexOf(item);
-                  return Flexible(
+                  return Expanded(
                     child: GestureDetector(
                       onTap: () {
                         if (index != _selectedIndex) {
