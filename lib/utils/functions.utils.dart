@@ -40,24 +40,45 @@ Future<T> pushNewScreenWithRouteSettings<T extends Object>(BuildContext context,
 }
 
 BoxDecoration getNavBarDecoration(
-    {bool showElevation = true, bool isCurved = false}) {
-  return isCurved && showElevation
+    {bool showElevation = true, NavBarCurve navBarCurve = NavBarCurve.none}) {
+  return navBarCurve == NavBarCurve.upperCorners && showElevation
       ? BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
         )
-      : isCurved && !showElevation
+      : navBarCurve == NavBarCurve.upperCorners && !showElevation
           ? BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(15.0),
                   topRight: Radius.circular(15.0)),
             )
-          : !isCurved && showElevation
+          : navBarCurve == NavBarCurve.allCorners && showElevation
               ? BoxDecoration(
+                  borderRadius: BorderRadius.circular(15.0),
                   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
                 )
-              : BoxDecoration();
+              : navBarCurve == NavBarCurve.allCorners && !showElevation
+                  ? BoxDecoration(
+                      borderRadius: BorderRadius.circular(15.0),
+                    )
+                  : navBarCurve == NavBarCurve.none && showElevation
+                      ? BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(color: Colors.black12, blurRadius: 2)
+                          ],
+                        )
+                      : BoxDecoration();
+}
+
+BorderRadius getClipRectBorderRadius(
+    {NavBarCurve navBarCurve = NavBarCurve.none}) {
+  return navBarCurve == NavBarCurve.allCorners
+      ? BorderRadius.circular(15.0)
+      : navBarCurve == NavBarCurve.upperCorners
+          ? BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
+          : BorderRadius.circular(0.0);
 }
 
 bool isIOS(BuildContext context) =>

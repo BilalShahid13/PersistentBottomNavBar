@@ -12,7 +12,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.isIOS,
       this.navBarHeight,
       this.onItemSelected,
-      this.isCurved,
+      this.navBarCurve,
       this.bottomPadding,
       this.horizontalPadding,
       this.neumorphicProperties = const NeumorphicProperties(),
@@ -27,8 +27,8 @@ class PersistentBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final bool isIOS;
+  final NavBarCurve navBarCurve;
   final NavBarStyle navBarStyle;
-  final bool isCurved;
   final double bottomPadding;
   final double horizontalPadding;
   final NeumorphicProperties neumorphicProperties;
@@ -49,7 +49,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -63,7 +63,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -77,7 +77,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -91,7 +91,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -105,7 +105,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -119,7 +119,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -133,7 +133,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -147,7 +147,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -161,7 +161,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -175,7 +175,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -189,7 +189,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
         neumorphicProperties: this.neumorphicProperties,
@@ -204,7 +204,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
         showElevation: this.showElevation,
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
       );
@@ -221,7 +221,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       ValueChanged<int> onItemSelected,
       double navBarHeight,
       NavBarStyle navBarStyle,
-      bool isCurved,
+      NavBarCurve navBarCurve,
       double horizontalPadding,
       NeumorphicProperties neumorphicProperties,
       double bottomPadding}) {
@@ -238,6 +238,6 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarStyle: navBarStyle ?? this.navBarStyle,
         bottomPadding: bottomPadding ?? this.bottomPadding,
         horizontalPadding: horizontalPadding ?? this.horizontalPadding,
-        isCurved: isCurved ?? this.isCurved);
+        navBarCurve: navBarCurve ?? this.navBarCurve);
   }
 }

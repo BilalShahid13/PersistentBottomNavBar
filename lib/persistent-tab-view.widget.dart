@@ -14,14 +14,16 @@ class PersistentTabView extends StatelessWidget {
       @required this.screens,
       this.controller,
       this.showElevation = false,
+      this.navBarHeight,
       this.backgroundColor = CupertinoColors.white,
       this.iconSize = 26.0,
       this.selectedIndex = 0,
       this.onItemSelected,
-      this.isCurved = false,
       this.bottomPadding,
       this.horizontalPadding,
       this.neumorphicProperties,
+      this.floatingActionWidget,
+      this.navBarCurve = NavBarCurve.none,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
     assert(items != null);
@@ -56,9 +58,6 @@ class PersistentTabView extends StatelessWidget {
   ///Callback when page or tab change is detected.
   final ValueChanged<int> onItemSelected;
 
-  ///Curves the top corners of the persistent bottom navigation bar. `false` by default.
-  final bool isCurved;
-
   ///Style for persistent bottom navigation bar. Accepts `NavBarStyle` to determine the theme.
   final NavBarStyle navBarStyle;
 
@@ -77,6 +76,12 @@ class PersistentTabView extends StatelessWidget {
   ///Works only with style `neumorphic`.
   final NeumorphicProperties neumorphicProperties;
 
+  final Widget floatingActionWidget;
+
+  final NavBarCurve navBarCurve;
+
+  final double navBarHeight;
+
   @override
   Widget build(BuildContext context) {
     return PersistentTabScaffold(
@@ -87,10 +92,10 @@ class PersistentTabView extends StatelessWidget {
         items: this.items,
         backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
-        navBarHeight: isIOS(context) ? 90.0 : 60.0,
+        navBarHeight: this.navBarHeight ?? (isIOS(context) ? 90.0 : 60.0),
         selectedIndex: this.selectedIndex,
         isIOS: isIOS(context),
-        isCurved: isCurved,
+        navBarCurve: navBarCurve,
         bottomPadding: this.bottomPadding,
         horizontalPadding: this.horizontalPadding,
         navBarStyle: this.navBarStyle,
@@ -104,9 +109,27 @@ class PersistentTabView extends StatelessWidget {
               },
       ),
       tabBuilder: (BuildContext context, int index) {
-        return CupertinoTabView(builder: (BuildContext context) {
-          return Material(child: screens[index]);
-        });
+        return this.floatingActionWidget == null
+            ? CupertinoTabView(builder: (BuildContext context) {
+                return Material(child: screens[index]);
+              })
+            : Stack(
+                fit: StackFit.expand,
+                children: <Widget>[
+                  SizedBox.expand(
+                    child: CupertinoTabView(
+                      builder: (BuildContext context) {
+                        return Material(child: screens[index]);
+                      },
+                    ),
+                  ),
+                  Positioned(
+                    bottom: this.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
+                    right: 10.0,
+                    child: this.floatingActionWidget,
+                  ),
+                ],
+              );
       },
     );
   }

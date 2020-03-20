@@ -13,7 +13,7 @@ class BottomNavStyle10 extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final bool isIOS;
-  final bool isCurved;
+  final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
 
@@ -29,7 +29,7 @@ class BottomNavStyle10 extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
-      this.isCurved,
+      this.navBarCurve,
       this.isIOS = true});
 
   bool opaque() {
@@ -118,11 +118,11 @@ class BottomNavStyle10 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: getNavBarDecoration(
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         showElevation: this.showElevation,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
+        borderRadius: getClipRectBorderRadius(navBarCurve: this.navBarCurve),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(

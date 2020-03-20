@@ -13,7 +13,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final bool isIOS;
-  final bool isCurved;
+  final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
   final CurveType curveType;
@@ -30,15 +30,15 @@ class NeumorphicBottomNavBar extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
-      this.isCurved,
+      this.navBarCurve,
       this.horizontalPadding,
       this.curveType = CurveType.concave,
-      this.neumorphicProperties,
+      this.neumorphicProperties = const NeumorphicProperties(),
       this.isIOS = true});
 
   Widget _getNavItem(
           PersistentBottomNavBarItem item, bool isSelected, double height) =>
-      this.neumorphicProperties.showSubtitleText != null &&
+      this.neumorphicProperties != null &&
               this.neumorphicProperties.showSubtitleText
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -96,16 +96,26 @@ class NeumorphicBottomNavBar extends StatelessWidget {
     return opaque(items, selectedIndex)
         ? NeumorphicContainer(
             decoration: NeumorphicDecoration(
-              borderRadius:
-                  BorderRadius.circular(this.neumorphicProperties.borderRadius),
+              borderRadius: BorderRadius.circular(
+                  this.neumorphicProperties == null
+                      ? 15.0
+                      : this.neumorphicProperties.borderRadius),
               color: backgroundColor,
-              border: this.neumorphicProperties.border,
-              shape: this.neumorphicProperties.shape,
+              border: this.neumorphicProperties == null
+                  ? null
+                  : this.neumorphicProperties.border,
+              shape: this.neumorphicProperties == null
+                  ? BoxShape.rectangle
+                  : this.neumorphicProperties.shape,
             ),
-            bevel: this.neumorphicProperties.bevel,
+            bevel: this.neumorphicProperties == null
+                ? 12.0
+                : this.neumorphicProperties.bevel,
             curveType: isSelected
                 ? CurveType.emboss
-                : this.neumorphicProperties.curveType,
+                : this.neumorphicProperties == null
+                    ? CurveType.concave
+                    : this.neumorphicProperties.curveType,
             height: this.isIOS ? height / 1.8 + 20 : height + 20,
             width: 60.0,
             padding: EdgeInsets.all(6.0),
@@ -128,11 +138,11 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: getNavBarDecoration(
-        isCurved: this.isCurved,
+        navBarCurve: this.navBarCurve,
         showElevation: this.showElevation,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(isCurved ? 15.0 : 0.0),
+        borderRadius: getClipRectBorderRadius(navBarCurve: this.navBarCurve),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(

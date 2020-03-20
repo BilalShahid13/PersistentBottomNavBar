@@ -12,3 +12,9 @@ enum NavBarStyle {
   neumorphic,
   simple,
 }
+
+enum NavBarCurve {
+  none,
+  upperCorners,
+  allCorners,
+}

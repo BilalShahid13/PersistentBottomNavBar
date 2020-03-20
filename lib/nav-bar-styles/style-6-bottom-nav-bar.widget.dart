@@ -13,7 +13,7 @@ class BottomNavStyle6 extends StatefulWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final bool isIOS;
-  final bool isCurved;
+  final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
 
@@ -29,7 +29,7 @@ class BottomNavStyle6 extends StatefulWidget {
       this.onItemSelected,
       this.bottomPadding,
       this.horizontalPadding,
-      this.isCurved,
+      this.navBarCurve,
       this.isIOS = true});
 
   @override
@@ -140,11 +140,11 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
     }
     return Container(
       decoration: getNavBarDecoration(
-        isCurved: widget.isCurved,
+        navBarCurve: widget.navBarCurve,
         showElevation: widget.showElevation,
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(widget.isCurved ? 15.0 : 0.0),
+        borderRadius: getClipRectBorderRadius(navBarCurve: widget.navBarCurve),
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
