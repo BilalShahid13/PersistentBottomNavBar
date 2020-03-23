@@ -69,20 +69,17 @@ class BottomNavStyle9 extends StatelessWidget {
             ),
             isSelected
                 ? Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Material(
-                        type: MaterialType.transparency,
-                        child: FittedBox(
-                          child: Text(
-                            item.title,
-                            style: TextStyle(
-                                color: (item.activeContentColor == null
-                                    ? item.activeColor
-                                    : item.activeContentColor),
-                                fontWeight: FontWeight.w400,
-                                fontSize: item.titleFontSize),
-                          ),
+                    child: Material(
+                      type: MaterialType.transparency,
+                      child: FittedBox(
+                        child: Text(
+                          item.title,
+                          style: TextStyle(
+                              color: (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor),
+                              fontWeight: FontWeight.w400,
+                              fontSize: item.titleFontSize),
                         ),
                       ),
                     ),

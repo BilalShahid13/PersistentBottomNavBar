@@ -76,10 +76,17 @@ class PersistentTabView extends StatelessWidget {
   ///Works only with style `neumorphic`.
   final NeumorphicProperties neumorphicProperties;
 
+  ///A custom widget which is displayed at the bottom right of the display at all times.
   final Widget floatingActionWidget;
 
+  ///Specifies if the NavBar's borders should be curved or not.
+  ///
+  ///Defaults to `none`
   final NavBarCurve navBarCurve;
 
+  ///Specifies the navBarHeight
+  ///
+  ///Defaults to `60.0` for Android and notchless iPhones and `90.0` for tablets and iPhones with a notch.
   final double navBarHeight;
 
   @override

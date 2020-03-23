@@ -82,7 +82,7 @@ class MyApp extends StatelessWidget {
       items: _navBarsItems(),
       screens: _buildScreens(),
       showElevation: true,
-      isCurved: false,
+      navBarCurve: NavBarCurve.upperCorners,
       iconSize: 26.0,
       navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
       onItemSelected: (index) {

@@ -74,7 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       items: _navBarsItems(),
       screens: _buildScreens(),
       showElevation: false,
-      isCurved: true,
+      navBarCurve: NavBarCurve.none,
       backgroundColor: const Color(0xFFEBEEF1),
       iconSize: 26.0,
       navBarStyle:
