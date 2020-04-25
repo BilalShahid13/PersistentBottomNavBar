@@ -70,6 +70,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return PersistentTabView(
+      controller: _controller,
+      screens: _buildScreens(),
+      customWidget: CustomNavBarWidget(
+        items: _navBarsItems(),
+        onItemSelected: (index) {
+          setState(() {
+            _controller.index = index;
+          });
+        },
+        selectedIndex: _controller.index,
+      ),
+      itemCount: 4,
+      navBarStyle: NavBarStyle.custom, // Choose the nav bar style with this property
+    );
   }
 }
