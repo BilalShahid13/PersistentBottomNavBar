@@ -49,7 +49,7 @@ Note: These doesn't include all style variations.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
-- Custom styling for the navigation bar. See [here](#Custom Navigation Bar Styling)
+- Custom styling for the navigation bar. See [here](#Custom-Navigation-Bar-Styling)
 
 ## Getting Started
 
@@ -69,7 +69,7 @@ _controller = PersistentTabController(initialIndex: 0);
 
 ```
 
-The main widget then to be declared is `PersistenTabView`. NOTE: This widget includes SCAFFOLD (based on `CupertinoTabScaffold`), so no need to declare it. Following is an example for demonstration purposes:
+The main widget then to be declared is `PersistentTabView`. NOTE: This widget includes SCAFFOLD (based on `CupertinoTabScaffold`), so no need to declare it. Following is an example for demonstration purposes:
 
 ```dart
 
