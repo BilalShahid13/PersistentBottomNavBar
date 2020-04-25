@@ -49,7 +49,7 @@ Note: These doesn't include all style variations.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
-- Custom styling for the navigation bar. See [here](#Custom-Navigation-Bar-Styling)
+- Custom styling for the navigation bar. Click [here](#Custom-Navigation-Bar-Styling) for more information.
 
 ## Getting Started
 
