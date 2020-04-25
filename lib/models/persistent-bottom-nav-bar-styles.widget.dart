@@ -1,4 +1,7 @@
+import '../persistent-tab-view.dart';
+
 enum NavBarStyle {
+  custom,
   style1,
   style2,
   style3,

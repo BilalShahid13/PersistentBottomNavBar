@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'custom-widget.dart';
 import 'screens.dart';
 
 void main() => runApp(MyApp());
@@ -69,19 +70,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      controller: _controller,
-      items: _navBarsItems(),
-      screens: _buildScreens(),
-      showElevation: false,
-      navBarCurve: NavBarCurve.none,
-      backgroundColor: const Color(0xFFEBEEF1),
-      iconSize: 26.0,
-      navBarStyle:
-          NavBarStyle.style8, // Choose the nav bar style with this property
-      onItemSelected: (index) {
-        print(index);
-      },
-    );
+    return Container();
   }
 }

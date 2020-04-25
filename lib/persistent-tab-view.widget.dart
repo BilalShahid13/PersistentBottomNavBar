@@ -10,7 +10,7 @@ import 'persistent-tab-view.dart';
 class PersistentTabView extends StatelessWidget {
   PersistentTabView(
       {Key key,
-      @required this.items,
+      this.items,
       @required this.screens,
       this.controller,
       this.showElevation = false,
@@ -23,13 +23,17 @@ class PersistentTabView extends StatelessWidget {
       this.horizontalPadding,
       this.neumorphicProperties,
       this.floatingActionWidget,
+      this.customWidget,
+      this.itemCount,
       this.navBarCurve = NavBarCurve.none,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
-    assert(items != null);
+    assert(items != null || navBarStyle == NavBarStyle.custom);
+    assert(items == null && itemCount != null || items != null);
     assert(screens != null);
-    assert(items.length == screens.length);
-    assert(items.length >= 2 && items.length <= 5);
+    assert(navBarStyle == NavBarStyle.custom || items.length == screens.length);
+    assert(navBarStyle == NavBarStyle.custom || items.length >= 2 && items.length <= 5);
+    assert(navBarStyle == NavBarStyle.custom && customWidget != null || navBarStyle != NavBarStyle.custom && customWidget == null);
   }
 
   ///List of persistent bottom navigation bar items to be displayed in the navigation bar.
@@ -89,55 +93,66 @@ class PersistentTabView extends StatelessWidget {
   ///Defaults to `60.0` for Android and notchless iPhones and `90.0` for tablets and iPhones with a notch.
   final double navBarHeight;
 
+  ///Custom navigation bar widget. To be only used when `navBarStyle` is set to `NavBarStyle.custom`.
+  final Widget customWidget;
+
+  ///If using `custom` navBarStyle, define this instead of the `items` property
+  final int itemCount;
+
   @override
   Widget build(BuildContext context) {
-    return PersistentTabScaffold(
-      controller: this.controller,
-      isIOS: isIOS(context),
-      tabBar: PersistentBottomNavBar(
-        showElevation: this.showElevation,
-        items: this.items,
-        backgroundColor: this.backgroundColor,
-        iconSize: this.iconSize,
-        navBarHeight: this.navBarHeight ?? (isIOS(context) ? 90.0 : 60.0),
-        selectedIndex: this.selectedIndex,
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: PersistentTabScaffold(
+        controller: this.controller,
         isIOS: isIOS(context),
-        navBarCurve: navBarCurve,
-        bottomPadding: this.bottomPadding,
-        horizontalPadding: this.horizontalPadding,
-        navBarStyle: this.navBarStyle,
-        neumorphicProperties: this.neumorphicProperties,
-        onItemSelected: onItemSelected != null
-            ? (int index) {
-                this.onItemSelected(index);
-              }
-            : (int index) {
-                //DO NOTHING
-              },
-      ),
-      tabBuilder: (BuildContext context, int index) {
-        return this.floatingActionWidget == null
-            ? CupertinoTabView(builder: (BuildContext context) {
-                return Material(child: screens[index]);
-              })
-            : Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  SizedBox.expand(
-                    child: CupertinoTabView(
-                      builder: (BuildContext context) {
-                        return Material(child: screens[index]);
-                      },
+        itemCount: items == null ? itemCount ?? 0 : items.length,
+        tabBar: PersistentBottomNavBar(
+          showElevation: this.showElevation,
+          items: this.items,
+          backgroundColor: this.backgroundColor,
+          iconSize: this.iconSize,
+          navBarHeight: this.navBarHeight ?? (isIOS(context) ? 90.0 : 60.0),
+          selectedIndex: this.selectedIndex,
+          isIOS: isIOS(context),
+          navBarCurve: navBarCurve,
+          bottomPadding: this.bottomPadding,
+          horizontalPadding: this.horizontalPadding,
+          navBarStyle: this.navBarStyle,
+          neumorphicProperties: this.neumorphicProperties,
+          customNavBarWidget: this.customWidget,
+          onItemSelected: onItemSelected != null
+              ? (int index) {
+                  this.onItemSelected(index);
+                }
+              : (int index) {
+                  //DO NOTHING
+                },
+        ),
+        tabBuilder: (BuildContext context, int index) {
+          return this.floatingActionWidget == null
+              ? CupertinoTabView(builder: (BuildContext context) {
+                  return Material(child: screens[index]);
+                })
+              : Stack(
+                  fit: StackFit.expand,
+                  children: <Widget>[
+                    SizedBox.expand(
+                      child: CupertinoTabView(
+                        builder: (BuildContext context) {
+                          return Material(child: screens[index]);
+                        },
+                      ),
                     ),
-                  ),
-                  Positioned(
-                    bottom: this.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
-                    right: 10.0,
-                    child: this.floatingActionWidget,
-                  ),
-                ],
-              );
-      },
+                    Positioned(
+                      bottom: this.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
+                      right: 10.0,
+                      child: this.floatingActionWidget,
+                    ),
+                  ],
+                );
+        },
+      ),
     );
   }
 }

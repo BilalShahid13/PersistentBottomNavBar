@@ -15,6 +15,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.navBarCurve,
       this.bottomPadding,
       this.horizontalPadding,
+      this.customNavBarWidget,
       this.neumorphicProperties = const NeumorphicProperties(),
       this.navBarStyle})
       : super(key: key);
@@ -32,13 +33,17 @@ class PersistentBottomNavBar extends StatelessWidget {
   final double bottomPadding;
   final double horizontalPadding;
   final NeumorphicProperties neumorphicProperties;
+  final Widget customNavBarWidget;
 
   bool opaque(int index) {
-    return !items[index].isTranslucent;
+    return items == null ? true : !items[index].isTranslucent;
   }
 
   @override
   Widget build(BuildContext context) {
+    if (navBarStyle == NavBarStyle.custom) {
+      return customNavBarWidget;
+    }
     if (navBarStyle == NavBarStyle.style1) {
       return BottomNavStyle1(
         items: this.items,
@@ -224,6 +229,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       NavBarCurve navBarCurve,
       double horizontalPadding,
       NeumorphicProperties neumorphicProperties,
+      Widget customNavBarWidget,
       double bottomPadding}) {
     return PersistentBottomNavBar(
         selectedIndex: selectedIndex ?? this.selectedIndex,
@@ -238,6 +244,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarStyle: navBarStyle ?? this.navBarStyle,
         bottomPadding: bottomPadding ?? this.bottomPadding,
         horizontalPadding: horizontalPadding ?? this.horizontalPadding,
+        customNavBarWidget: customNavBarWidget ?? this.customNavBarWidget,
         navBarCurve: navBarCurve ?? this.navBarCurve);
   }
 }

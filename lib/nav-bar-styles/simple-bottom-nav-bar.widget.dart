@@ -24,7 +24,7 @@ class BottomNavSimple extends StatelessWidget {
       this.iconSize,
       this.backgroundColor,
       this.animationDuration = const Duration(milliseconds: 1000),
-      this.navBarHeight = 0.0,
+      this.navBarHeight = 60.0,
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
