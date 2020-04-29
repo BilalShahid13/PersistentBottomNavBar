@@ -175,7 +175,7 @@ If you are pushing a new `modal` screen, use the following function:
 
 ```
 
-*Some Tips for the navigator functions.*
+### Some Useful Tips
 
 Pop to any screen in the navigation graph for a given tab:
 
