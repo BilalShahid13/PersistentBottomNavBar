@@ -14,4 +14,3 @@ export 'dart:io';
 export 'package:flutter/cupertino.dart';
 export 'package:flutter/foundation.dart';
 export 'package:flutter/widgets.dart';
-export 'package:flutter_device_type/flutter_device_type.dart';

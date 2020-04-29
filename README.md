@@ -1,9 +1,9 @@
-# persistent_bottom_nav_bar
+# Persistent Bottom Navigation Bar
 
 [![pub package version](https://img.shields.io/pub/v/persistent_bottom_nav_bar)](https://pub.dev/packages/persistent_bottom_nav_bar)
 [![license](https://img.shields.io/github/license/BilalShahid13/PersistentBottomNavBar)](https://github.com/BilalShahid13/PersistentBottomNavBar/blob/master/LICENSE)
 
-A persistent bottom navigation bar for Flutter.
+A persistent/static bottom navigation bar for Flutter.
 
 ![Persistent Behavior](gifs/persistent.gif)
 
@@ -200,6 +200,16 @@ Pop back to first screen in the navigation graph for a given tab:
     ),
     (_) => false,
   );
+
+```dart
+    Navigator.of(context).pushAndRemoveUntil(
+    CupertinoPageRoute(
+      builder: (BuildContext context) {
+        return FirstScreen();
+      },
+    ),
+    (_) => false,
+  );
 ```
 
 ## Custom Navigation Bar Styling
@@ -320,7 +330,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                 selectedIndex: _controller.index,
                 onItemSelected: onItemSelected: (index) {
                     setState(() {
-                        _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
+                        _controller.index = index; // NOTE: THIS IS CRITICAL!! Don't miss it!
                     });
                 },
             ),

@@ -15,16 +15,7 @@ BoxDecoration getNavBarDecoration(
                   topLeft: Radius.circular(15.0),
                   topRight: Radius.circular(15.0)),
             )
-          : navBarCurve == NavBarCurve.allCorners && showElevation
-              ? BoxDecoration(
-                  borderRadius: BorderRadius.circular(15.0),
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
-                )
-              : navBarCurve == NavBarCurve.allCorners && !showElevation
-                  ? BoxDecoration(
-                      borderRadius: BorderRadius.circular(15.0),
-                    )
-                  : navBarCurve == NavBarCurve.none && showElevation
+          :  navBarCurve == NavBarCurve.none && showElevation
                       ? BoxDecoration(
                           boxShadow: [
                             BoxShadow(color: Colors.black12, blurRadius: 2)
@@ -35,17 +26,11 @@ BoxDecoration getNavBarDecoration(
 
 BorderRadius getClipRectBorderRadius(
     {NavBarCurve navBarCurve = NavBarCurve.none}) {
-  return navBarCurve == NavBarCurve.allCorners
-      ? BorderRadius.circular(15.0)
-      : navBarCurve == NavBarCurve.upperCorners
+  return  navBarCurve == NavBarCurve.upperCorners
           ? BorderRadius.only(
               topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
           : BorderRadius.circular(0.0);
 }
-
-bool isIOS(BuildContext context) =>
-    (Theme.of(context).platform == TargetPlatform.iOS &&
-        (Device.get().isIphoneX || Device.get().isTablet));
 
 bool isColorOpaque(BuildContext context, Color color) {
   final Color backgroundColor =

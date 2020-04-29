@@ -19,5 +19,4 @@ enum NavBarStyle {
 enum NavBarCurve {
   none,
   upperCorners,
-  allCorners,
 }
