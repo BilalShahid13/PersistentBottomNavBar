@@ -7,7 +7,7 @@ import 'persistent-tab-view.dart';
 ///A highly customizable persistent navigation bar for flutter.
 ///
 ///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
-class PersistentTabView extends StatelessWidget {
+class PersistentTabView extends StatefulWidget {
   PersistentTabView(
       {Key key,
       this.items,
@@ -26,6 +26,8 @@ class PersistentTabView extends StatelessWidget {
       this.customWidget,
       this.itemCount,
       this.navBarCurve = NavBarCurve.none,
+      this.confineInSafeArea = true,
+      this.handleAndroidBackButtonPress = true,
       this.navBarStyle = NavBarStyle.style1})
       : super(key: key) {
     assert(items != null || navBarStyle == NavBarStyle.custom);
@@ -99,60 +101,169 @@ class PersistentTabView extends StatelessWidget {
   ///If using `custom` navBarStyle, define this instead of the `items` property
   final int itemCount;
 
+  ///Will confine the widget in the safe area defined by the device.
+  final bool confineInSafeArea;
+
+  ///Handles android back button actions.
+  ///
+  ///Action based on scenarios:
+  ///1. If the you are on the first tab with all screens popped of the given tab, the app will close.
+  ///2. If you are on another tab with all screens popped of that given tab, you will be switched to first tab.
+  ///3. If there are screens pushed on the selected tab, a screen will pop on a respective back button press.
+  final bool handleAndroidBackButtonPress;
+
   @override
-  Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async => false,
-      child: PersistentTabScaffold(
-        controller: this.controller,
-        isIOS: isIOS(context),
-        itemCount: items == null ? itemCount ?? 0 : items.length,
+  _PersistentTabViewState createState() => _PersistentTabViewState();
+}
+
+class _PersistentTabViewState extends State<PersistentTabView> {
+  List<BuildContext> _contextList;
+  PersistentTabController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _contextList = List<BuildContext>(widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
+    if (widget.controller == null) {
+      _controller = PersistentTabController(initialIndex: 0);
+    } else {
+      _controller = widget.controller;
+    }
+  }
+
+  Widget navigationBarWidget() => PersistentTabScaffold(
+        controller: _controller,
+        itemCount: widget.items == null ? widget.itemCount ?? 0 : widget.items.length,
         tabBar: PersistentBottomNavBar(
-          showElevation: this.showElevation,
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight ?? (isIOS(context) ? 90.0 : 60.0),
-          selectedIndex: this.selectedIndex,
-          isIOS: isIOS(context),
-          navBarCurve: navBarCurve,
-          bottomPadding: this.bottomPadding,
-          horizontalPadding: this.horizontalPadding,
-          navBarStyle: this.navBarStyle,
-          neumorphicProperties: this.neumorphicProperties,
-          customNavBarWidget: this.customWidget,
-          onItemSelected: onItemSelected != null
+          showElevation: widget.showElevation,
+          items: widget.items,
+          backgroundColor: widget.backgroundColor,
+          iconSize: widget.iconSize,
+          navBarHeight: widget.navBarHeight ?? kToolbarHeight,
+          selectedIndex: widget.selectedIndex,
+          navBarCurve: widget.navBarCurve,
+          bottomPadding: widget.bottomPadding,
+          horizontalPadding: widget.horizontalPadding,
+          navBarStyle: widget.navBarStyle,
+          neumorphicProperties: widget.neumorphicProperties,
+          customNavBarWidget: widget.customWidget,
+          onItemSelected: widget.onItemSelected != null
               ? (int index) {
-                  this.onItemSelected(index);
+                  widget.onItemSelected(index);
                 }
               : (int index) {
                   //DO NOTHING
                 },
         ),
         tabBuilder: (BuildContext context, int index) {
-          return this.floatingActionWidget == null
-              ? CupertinoTabView(builder: (BuildContext context) {
-                  return Material(child: screens[index]);
+          return widget.floatingActionWidget == null
+              ? CupertinoTabView(builder: (BuildContext screenContext) {
+                  _contextList[index] = screenContext;
+                  return Material(child: widget.screens[index]);
                 })
               : Stack(
                   fit: StackFit.expand,
                   children: <Widget>[
                     SizedBox.expand(
                       child: CupertinoTabView(
-                        builder: (BuildContext context) {
-                          return Material(child: screens[index]);
+                        builder: (BuildContext screenContext) {
+                          _contextList[index] = screenContext;
+                          return Material(child: widget.screens[index]);
                         },
                       ),
                     ),
                     Positioned(
-                      bottom: this.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
+                      bottom: widget.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
                       right: 10.0,
-                      child: this.floatingActionWidget,
+                      child: widget.floatingActionWidget,
                     ),
                   ],
                 );
         },
-      ),
-    );
+      );
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.handleAndroidBackButtonPress && widget.confineInSafeArea) {
+      return WillPopScope(
+        onWillPop: () async {
+          if (_controller.index == 0 && !Navigator.canPop(_contextList.first)) {
+            return true;
+          } else {
+            if (Navigator.canPop(_contextList[_controller.index])) {
+              Navigator.pop(_contextList[_controller.index]);
+            } else {
+              if (widget.onItemSelected != null) {
+                widget.onItemSelected(0);
+              }
+              setState(() {
+                _controller.index = 0;
+              });
+            }
+            return false;
+          }
+        },
+        child: Container(
+          color: widget.backgroundColor,
+          child: SafeArea(top: false, child: navigationBarWidget()),
+        ),
+      );
+    } else if (widget.handleAndroidBackButtonPress && !widget.confineInSafeArea) {
+      return WillPopScope(
+        onWillPop: () async {
+          if (_controller.index == 0 && !Navigator.canPop(_contextList.first)) {
+            return true;
+          } else {
+            if (Navigator.canPop(_contextList[_controller.index])) {
+              Navigator.pop(_contextList[_controller.index]);
+            } else {
+              if (widget.onItemSelected != null) {
+                widget.onItemSelected(0);
+              }
+              setState(() {
+                _controller.index = 0;
+              });
+            }
+            return false;
+          }
+        },
+        child: navigationBarWidget(),
+      );
+    } else if (!widget.handleAndroidBackButtonPress && widget.confineInSafeArea) {
+      return Container(
+        color: widget.backgroundColor,
+        child: SafeArea(top: false, child: navigationBarWidget()),
+      );
+    } else {
+      return navigationBarWidget();
+    }
   }
+}
+
+Future<T> pushNewScreen<T extends Object>(BuildContext context, {@required Widget screen, bool withNavBar, bool platformSpecific = false}) {
+  if (platformSpecific && withNavBar == null) {
+    withNavBar = Platform.isAndroid ? false : true;
+  } else if (withNavBar == null) {
+    withNavBar = true;
+  }
+  return Navigator.of(context, rootNavigator: !withNavBar).push(CupertinoPageRoute(builder: (BuildContext context) => screen));
+}
+
+Future<T> pushDynamicScreen<T extends Object>(BuildContext context, {@required dynamic screen, bool withNavBar, bool platformSpecific = false}) {
+  if (platformSpecific && withNavBar == null) {
+    withNavBar = Platform.isAndroid ? false : true;
+  } else if (withNavBar == null) {
+    withNavBar = true;
+  }
+  return Navigator.of(context, rootNavigator: !withNavBar).push(screen);
+}
+
+Future<T> pushNewScreenWithRouteSettings<T extends Object>(BuildContext context,
+    {@required Widget screen, @required RouteSettings settings, bool withNavBar, bool platformSpecific = false}) {
+  if (platformSpecific && withNavBar == null) {
+    withNavBar = Platform.isAndroid ? false : true;
+  } else if (withNavBar == null) {
+    withNavBar = true;
+  }
+  return Navigator.of(context, rootNavigator: !withNavBar).push(CupertinoPageRoute(settings: settings, builder: (BuildContext context) => screen));
 }

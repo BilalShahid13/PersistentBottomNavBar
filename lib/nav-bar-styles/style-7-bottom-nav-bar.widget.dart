@@ -12,7 +12,6 @@ class BottomNavStyle7 extends StatelessWidget {
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final bool isIOS;
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
@@ -29,14 +28,13 @@ class BottomNavStyle7 extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
-      this.navBarCurve,
-      this.isIOS = true});
+      this.navBarCurve});
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: isSelected ? 140 : 50,
-      height: this.isIOS ? height / 2.3 : height / 1.6,
+      height: height / 1.6,
       duration: animationDuration,
       padding: EdgeInsets.all(item.contentPadding),
       decoration: isSelected
@@ -59,7 +57,7 @@ class BottomNavStyle7 extends StatelessWidget {
             ),
       child: Container(
         alignment: Alignment.center,
-        height: this.isIOS ? height / 2.3 : height / 1.6,
+        height: height / 1.6,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -119,19 +117,7 @@ class BottomNavStyle7 extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
-              padding: this.isIOS
-                  ? EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.07
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.07
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.12,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.38
-                          : this.bottomPadding)
-                  : this.bottomPadding == null
+              padding: this.bottomPadding == null
                       ? EdgeInsets.symmetric(
                           horizontal: MediaQuery.of(context).size.width * 0.07,
                           vertical: this.navBarHeight * 0.15,
@@ -147,9 +133,7 @@ class BottomNavStyle7 extends StatelessWidget {
                           bottom: this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: this.isIOS
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: items.map((item) {
                   var index = items.indexOf(item);
                   return Flexible(
@@ -158,8 +142,11 @@ class BottomNavStyle7 extends StatelessWidget {
                       onTap: () {
                         this.onItemSelected(index);
                       },
-                      child: _buildItem(
-                          item, selectedIndex == index, this.navBarHeight),
+                      child: Container(
+                                color: Colors.transparent,
+                                              child: _buildItem(
+                            item, selectedIndex == index, this.navBarHeight),
+                      ),
                     ),
                   );
                 }).toList(),

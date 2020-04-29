@@ -19,7 +19,7 @@ class CustomNavBarWidget extends StatelessWidget {
       PersistentBottomNavBarItem item, bool isSelected) {
     return Container(
       alignment: Alignment.center,
-      height: 60.0,
+      height: kBottomNavigationBarHeight,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -68,7 +68,7 @@ class CustomNavBarWidget extends StatelessWidget {
       color: Colors.white,
       child: Container(
         width: double.infinity,
-        height: 60.0,
+        height: kBottomNavigationBarHeight,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: items.map((item) {

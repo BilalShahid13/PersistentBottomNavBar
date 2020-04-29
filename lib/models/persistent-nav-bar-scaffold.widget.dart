@@ -36,7 +36,6 @@ class PersistentTabScaffold extends StatefulWidget {
     this.controller,
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
-    this.isIOS,
     this.itemCount,
   })  : assert(tabBar != null),
         assert(tabBuilder != null),
@@ -55,8 +54,6 @@ class PersistentTabScaffold extends StatefulWidget {
   final Color backgroundColor;
 
   final bool resizeToAvoidBottomInset;
-
-  final bool isIOS;
 
   final int itemCount;
 
@@ -137,29 +134,29 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
     } else if (widget.tabBar.navBarCurve == NavBarCurve.allCorners || widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
-      if (widget.isIOS) {
+      // if (widget.isIOS) {
+      //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
+      //     final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
+      //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
+      //   }
+      // } else {
         if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
           final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
           contentPadding = EdgeInsets.only(bottom: bottomPadding);
         }
-      } else {
-        if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
-          final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
-          contentPadding = EdgeInsets.only(bottom: bottomPadding);
-        }
-      }
+      //}
     } else {
-      if (widget.isIOS) {
-        if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.6 > existingMediaQuery.viewInsets.bottom)) {
-          final double bottomPadding = widget.tabBar.navBarHeight;
-          contentPadding = EdgeInsets.only(bottom: bottomPadding);
-        }
-      } else {
+      // if (widget.isIOS) {
+      //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.6 > existingMediaQuery.viewInsets.bottom)) {
+      //     final double bottomPadding = widget.tabBar.navBarHeight;
+      //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
+      //   }
+      // } else {
         if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight > existingMediaQuery.viewInsets.bottom)) {
           final double bottomPadding = widget.tabBar.navBarHeight;
           contentPadding = EdgeInsets.only(bottom: bottomPadding);
         }
-      }
+      //}
     }
 
     content = MediaQuery(

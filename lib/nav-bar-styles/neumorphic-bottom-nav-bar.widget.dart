@@ -12,7 +12,6 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final bool isIOS;
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
@@ -33,8 +32,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
       this.navBarCurve,
       this.horizontalPadding,
       this.curveType = CurveType.concave,
-      this.neumorphicProperties = const NeumorphicProperties(),
-      this.isIOS = true});
+      this.neumorphicProperties = const NeumorphicProperties()});
 
   Widget _getNavItem(
           PersistentBottomNavBarItem item, bool isSelected, double height) =>
@@ -116,7 +114,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
                 : this.neumorphicProperties == null
                     ? CurveType.concave
                     : this.neumorphicProperties.curveType,
-            height: this.isIOS ? height / 1.8 + 20 : height + 20,
+            height: height + 20,
             width: 60.0,
             padding: EdgeInsets.all(6.0),
             child: _getNavItem(item, isSelected, height),
@@ -127,7 +125,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
               color: getBackgroundColor(
                   context, items, backgroundColor, selectedIndex),
             ),
-            height: this.isIOS ? height / 1.8 + 20 : height + 20,
+            height: height + 20,
             width: 60.0,
             padding: EdgeInsets.all(6.0),
             child: _getNavItem(item, isSelected, height),
@@ -151,20 +149,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
-              padding: this.isIOS
-                  ? EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.12,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.26
-                          : this.bottomPadding,
-                    )
-                  : EdgeInsets.only(
+              padding: EdgeInsets.only(
                       left: this.horizontalPadding == null
                           ? MediaQuery.of(context).size.width * 0.04
                           : this.horizontalPadding,
@@ -177,9 +162,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
                           : this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: this.isIOS
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: items.map((item) {
                   var index = items.indexOf(item);
                   return Flexible(

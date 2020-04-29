@@ -12,7 +12,6 @@ class BottomNavStyle6 extends StatefulWidget {
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final bool isIOS;
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
@@ -29,15 +28,13 @@ class BottomNavStyle6 extends StatefulWidget {
       this.onItemSelected,
       this.bottomPadding,
       this.horizontalPadding,
-      this.navBarCurve,
-      this.isIOS = true});
+      this.navBarCurve});
 
   @override
   _BottomNavStyle6State createState() => _BottomNavStyle6State();
 }
 
-class _BottomNavStyle6State extends State<BottomNavStyle6>
-    with TickerProviderStateMixin {
+class _BottomNavStyle6State extends State<BottomNavStyle6> with TickerProviderStateMixin {
   List<AnimationController> _animationControllerList;
   List<Animation<double>> _animationList;
 
@@ -53,11 +50,8 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
     _animationList = List<Animation<double>>();
 
     for (int i = 0; i < widget.items.length; ++i) {
-      _animationControllerList.add(AnimationController(
-          duration: Duration(milliseconds: 400), vsync: this));
-      _animationList.add(Tween(begin: 0.95, end: 1.18)
-          .chain(CurveTween(curve: Curves.ease))
-          .animate(_animationControllerList[i]));
+      _animationControllerList.add(AnimationController(duration: Duration(milliseconds: 400), vsync: this));
+      _animationList.add(Tween(begin: 0.95, end: 1.18).chain(CurveTween(curve: Curves.ease)).animate(_animationControllerList[i]));
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -65,18 +59,17 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
     });
   }
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
-      double height, int itemIndex) {
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height, int itemIndex) {
     return AnimatedBuilder(
       animation: _animationList[itemIndex],
       builder: (context, child) => Transform.scale(
         scale: _animationList[itemIndex].value,
         child: Container(
           width: 150.0,
-          height: widget.isIOS ? height / 1.8 : height,
+          height: height,
           child: Container(
             alignment: Alignment.center,
-            height: widget.isIOS ? height / 1.8 : height,
+            height: height,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,12 +79,8 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
                     data: IconThemeData(
                         size: widget.iconSize,
                         color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
+                            ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
+                            : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
                     child: item.icon,
                   ),
                 ),
@@ -103,11 +92,7 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
                       child: Text(
                         item.title,
                         style: TextStyle(
-                            color: isSelected
-                                ? (item.activeContentColor == null
-                                    ? item.activeColor
-                                    : item.activeContentColor)
-                                : item.inactiveColor,
+                            color: isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : item.inactiveColor,
                             fontWeight: FontWeight.w400,
                             fontSize: item.titleFontSize),
                       ),
@@ -148,57 +133,35 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: getBackgroundColor(context, widget.items,
-                widget.backgroundColor, widget.selectedIndex),
+            color: getBackgroundColor(context, widget.items, widget.backgroundColor, widget.selectedIndex),
             child: Container(
               width: double.infinity,
               height: widget.navBarHeight,
-              padding: widget.isIOS
-                  ? EdgeInsets.only(
-                      left: widget.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : widget.horizontalPadding,
-                      right: widget.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : widget.horizontalPadding,
-                      top: widget.navBarHeight * 0.12,
-                      bottom: widget.bottomPadding == null
-                          ? widget.navBarHeight * 0.36
-                          : widget.bottomPadding)
-                  : EdgeInsets.only(
-                      left: widget.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : widget.horizontalPadding,
-                      right: widget.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : widget.horizontalPadding,
-                      top: widget.navBarHeight * 0.15,
-                      bottom: widget.bottomPadding == null
-                          ? widget.navBarHeight * 0.12
-                          : widget.bottomPadding),
+              padding: EdgeInsets.only(
+                  left: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                  right: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                  top: widget.navBarHeight * 0.15,
+                  bottom: widget.bottomPadding == null ? widget.navBarHeight * 0.12 : widget.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: widget.isIOS
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: widget.items.map((item) {
                   var index = widget.items.indexOf(item);
                   return Expanded(
-                    child: FlatButton(
-                      onPressed: () {
+                    child: GestureDetector(
+                      onTap: () {
                         if (index != _selectedIndex) {
                           _lastSelectedIndex = _selectedIndex;
                           _selectedIndex = index;
                           _animationControllerList[_selectedIndex].forward();
-                          _animationControllerList[_lastSelectedIndex]
-                              .reverse();
+                          _animationControllerList[_lastSelectedIndex].reverse();
                         }
                         widget.onItemSelected(index);
                       },
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      child: _buildItem(item, widget.selectedIndex == index,
-                          widget.navBarHeight, index),
+                      child: Container(
+                        color: Colors.transparent,
+                        child: _buildItem(item, widget.selectedIndex == index, widget.navBarHeight, index),
+                      ),
                     ),
                   );
                 }).toList(),

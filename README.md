@@ -1,5 +1,8 @@
 # persistent_bottom_nav_bar
 
+[![pub package version](https://img.shields.io/pub/v/persistent_bottom_nav_bar)](https://pub.dev/packages/persistent_bottom_nav_bar)
+[![license](https://img.shields.io/github/license/BilalShahid13/PersistentBottomNavBar)](https://github.com/BilalShahid13/PersistentBottomNavBar/blob/master/LICENSE)
+
 A persistent bottom navigation bar for Flutter.
 
 ![Persistent Behavior](gifs/persistent.gif)
@@ -50,6 +53,7 @@ Note: These doesn't include all style variations.
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
 - Custom styling for the navigation bar. Click [here](#Custom-Navigation-Bar-Styling) for more information.
+- Handles hardware/software Android back button.
 
 ## Getting Started
 
@@ -84,6 +88,8 @@ class MyApp extends StatelessWidget {
       screens: _buildScreens(),
       showElevation: true,
       navBarCurve: NavBarCurve.upperCorners,
+      confineInSafeArea: true,
+      handleAndroidBackButtonPress: true,
       iconSize: 26.0,
       navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
       onItemSelected: (index) {
@@ -275,6 +281,11 @@ If you want to have your own style for the navigation bar, follow these steps:
             controller: _controller,
             itemCount: items.length, // This is required in case of custom style! Pass the number of items for the nav bar.
             screens: _buildScreens(),
+            confineInSafeArea: true,
+            handleAndroidBackButtonPress: true,
+            onItemSelected: (int) {
+                setState(() {}); // This is required to update the nav bar if Android back button is pressed
+            },
             customWidget: CustomNavBarWidget( // Your custom widget goes here
                 items: _navBarsItems(),
                 selectedIndex: _controller.index,
@@ -294,9 +305,5 @@ If you want to have your own style for the navigation bar, follow these steps:
     `NOTE: In the 'onSelected' function of the customWidget, don't forgot to change the index of the controller`
 
 3. Done! As we can see, the other properties like `iconSize`, `navBarHeight` are not required here so you can skip those properties. Sample code is provided in the `example project`.
-
-### Limitation
-
-If you are facing issues with the android back button where it is popping the wrong the screen, use the package `back_button_interceptor` to solve your problem. This is not a perfect solution but should work most of the time. Meanwhile, I'm doing my best to find a fix so keep checking the package for any updates.
 
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.

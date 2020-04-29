@@ -12,7 +12,6 @@ class BottomNavSimple extends StatelessWidget {
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final bool isIOS;
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
@@ -29,19 +28,18 @@ class BottomNavSimple extends StatelessWidget {
       this.onItemSelected,
       this.bottomPadding,
       this.navBarCurve,
-      this.horizontalPadding,
-      this.isIOS = true});
+      this.horizontalPadding});
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 150.0,
-      height: this.isIOS ? height / 1.8 : height,
+      height: height,
       duration: animationDuration,
       child: AnimatedContainer(
         duration: animationDuration,
         alignment: Alignment.center,
-        height: this.isIOS ? height / 1.8 : height,
+        height: height,
         child: ListView(
           shrinkWrap: true,
           physics: NeverScrollableScrollPhysics(),
@@ -108,20 +106,7 @@ class BottomNavSimple extends StatelessWidget {
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
-              padding: this.isIOS
-                  ? EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.12,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.38
-                          : this.bottomPadding,
-                    )
-                  : EdgeInsets.only(
+              padding: EdgeInsets.only(
                       left: this.horizontalPadding == null
                           ? MediaQuery.of(context).size.width * 0.04
                           : this.horizontalPadding,
@@ -134,9 +119,7 @@ class BottomNavSimple extends StatelessWidget {
                           : this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: this.isIOS
-                    ? CrossAxisAlignment.start
-                    : CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: items.map((item) {
                   var index = items.indexOf(item);
                   return Flexible(

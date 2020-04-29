@@ -3,6 +3,7 @@ export 'models/persistent-nav-bar-scaffold.widget.dart';
 export 'models/persistent-bottom-nav-bar.widget.dart';
 export 'models/persisten-bottom-nav-item.widget.dart';
 export 'models/persistent-bottom-nav-bar-styles.widget.dart';
+export 'models/screen-context.widget.dart';
 export 'models/neumorphic-properties.widget.dart';
 export 'neumorphic-package-by-serge-software/neumorphic-card.dart';
 export 'utils/utils.dart';
