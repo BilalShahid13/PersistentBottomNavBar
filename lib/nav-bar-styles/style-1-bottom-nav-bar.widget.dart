@@ -106,21 +106,21 @@ class BottomNavStyle1 extends StatelessWidget {
                 width: double.infinity,
                 height: this.navBarHeight,
                 padding: this.bottomPadding == null
-                        ? EdgeInsets.symmetric(
-                            horizontal: this.horizontalPadding == null
-                                ? MediaQuery.of(context).size.width * 0.07
-                                : this.horizontalPadding,
-                            vertical: this.navBarHeight * 0.15,
-                          )
-                        : EdgeInsets.only(
-                            top: this.navBarHeight * 0.15,
-                            left: this.horizontalPadding == null
-                                ? MediaQuery.of(context).size.width * 0.07
-                                : this.horizontalPadding,
-                            right: this.horizontalPadding == null
-                                ? MediaQuery.of(context).size.width * 0.07
-                                : this.horizontalPadding,
-                            bottom: this.bottomPadding),
+                    ? EdgeInsets.symmetric(
+                        horizontal: this.horizontalPadding == null
+                            ? MediaQuery.of(context).size.width * 0.07
+                            : this.horizontalPadding,
+                        vertical: this.navBarHeight * 0.15,
+                      )
+                    : EdgeInsets.only(
+                        top: this.navBarHeight * 0.15,
+                        left: this.horizontalPadding == null
+                            ? MediaQuery.of(context).size.width * 0.07
+                            : this.horizontalPadding,
+                        right: this.horizontalPadding == null
+                            ? MediaQuery.of(context).size.width * 0.07
+                            : this.horizontalPadding,
+                        bottom: this.bottomPadding),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,

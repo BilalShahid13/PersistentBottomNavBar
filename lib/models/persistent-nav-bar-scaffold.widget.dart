@@ -75,7 +75,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   }
 
   void _updateTabController({bool shouldDisposeOldController = false}) {
-    final PersistentTabController newController = widget.controller ?? PersistentTabController(initialIndex: widget.tabBar.selectedIndex);
+    final PersistentTabController newController = widget.controller ??
+        PersistentTabController(initialIndex: widget.tabBar.selectedIndex);
 
     if (newController == _controller) {
       return;
@@ -103,7 +104,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   void didUpdateWidget(PersistentTabScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
-      _updateTabController(shouldDisposeOldController: oldWidget.controller == null);
+      _updateTabController(
+          shouldDisposeOldController: oldWidget.controller == null);
     } else if (_controller.index >= widget.itemCount) {
       _controller.index = widget.itemCount - 1;
     }
@@ -128,22 +130,27 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     if (widget.resizeToAvoidBottomInset) {
       // Remove the view inset and add it back as a padding in the inner content.
       newMediaQuery = newMediaQuery.removeViewInsets(removeBottom: true);
-      contentPadding = EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
+      contentPadding =
+          EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
-    } else if (widget.tabBar.navBarCurve == NavBarCurve.allCorners || widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
+    } else if (widget.tabBar.navBarCurve == NavBarCurve.allCorners ||
+        widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
       // if (widget.isIOS) {
       //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
       //     final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
       //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
       //   }
       // } else {
-        if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
-          final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
-          contentPadding = EdgeInsets.only(bottom: bottomPadding);
-        }
+      if (widget.tabBar != null &&
+          (!widget.resizeToAvoidBottomInset ||
+              widget.tabBar.navBarHeight * 0.8 >
+                  existingMediaQuery.viewInsets.bottom)) {
+        final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
+        contentPadding = EdgeInsets.only(bottom: bottomPadding);
+      }
       //}
     } else {
       // if (widget.isIOS) {
@@ -152,10 +159,13 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
       //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
       //   }
       // } else {
-        if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight > existingMediaQuery.viewInsets.bottom)) {
-          final double bottomPadding = widget.tabBar.navBarHeight;
-          contentPadding = EdgeInsets.only(bottom: bottomPadding);
-        }
+      if (widget.tabBar != null &&
+          (!widget.resizeToAvoidBottomInset ||
+              widget.tabBar.navBarHeight >
+                  existingMediaQuery.viewInsets.bottom)) {
+        final double bottomPadding = widget.tabBar.navBarHeight;
+        contentPadding = EdgeInsets.only(bottom: bottomPadding);
+      }
       //}
     }
 
@@ -276,7 +286,9 @@ class _TabSwitchingViewState extends State<_TabSwitchingView> {
         tabFocusNodes.addAll(
           List<FocusScopeNode>.generate(
             widget.tabCount - tabFocusNodes.length,
-            (int index) => FocusScopeNode(debugLabel: '$CupertinoTabScaffold Tab ${index + tabFocusNodes.length}'),
+            (int index) => FocusScopeNode(
+                debugLabel:
+                    '$CupertinoTabScaffold Tab ${index + tabFocusNodes.length}'),
           ),
         );
       }
@@ -310,7 +322,9 @@ class _TabSwitchingViewState extends State<_TabSwitchingView> {
             child: FocusScope(
               node: tabFocusNodes[index],
               child: Builder(builder: (BuildContext context) {
-                return shouldBuildTab[index] ? widget.tabBuilder(context, index) : Container();
+                return shouldBuildTab[index]
+                    ? widget.tabBuilder(context, index)
+                    : Container();
               }),
             ),
           ),

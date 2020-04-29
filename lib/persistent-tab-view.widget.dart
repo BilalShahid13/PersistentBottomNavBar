@@ -34,8 +34,10 @@ class PersistentTabView extends StatefulWidget {
     assert(items == null && itemCount != null || items != null);
     assert(screens != null);
     assert(navBarStyle == NavBarStyle.custom || items.length == screens.length);
-    assert(navBarStyle == NavBarStyle.custom || items.length >= 2 && items.length <= 5);
-    assert(navBarStyle == NavBarStyle.custom && customWidget != null || navBarStyle != NavBarStyle.custom && customWidget == null);
+    assert(navBarStyle == NavBarStyle.custom ||
+        items.length >= 2 && items.length <= 5);
+    assert(navBarStyle == NavBarStyle.custom && customWidget != null ||
+        navBarStyle != NavBarStyle.custom && customWidget == null);
   }
 
   ///List of persistent bottom navigation bar items to be displayed in the navigation bar.
@@ -123,7 +125,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   @override
   void initState() {
     super.initState();
-    _contextList = List<BuildContext>(widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
+    _contextList = List<BuildContext>(
+        widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
     if (widget.controller == null) {
       _controller = PersistentTabController(initialIndex: 0);
     } else {
@@ -133,7 +136,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
 
   Widget navigationBarWidget() => PersistentTabScaffold(
         controller: _controller,
-        itemCount: widget.items == null ? widget.itemCount ?? 0 : widget.items.length,
+        itemCount:
+            widget.items == null ? widget.itemCount ?? 0 : widget.items.length,
         tabBar: PersistentBottomNavBar(
           showElevation: widget.showElevation,
           items: widget.items,
@@ -173,7 +177,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                       ),
                     ),
                     Positioned(
-                      bottom: widget.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
+                      bottom:
+                          widget.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
                       right: 10.0,
                       child: widget.floatingActionWidget,
                     ),
@@ -208,7 +213,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           child: SafeArea(top: false, child: navigationBarWidget()),
         ),
       );
-    } else if (widget.handleAndroidBackButtonPress && !widget.confineInSafeArea) {
+    } else if (widget.handleAndroidBackButtonPress &&
+        !widget.confineInSafeArea) {
       return WillPopScope(
         onWillPop: () async {
           if (_controller.index == 0 && !Navigator.canPop(_contextList.first)) {
@@ -229,7 +235,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         },
         child: navigationBarWidget(),
       );
-    } else if (!widget.handleAndroidBackButtonPress && widget.confineInSafeArea) {
+    } else if (!widget.handleAndroidBackButtonPress &&
+        widget.confineInSafeArea) {
       return Container(
         color: widget.backgroundColor,
         child: SafeArea(top: false, child: navigationBarWidget()),
@@ -240,16 +247,21 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   }
 }
 
-Future<T> pushNewScreen<T extends Object>(BuildContext context, {@required Widget screen, bool withNavBar, bool platformSpecific = false}) {
+Future<T> pushNewScreen<T extends Object>(BuildContext context,
+    {@required Widget screen, bool withNavBar, bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else if (withNavBar == null) {
     withNavBar = true;
   }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(CupertinoPageRoute(builder: (BuildContext context) => screen));
+  return Navigator.of(context, rootNavigator: !withNavBar)
+      .push(CupertinoPageRoute(builder: (BuildContext context) => screen));
 }
 
-Future<T> pushDynamicScreen<T extends Object>(BuildContext context, {@required dynamic screen, bool withNavBar, bool platformSpecific = false}) {
+Future<T> pushDynamicScreen<T extends Object>(BuildContext context,
+    {@required dynamic screen,
+    bool withNavBar,
+    bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else if (withNavBar == null) {
@@ -259,11 +271,16 @@ Future<T> pushDynamicScreen<T extends Object>(BuildContext context, {@required d
 }
 
 Future<T> pushNewScreenWithRouteSettings<T extends Object>(BuildContext context,
-    {@required Widget screen, @required RouteSettings settings, bool withNavBar, bool platformSpecific = false}) {
+    {@required Widget screen,
+    @required RouteSettings settings,
+    bool withNavBar,
+    bool platformSpecific = false}) {
   if (platformSpecific && withNavBar == null) {
     withNavBar = Platform.isAndroid ? false : true;
   } else if (withNavBar == null) {
     withNavBar = true;
   }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(CupertinoPageRoute(settings: settings, builder: (BuildContext context) => screen));
+  return Navigator.of(context, rootNavigator: !withNavBar).push(
+      CupertinoPageRoute(
+          settings: settings, builder: (BuildContext context) => screen));
 }

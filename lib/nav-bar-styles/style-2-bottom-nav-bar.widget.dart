@@ -30,7 +30,8 @@ class BottomNavStyle2 extends StatelessWidget {
       this.navBarCurve,
       this.horizontalPadding});
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height) {
+  Widget _buildItem(
+      PersistentBottomNavBarItem item, bool isSelected, double height) {
     return AnimatedContainer(
       width: 150.0,
       height: height / 1,
@@ -48,8 +49,12 @@ class BottomNavStyle2 extends StatelessWidget {
                 data: IconThemeData(
                     size: iconSize,
                     color: isSelected
-                        ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
-                        : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
+                        ? (item.activeContentColor == null
+                            ? item.activeColor
+                            : item.activeContentColor)
+                        : item.inactiveColor == null
+                            ? item.activeColor
+                            : item.inactiveColor),
                 child: item.icon,
               ),
             ),
@@ -61,7 +66,9 @@ class BottomNavStyle2 extends StatelessWidget {
                     child: Text(
                   isSelected ? item.title : " ",
                   style: TextStyle(
-                      color: (item.activeContentColor == null ? item.activeColor : item.activeContentColor),
+                      color: (item.activeContentColor == null
+                          ? item.activeColor
+                          : item.activeContentColor),
                       fontWeight: FontWeight.w400,
                       fontSize: item.titleFontSize),
                 )),
@@ -85,15 +92,22 @@ class BottomNavStyle2 extends StatelessWidget {
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+            color: getBackgroundColor(
+                context, items, backgroundColor, selectedIndex),
             child: Container(
               width: double.infinity,
               height: this.navBarHeight,
               padding: EdgeInsets.only(
-                  left: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
-                  right: this.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.05 : this.horizontalPadding,
+                  left: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.05
+                      : this.horizontalPadding,
+                  right: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.05
+                      : this.horizontalPadding,
                   top: this.navBarHeight * 0.15,
-                  bottom: this.bottomPadding == null ? this.navBarHeight * 0.12 : this.bottomPadding),
+                  bottom: this.bottomPadding == null
+                      ? this.navBarHeight * 0.12
+                      : this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -106,7 +120,8 @@ class BottomNavStyle2 extends StatelessWidget {
                       },
                       child: Container(
                         color: Colors.transparent,
-                        child: _buildItem(item, selectedIndex == index, this.navBarHeight),
+                        child: _buildItem(
+                            item, selectedIndex == index, this.navBarHeight),
                       ),
                     ),
                   );

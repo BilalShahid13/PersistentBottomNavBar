@@ -34,7 +34,8 @@ class BottomNavStyle8 extends StatefulWidget {
   _BottomNavStyle8State createState() => _BottomNavStyle8State();
 }
 
-class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderStateMixin {
+class _BottomNavStyle8State extends State<BottomNavStyle8>
+    with TickerProviderStateMixin {
   List<AnimationController> _animationControllerList;
   List<Animation<double>> _animationList;
 
@@ -50,8 +51,11 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
     _animationList = List<Animation<double>>();
 
     for (int i = 0; i < widget.items.length; ++i) {
-      _animationControllerList.add(AnimationController(duration: Duration(milliseconds: 400), vsync: this));
-      _animationList.add(Tween(begin: 0.95, end: 1.2).chain(CurveTween(curve: Curves.ease)).animate(_animationControllerList[i]));
+      _animationControllerList.add(AnimationController(
+          duration: Duration(milliseconds: 400), vsync: this));
+      _animationList.add(Tween(begin: 0.95, end: 1.2)
+          .chain(CurveTween(curve: Curves.ease))
+          .animate(_animationControllerList[i]));
     }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -59,7 +63,8 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
     });
   }
 
-  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double height, int itemIndex) {
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
+      double height, int itemIndex) {
     return Container(
       alignment: Alignment.center,
       height: height,
@@ -73,8 +78,12 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
               data: IconThemeData(
                   size: widget.iconSize,
                   color: isSelected
-                      ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor)
-                      : item.inactiveColor == null ? item.activeColor : item.inactiveColor),
+                      ? (item.activeContentColor == null
+                          ? item.activeColor
+                          : item.activeContentColor)
+                      : item.inactiveColor == null
+                          ? item.activeColor
+                          : item.inactiveColor),
               child: item.icon,
             ),
           ),
@@ -90,7 +99,11 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
                     child: Text(
                       item.title,
                       style: TextStyle(
-                          color: isSelected ? (item.activeContentColor == null ? item.activeColor : item.activeContentColor) : item.inactiveColor,
+                          color: isSelected
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
+                              : item.inactiveColor,
                           fontWeight: FontWeight.w400,
                           fontSize: item.titleFontSize),
                     ),
@@ -130,15 +143,22 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
         child: BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
           child: Container(
-            color: getBackgroundColor(context, widget.items, widget.backgroundColor, widget.selectedIndex),
+            color: getBackgroundColor(context, widget.items,
+                widget.backgroundColor, widget.selectedIndex),
             child: Container(
               width: double.infinity,
               height: widget.navBarHeight,
               padding: EdgeInsets.only(
-                  left: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
-                  right: widget.horizontalPadding == null ? MediaQuery.of(context).size.width * 0.04 : widget.horizontalPadding,
+                  left: widget.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.04
+                      : widget.horizontalPadding,
+                  right: widget.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.04
+                      : widget.horizontalPadding,
                   top: widget.navBarHeight * 0.15,
-                  bottom: widget.bottomPadding == null ? widget.navBarHeight * 0.12 : widget.bottomPadding),
+                  bottom: widget.bottomPadding == null
+                      ? widget.navBarHeight * 0.12
+                      : widget.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -151,13 +171,15 @@ class _BottomNavStyle8State extends State<BottomNavStyle8> with TickerProviderSt
                           _lastSelectedIndex = _selectedIndex;
                           _selectedIndex = index;
                           _animationControllerList[_selectedIndex].forward();
-                          _animationControllerList[_lastSelectedIndex].reverse();
+                          _animationControllerList[_lastSelectedIndex]
+                              .reverse();
                         }
                         widget.onItemSelected(index);
                       },
                       child: Container(
                         color: Colors.transparent,
-                        child: _buildItem(item, widget.selectedIndex == index, widget.navBarHeight, index),
+                        child: _buildItem(item, widget.selectedIndex == index,
+                            widget.navBarHeight, index),
                       ),
                     ),
                   );

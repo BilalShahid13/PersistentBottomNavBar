@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
-BoxDecoration getNavBarDecoration({bool showElevation = true, NavBarCurve navBarCurve = NavBarCurve.none}) {
+BoxDecoration getNavBarDecoration(
+    {bool showElevation = true, NavBarCurve navBarCurve = NavBarCurve.none}) {
   return navBarCurve == NavBarCurve.upperCorners && showElevation
       ? BoxDecoration(
-          borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
           boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
         )
       : navBarCurve == NavBarCurve.upperCorners && !showElevation
           ? BoxDecoration(
-              borderRadius: BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(15.0),
+                  topRight: Radius.circular(15.0)),
             )
           : navBarCurve == NavBarCurve.allCorners && showElevation
               ? BoxDecoration(
@@ -22,23 +26,30 @@ BoxDecoration getNavBarDecoration({bool showElevation = true, NavBarCurve navBar
                     )
                   : navBarCurve == NavBarCurve.none && showElevation
                       ? BoxDecoration(
-                          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
+                          boxShadow: [
+                            BoxShadow(color: Colors.black12, blurRadius: 2)
+                          ],
                         )
                       : BoxDecoration();
 }
 
-BorderRadius getClipRectBorderRadius({NavBarCurve navBarCurve = NavBarCurve.none}) {
+BorderRadius getClipRectBorderRadius(
+    {NavBarCurve navBarCurve = NavBarCurve.none}) {
   return navBarCurve == NavBarCurve.allCorners
       ? BorderRadius.circular(15.0)
       : navBarCurve == NavBarCurve.upperCorners
-          ? BorderRadius.only(topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
+          ? BorderRadius.only(
+              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
           : BorderRadius.circular(0.0);
 }
 
-bool isIOS(BuildContext context) => (Theme.of(context).platform == TargetPlatform.iOS && (Device.get().isIphoneX || Device.get().isTablet));
+bool isIOS(BuildContext context) =>
+    (Theme.of(context).platform == TargetPlatform.iOS &&
+        (Device.get().isIphoneX || Device.get().isTablet));
 
 bool isColorOpaque(BuildContext context, Color color) {
-  final Color backgroundColor = color ?? CupertinoTheme.of(context).barBackgroundColor;
+  final Color backgroundColor =
+      color ?? CupertinoTheme.of(context).barBackgroundColor;
   return CupertinoDynamicColor.resolve(backgroundColor, context).alpha == 0xFF;
 }
 
@@ -51,7 +62,8 @@ bool opaque(List<PersistentBottomNavBarItem> items, int selectedIndex) {
   return true;
 }
 
-double getTranslucencyAmount(List<PersistentBottomNavBarItem> items, int selectedIndex) {
+double getTranslucencyAmount(
+    List<PersistentBottomNavBarItem> items, int selectedIndex) {
   for (int i = 0; i < items.length; ++i) {
     if (items[i].isTranslucent && i == selectedIndex) {
       return items[i].translucencyPercentage / 100.0;
@@ -60,7 +72,8 @@ double getTranslucencyAmount(List<PersistentBottomNavBarItem> items, int selecte
   return 1.0;
 }
 
-Color getBackgroundColor(BuildContext context, List<PersistentBottomNavBarItem> items, Color color, int selectedIndex) {
+Color getBackgroundColor(BuildContext context,
+    List<PersistentBottomNavBarItem> items, Color color, int selectedIndex) {
   if (color == null) {
     return Colors.white;
   } else if (!opaque(items, selectedIndex) && isColorOpaque(context, color)) {

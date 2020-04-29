@@ -93,16 +93,16 @@ class BottomNavStyle5 extends StatelessWidget {
               width: double.infinity,
               height: this.navBarHeight,
               padding: EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.05
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.05
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.06,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.16
-                          : this.bottomPadding),
+                  left: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.05
+                      : this.horizontalPadding,
+                  right: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.05
+                      : this.horizontalPadding,
+                  top: this.navBarHeight * 0.06,
+                  bottom: this.bottomPadding == null
+                      ? this.navBarHeight * 0.16
+                      : this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,8 +114,8 @@ class BottomNavStyle5 extends StatelessWidget {
                         this.onItemSelected(index);
                       },
                       child: Container(
-                                color: Colors.transparent,
-                                              child: _buildItem(
+                        color: Colors.transparent,
+                        child: _buildItem(
                             item, selectedIndex == index, this.navBarHeight),
                       ),
                     ),

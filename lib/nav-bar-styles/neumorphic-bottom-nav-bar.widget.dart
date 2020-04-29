@@ -150,16 +150,16 @@ class NeumorphicBottomNavBar extends StatelessWidget {
               width: double.infinity,
               height: this.navBarHeight,
               padding: EdgeInsets.only(
-                      left: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      right: this.horizontalPadding == null
-                          ? MediaQuery.of(context).size.width * 0.04
-                          : this.horizontalPadding,
-                      top: this.navBarHeight * 0.15,
-                      bottom: this.bottomPadding == null
-                          ? this.navBarHeight * 0.12
-                          : this.bottomPadding),
+                  left: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.04
+                      : this.horizontalPadding,
+                  right: this.horizontalPadding == null
+                      ? MediaQuery.of(context).size.width * 0.04
+                      : this.horizontalPadding,
+                  top: this.navBarHeight * 0.15,
+                  bottom: this.bottomPadding == null
+                      ? this.navBarHeight * 0.12
+                      : this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,

@@ -118,19 +118,19 @@ class BottomNavStyle7 extends StatelessWidget {
               width: double.infinity,
               height: this.navBarHeight,
               padding: this.bottomPadding == null
-                      ? EdgeInsets.symmetric(
-                          horizontal: MediaQuery.of(context).size.width * 0.07,
-                          vertical: this.navBarHeight * 0.15,
-                        )
-                      : EdgeInsets.only(
-                          top: this.navBarHeight * 0.15,
-                          left: this.horizontalPadding == null
-                              ? MediaQuery.of(context).size.width * 0.07
-                              : this.horizontalPadding,
-                          right: this.horizontalPadding == null
-                              ? MediaQuery.of(context).size.width * 0.07
-                              : this.horizontalPadding,
-                          bottom: this.bottomPadding),
+                  ? EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.07,
+                      vertical: this.navBarHeight * 0.15,
+                    )
+                  : EdgeInsets.only(
+                      top: this.navBarHeight * 0.15,
+                      left: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.07
+                          : this.horizontalPadding,
+                      right: this.horizontalPadding == null
+                          ? MediaQuery.of(context).size.width * 0.07
+                          : this.horizontalPadding,
+                      bottom: this.bottomPadding),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -143,8 +143,8 @@ class BottomNavStyle7 extends StatelessWidget {
                         this.onItemSelected(index);
                       },
                       child: Container(
-                                color: Colors.transparent,
-                                              child: _buildItem(
+                        color: Colors.transparent,
+                        child: _buildItem(
                             item, selectedIndex == index, this.navBarHeight),
                       ),
                     ),
