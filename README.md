@@ -200,16 +200,6 @@ Pop back to first screen in the navigation graph for a given tab:
     ),
     (_) => false,
   );
-
-```dart
-    Navigator.of(context).pushAndRemoveUntil(
-    CupertinoPageRoute(
-      builder: (BuildContext context) {
-        return FirstScreen();
-      },
-    ),
-    (_) => false,
-  );
 ```
 
 ## Custom Navigation Bar Styling
