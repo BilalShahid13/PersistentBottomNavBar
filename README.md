@@ -133,6 +133,8 @@ class MyApp extends StatelessWidget {
 
 ```
 
+## Navigator Functions
+
 To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. Additionally, `platform specific` behavior can be enabled or disabled from here (`disabled` by default).
 
 If `platform specific` is enabled while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is the default behavior specified by each platform.
@@ -171,6 +173,33 @@ If you are pushing a new `modal` screen, use the following function:
         withNavBar: true,
     );
 
+```
+
+*Some Tips for the navigator functions.*
+
+Pop to any screen in the navigation graph for a given tab:
+
+```dart
+    Navigator.of(context).popUntil((route) {
+        return route.settings.name == "ScreenToPopBackTo";
+    });
+```
+
+Pop back to first screen in the navigation graph for a given tab:
+
+```dart
+    Navigator.of(context).popUntil(ModalRoute.withName("/"));
+```
+
+```dart
+    Navigator.of(context).pushAndRemoveUntil(
+    CupertinoPageRoute(
+      builder: (BuildContext context) {
+        return FirstScreen();
+      },
+    ),
+    (_) => false,
+  );
 ```
 
 ## Custom Navigation Bar Styling
@@ -291,7 +320,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                 selectedIndex: _controller.index,
                 onItemSelected: onItemSelected: (index) {
                     setState(() {
-                        _controller.index = index; // THIS IS CRITICAL!! Don't forget to miss it!
+                        _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
                     });
                 },
             ),
@@ -304,6 +333,6 @@ If you want to have your own style for the navigation bar, follow these steps:
 
     `NOTE: In the 'onSelected' function of the customWidget, don't forgot to change the index of the controller`
 
-3. Done! As we can see, the other properties like `iconSize`, `navBarHeight` are not required here so you can skip those properties. Sample code is provided in the `example project`.
+3. Done! As we can see, some of the other properties like `iconSize`, `items` are not required here so you can skip those properties. But keep in mind that here `navBarHeight` acts as a padding from the bottom. If you give too much `navBarHeight` but less height in the custom widget or vice versa, layout issues might appear.
 
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.

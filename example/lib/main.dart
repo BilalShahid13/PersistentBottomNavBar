@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(), // Redundant here but defined to demonstrate for other than custom style
-      // confineInSafeArea: true,
-      // handleAndroidBackButtonPress: true,
+      confineInSafeArea: true,
+      handleAndroidBackButtonPress: true,
       onItemSelected: (int) {
         setState(() {}); // This is required to update the nav bar if Android back button is pressed
       },
@@ -83,7 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
         items: _navBarsItems(),
         onItemSelected: (index) {
           setState(() {
-            _controller.index = index;
+            _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
           });
         },
         selectedIndex: _controller.index,
