@@ -136,8 +136,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
-    } else if (
-        widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
+    } else if (widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
       // if (widget.isIOS) {
       //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
       //     final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
@@ -186,7 +185,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                 topRight: Radius.circular(15.0),
               ),
             )
-          :  BoxDecoration(color: CupertinoColors.white.withOpacity(0.0)),
+          : BoxDecoration(color: CupertinoColors.white.withOpacity(0.0)),
       child: Stack(
         children: <Widget>[
           content,
