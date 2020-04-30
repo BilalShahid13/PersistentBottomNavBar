@@ -14,7 +14,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added feature to pop back to first screen on tapping of an already selected tab.
 - Fixed the issue when new tab was added dynamically.
 - Fixed safe area issues.
-- Bug fixes
+- Removed property `selectedIndex` as it was redundant. Use `PersistentTabController` to control it instead. `Breaking Change`
+- Bug fixes.
 
 ## [1.4.5] - 2020-04-29
 
