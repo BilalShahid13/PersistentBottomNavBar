@@ -37,15 +37,16 @@ class PersistentBottomNavBar extends StatelessWidget {
     return items == null ? true : !items[index].isTranslucent;
   }
 
-  @override
-  Widget build(BuildContext context) {
+  Widget getNavBarStyle() {
     if (navBarStyle == NavBarStyle.custom) {
       return customNavBarWidget;
     }
     if (navBarStyle == NavBarStyle.style1) {
       return BottomNavStyle1(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -58,7 +59,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style2) {
       return BottomNavStyle2(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -71,7 +74,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style3) {
       return BottomNavStyle3(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -84,7 +89,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style4) {
       return BottomNavStyle4(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -97,7 +104,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style5) {
       return BottomNavStyle5(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -110,7 +119,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style6) {
       return BottomNavStyle6(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -123,7 +134,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style7) {
       return BottomNavStyle7(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -136,7 +149,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style8) {
       return BottomNavStyle8(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -149,7 +164,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style9) {
       return BottomNavStyle9(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -162,7 +179,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style10) {
       return BottomNavStyle10(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -175,7 +194,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.neumorphic) {
       return NeumorphicBottomNavBar(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -189,7 +210,9 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else {
       return BottomNavSimple(
         items: this.items,
-        backgroundColor: this.backgroundColor,
+        backgroundColor: this.items[this.selectedIndex].isTranslucent
+            ? Colors.transparent
+            : this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -200,6 +223,19 @@ class PersistentBottomNavBar extends StatelessWidget {
         horizontalPadding: this.horizontalPadding,
       );
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: this.navBarStyle == NavBarStyle.custom
+          ? this.backgroundColor
+          : this.items[this.selectedIndex].isTranslucent
+              ? this.backgroundColor.withOpacity(
+                  this.items[this.selectedIndex].translucencyPercentage / 100.0)
+              : this.backgroundColor,
+      child: SafeArea(top: false, child: getNavBarStyle()),
+    );
   }
 
   PersistentBottomNavBar copyWith(

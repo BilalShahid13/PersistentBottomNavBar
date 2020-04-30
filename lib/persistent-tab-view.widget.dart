@@ -208,10 +208,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             return false;
           }
         },
-        child: Container(
-          color: widget.backgroundColor,
-          child: SafeArea(top: false, child: navigationBarWidget()),
-        ),
+        child: navigationBarWidget(),
       );
     } else if (widget.handleAndroidBackButtonPress &&
         !widget.confineInSafeArea) {
@@ -238,8 +235,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     } else if (!widget.handleAndroidBackButtonPress &&
         widget.confineInSafeArea) {
       return Container(
-        color: widget.backgroundColor,
-        child: SafeArea(top: false, child: navigationBarWidget()),
+        color: widget.items != null &&
+                widget.items[_controller.index].isTranslucent
+            ? widget.backgroundColor.withOpacity(
+                widget.items[_controller.index].translucencyPercentage / 100)
+            : widget.backgroundColor,
+        child: SafeArea(bottom: false, top: true, child: navigationBarWidget()),
       );
     } else {
       return navigationBarWidget();

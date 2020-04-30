@@ -333,6 +333,6 @@ If you want to have your own style for the navigation bar, follow these steps:
 
     `NOTE: In the 'onSelected' function of the customWidget, don't forgot to change the index of the controller`
 
-3. Done! As we can see, some of the other properties like `iconSize`, `items` are not required here so you can skip those properties. But keep in mind that here `navBarHeight` acts as a padding from the bottom. If you give too much `navBarHeight` but less height in the custom widget or vice versa, layout issues might appear.
+3. Done! As we can see, some of the other properties like `iconSize`, `items` are not required here so you can skip those properties. But keep in mind that here `navBarHeight` acts as a **bottom padding**. If you give too much `navBarHeight` but less height in the custom widget or vice versa, layout issues might appear.
 
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.
