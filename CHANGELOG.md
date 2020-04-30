@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.0] - 2020-04-30
+
+- Added feature to pop back to first screen on tapping of an already selected tab.
+- Fixed the issue when new tab was added dynamically.
+- Fixed safe area issues.
+- Bug fixes
+
 ## [1.4.5] - 2020-04-29
 
 - Fixed nav bar translucency for provided styles.

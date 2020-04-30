@@ -5,17 +5,33 @@ class PersistentTabController extends ChangeNotifier {
   PersistentTabController({int initialIndex = 0})
       : _index = initialIndex,
         assert(initialIndex != null),
-        assert(initialIndex >= 0);
+        assert(initialIndex >= 0) {
+    _previousIndex = initialIndex;
+  }
 
   bool _isDisposed = false;
   int get index => _index;
+  int get previousTab => _previousIndex;
   int _index;
+  int _previousIndex;
   set index(int value) {
     assert(value != null);
     assert(value >= 0);
     if (_index == value) {
       return;
     }
+    _previousIndex = _index;
+    _index = value;
+    notifyListeners();
+  }
+
+  jumpToTab(int value) {
+    assert(value != null);
+    assert(value >= 0);
+    if (_index == value) {
+      return;
+    }
+    _previousIndex = _index;
     _index = value;
     notifyListeners();
   }
@@ -23,8 +39,8 @@ class PersistentTabController extends ChangeNotifier {
   @mustCallSuper
   @override
   void dispose() {
-    super.dispose();
     _isDisposed = true;
+    super.dispose();
   }
 }
 

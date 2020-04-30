@@ -5,6 +5,7 @@ import '../persistent-tab-view.dart';
 
 class BottomNavSimple extends StatelessWidget {
   final int selectedIndex;
+  final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
@@ -15,15 +16,18 @@ class BottomNavSimple extends StatelessWidget {
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
+  final Function(int) popAllScreensForTheSelectedTab;
 
   BottomNavSimple(
       {Key key,
       this.selectedIndex,
+      this.previousIndex,
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
       this.animationDuration = const Duration(milliseconds: 1000),
       this.navBarHeight = 60.0,
+      this.popAllScreensForTheSelectedTab,
       @required this.items,
       this.onItemSelected,
       this.bottomPadding,
@@ -92,49 +96,39 @@ class BottomNavSimple extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: getNavBarDecoration(
-        navBarCurve: this.navBarCurve,
-        showElevation: this.showElevation,
-      ),
-      child: ClipRRect(
-        borderRadius: getClipRectBorderRadius(navBarCurve: this.navBarCurve),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-          child: Container(
-            color: getBackgroundColor(
-                context, items, backgroundColor, selectedIndex),
-            child: Container(
-              width: double.infinity,
-              height: this.navBarHeight,
-              padding: EdgeInsets.only(
-                  left: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : this.horizontalPadding,
-                  right: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : this.horizontalPadding,
-                  top: this.navBarHeight * 0.15,
-                  bottom: this.bottomPadding == null
-                      ? this.navBarHeight * 0.12
-                      : this.bottomPadding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
-                  return Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        this.onItemSelected(index);
-                      },
-                      child: _buildItem(
-                          item, selectedIndex == index, this.navBarHeight),
-                    ),
-                  );
-                }).toList(),
+      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+      child: Container(
+        width: double.infinity,
+        height: this.navBarHeight,
+        padding: EdgeInsets.only(
+            left: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : this.horizontalPadding,
+            right: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : this.horizontalPadding,
+            top: this.navBarHeight * 0.15,
+            bottom: this.bottomPadding == null
+                ? this.navBarHeight * 0.12
+                : this.bottomPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: items.map((item) {
+            var index = items.indexOf(item);
+            return Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  if (this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
+                },
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ),
     );

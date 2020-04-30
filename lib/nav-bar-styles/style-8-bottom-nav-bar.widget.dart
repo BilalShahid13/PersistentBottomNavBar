@@ -5,6 +5,7 @@ import '../persistent-tab-view.dart';
 
 class BottomNavStyle8 extends StatefulWidget {
   final int selectedIndex;
+  final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
@@ -15,10 +16,12 @@ class BottomNavStyle8 extends StatefulWidget {
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
+  final Function(int) popAllScreensForTheSelectedTab;
 
   BottomNavStyle8(
       {Key key,
       this.selectedIndex,
+      this.previousIndex,
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
@@ -26,6 +29,7 @@ class BottomNavStyle8 extends StatefulWidget {
       this.navBarHeight = 0.0,
       @required this.items,
       this.onItemSelected,
+      this.popAllScreensForTheSelectedTab,
       this.bottomPadding,
       this.horizontalPadding,
       this.navBarCurve});
@@ -127,6 +131,18 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.items.length != _animationControllerList.length) {
+      _animationControllerList = List<AnimationController>();
+      _animationList = List<Animation<double>>();
+
+      for (int i = 0; i < widget.items.length; ++i) {
+        _animationControllerList.add(AnimationController(
+            duration: Duration(milliseconds: 400), vsync: this));
+        _animationList.add(Tween(begin: 0.95, end: 1.18)
+            .chain(CurveTween(curve: Curves.ease))
+            .animate(_animationControllerList[i]));
+      }
+    }
     if (widget.selectedIndex != _selectedIndex) {
       _lastSelectedIndex = _selectedIndex;
       _selectedIndex = widget.selectedIndex;
@@ -134,59 +150,48 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
       _animationControllerList[_lastSelectedIndex].reverse();
     }
     return Container(
-      decoration: getNavBarDecoration(
-        navBarCurve: widget.navBarCurve,
-        showElevation: widget.showElevation,
-      ),
-      child: ClipRRect(
-        borderRadius: getClipRectBorderRadius(navBarCurve: widget.navBarCurve),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-          child: Container(
-            color: getBackgroundColor(context, widget.items,
-                widget.backgroundColor, widget.selectedIndex),
-            child: Container(
-              width: double.infinity,
-              height: widget.navBarHeight,
-              padding: EdgeInsets.only(
-                  left: widget.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : widget.horizontalPadding,
-                  right: widget.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : widget.horizontalPadding,
-                  top: widget.navBarHeight * 0.15,
-                  bottom: widget.bottomPadding == null
-                      ? widget.navBarHeight * 0.12
-                      : widget.bottomPadding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: widget.items.map((item) {
-                  var index = widget.items.indexOf(item);
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () {
-                        if (index != _selectedIndex) {
-                          _lastSelectedIndex = _selectedIndex;
-                          _selectedIndex = index;
-                          _animationControllerList[_selectedIndex].forward();
-                          _animationControllerList[_lastSelectedIndex]
-                              .reverse();
-                        }
-                        widget.onItemSelected(index);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: _buildItem(item, widget.selectedIndex == index,
-                            widget.navBarHeight, index),
-                      ),
-                    ),
-                  );
-                }).toList(),
+      color: getBackgroundColor(
+          context, widget.items, widget.backgroundColor, widget.selectedIndex),
+      child: Container(
+        width: double.infinity,
+        height: widget.navBarHeight,
+        padding: EdgeInsets.only(
+            left: widget.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : widget.horizontalPadding,
+            right: widget.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : widget.horizontalPadding,
+            top: widget.navBarHeight * 0.15,
+            bottom: widget.bottomPadding == null
+                ? widget.navBarHeight * 0.12
+                : widget.bottomPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: widget.items.map((item) {
+            var index = widget.items.indexOf(item);
+            return Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (index != _selectedIndex) {
+                    _lastSelectedIndex = _selectedIndex;
+                    _selectedIndex = index;
+                    _animationControllerList[_selectedIndex].forward();
+                    _animationControllerList[_lastSelectedIndex].reverse();
+                  } else if (widget.previousIndex == index) {
+                    widget.popAllScreensForTheSelectedTab(index);
+                  }
+                  widget.onItemSelected(index);
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: _buildItem(item, widget.selectedIndex == index,
+                      widget.navBarHeight, index),
+                ),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ),
     );

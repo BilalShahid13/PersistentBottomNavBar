@@ -5,6 +5,7 @@ import '../persistent-tab-view.dart';
 
 class BottomNavStyle5 extends StatelessWidget {
   final int selectedIndex;
+  final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
@@ -15,10 +16,12 @@ class BottomNavStyle5 extends StatelessWidget {
   final NavBarCurve navBarCurve;
   final double bottomPadding;
   final double horizontalPadding;
+  final Function(int) popAllScreensForTheSelectedTab;
 
   BottomNavStyle5(
       {Key key,
       this.selectedIndex,
+      this.previousIndex,
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
@@ -27,6 +30,7 @@ class BottomNavStyle5 extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.horizontalPadding,
+      this.popAllScreensForTheSelectedTab,
       this.bottomPadding,
       this.navBarCurve});
 
@@ -78,52 +82,42 @@ class BottomNavStyle5 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: getNavBarDecoration(
-        navBarCurve: this.navBarCurve,
-        showElevation: this.showElevation,
-      ),
-      child: ClipRRect(
-        borderRadius: getClipRectBorderRadius(navBarCurve: this.navBarCurve),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-          child: Container(
-            color: getBackgroundColor(
-                context, items, backgroundColor, selectedIndex),
-            child: Container(
-              width: double.infinity,
-              height: this.navBarHeight,
-              padding: EdgeInsets.only(
-                  left: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.05
-                      : this.horizontalPadding,
-                  right: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.05
-                      : this.horizontalPadding,
-                  top: this.navBarHeight * 0.06,
-                  bottom: this.bottomPadding == null
-                      ? this.navBarHeight * 0.16
-                      : this.bottomPadding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
-                  return Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        this.onItemSelected(index);
-                      },
-                      child: Container(
-                        color: Colors.transparent,
-                        child: _buildItem(
-                            item, selectedIndex == index, this.navBarHeight),
-                      ),
-                    ),
-                  );
-                }).toList(),
+      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+      child: Container(
+        width: double.infinity,
+        height: this.navBarHeight,
+        padding: EdgeInsets.only(
+            left: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.05
+                : this.horizontalPadding,
+            right: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.05
+                : this.horizontalPadding,
+            top: this.navBarHeight * 0.06,
+            bottom: this.bottomPadding == null
+                ? this.navBarHeight * 0.16
+                : this.bottomPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: items.map((item) {
+            var index = items.indexOf(item);
+            return Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  if (this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
+                },
+                child: Container(
+                  color: Colors.transparent,
+                  child: _buildItem(
+                      item, selectedIndex == index, this.navBarHeight),
+                ),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ),
     );

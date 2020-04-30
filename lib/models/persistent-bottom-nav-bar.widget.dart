@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
@@ -5,6 +7,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   const PersistentBottomNavBar(
       {Key key,
       this.selectedIndex,
+      this.previousIndex,
       this.iconSize,
       this.backgroundColor,
       this.showElevation,
@@ -15,11 +18,13 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.bottomPadding,
       this.horizontalPadding,
       this.customNavBarWidget,
+      this.popAllScreensForTheSelectedTab,
       this.neumorphicProperties = const NeumorphicProperties(),
       this.navBarStyle})
       : super(key: key);
 
   final int selectedIndex;
+  final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
@@ -32,6 +37,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final double horizontalPadding;
   final NeumorphicProperties neumorphicProperties;
   final Widget customNavBarWidget;
+  final Function(int) popAllScreensForTheSelectedTab;
 
   bool opaque(int index) {
     return items == null ? true : !items[index].isTranslucent;
@@ -51,6 +57,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -66,6 +74,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -81,6 +91,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -96,6 +108,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -111,6 +125,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -126,6 +142,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -141,6 +159,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -156,6 +176,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -171,6 +193,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -186,6 +210,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -201,6 +227,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -217,6 +245,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
         selectedIndex: this.selectedIndex,
+        previousIndex: this.previousIndex,
+        popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
         showElevation: this.showElevation,
         navBarCurve: this.navBarCurve,
         bottomPadding: this.bottomPadding,
@@ -227,20 +257,48 @@ class PersistentBottomNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: this.navBarStyle == NavBarStyle.custom
-          ? this.backgroundColor
-          : this.items[this.selectedIndex].isTranslucent
-              ? this.backgroundColor.withOpacity(
-                  this.items[this.selectedIndex].translucencyPercentage / 100.0)
-              : this.backgroundColor,
-      child: SafeArea(top: false, child: getNavBarStyle()),
-    );
+    return this.navBarStyle == NavBarStyle.custom
+        ? Container(
+            color: this.backgroundColor,
+            child: SafeArea(top: false, child: this.customNavBarWidget),
+          )
+        : Container(
+            color: this.items[this.selectedIndex].isTranslucent
+                ? this.backgroundColor.withOpacity(
+                    this.items[this.selectedIndex].translucencyPercentage /
+                        100.0)
+                : this.backgroundColor,
+            child: Container(
+              decoration: getNavBarDecoration(
+                navBarCurve: this.navBarCurve,
+                showElevation: this.showElevation,
+              ),
+              child: ClipRRect(
+                borderRadius:
+                    getClipRectBorderRadius(navBarCurve: this.navBarCurve),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                  child: Container(
+                    color: this.navBarStyle == NavBarStyle.custom
+                        ? this.backgroundColor
+                        : this.items[this.selectedIndex].isTranslucent
+                            ? Colors.transparent
+                            : this.backgroundColor,
+                    child: SafeArea(
+                      top: false,
+                      child: getNavBarStyle(),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
   }
 
   PersistentBottomNavBar copyWith(
       {int selectedIndex,
       double iconSize,
+      int previousIndex,
       Color backgroundColor,
       bool showElevation,
       Duration animationDuration,
@@ -252,13 +310,17 @@ class PersistentBottomNavBar extends StatelessWidget {
       double horizontalPadding,
       NeumorphicProperties neumorphicProperties,
       Widget customNavBarWidget,
+      Function(int) popAllScreensForTheSelectedTab,
       double bottomPadding}) {
     return PersistentBottomNavBar(
         selectedIndex: selectedIndex ?? this.selectedIndex,
+        previousIndex: previousIndex ?? this.previousIndex,
         iconSize: iconSize ?? this.iconSize,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         showElevation: showElevation ?? this.showElevation,
         items: items ?? this.items,
+        popAllScreensForTheSelectedTab: popAllScreensForTheSelectedTab ??
+            this.popAllScreensForTheSelectedTab,
         onItemSelected: onItemSelected ?? this.onItemSelected,
         navBarHeight: navBarHeight ?? this.navBarHeight,
         neumorphicProperties: neumorphicProperties ?? this.neumorphicProperties,

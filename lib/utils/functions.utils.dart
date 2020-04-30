@@ -65,3 +65,13 @@ Color getBackgroundColor(BuildContext context,
     return color;
   }
 }
+
+void popAllScreens(BuildContext context) {
+  while (true) {
+    if (Navigator.canPop(context)) {
+      Navigator.pop(context);
+    } else {
+      break;
+    }
+  }
+}

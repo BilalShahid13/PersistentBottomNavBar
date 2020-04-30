@@ -17,7 +17,6 @@ class PersistentTabView extends StatefulWidget {
       this.navBarHeight,
       this.backgroundColor = CupertinoColors.white,
       this.iconSize = 26.0,
-      this.selectedIndex = 0,
       this.onItemSelected,
       this.bottomPadding,
       this.horizontalPadding,
@@ -59,9 +58,6 @@ class PersistentTabView extends StatefulWidget {
   ///
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double iconSize;
-
-  ///Index of the page to be selected. `0` by default.
-  final int selectedIndex;
 
   ///Callback when page or tab change is detected.
   final ValueChanged<int> onItemSelected;
@@ -121,6 +117,7 @@ class PersistentTabView extends StatefulWidget {
 class _PersistentTabViewState extends State<PersistentTabView> {
   List<BuildContext> _contextList;
   PersistentTabController _controller;
+  int _previousIndex;
 
   @override
   void initState() {
@@ -132,7 +129,32 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     } else {
       _controller = widget.controller;
     }
+    _previousIndex = _controller.index;
   }
+
+  Widget _buildScreen(int index) => widget.floatingActionWidget == null
+      ? CupertinoTabView(builder: (BuildContext screenContext) {
+          _contextList[index] = screenContext;
+          return Material(child: widget.screens[index]);
+        })
+      : Stack(
+          fit: StackFit.expand,
+          children: <Widget>[
+            SizedBox.expand(
+              child: CupertinoTabView(
+                builder: (BuildContext screenContext) {
+                  _contextList[index] = screenContext;
+                  return Material(child: widget.screens[index]);
+                },
+              ),
+            ),
+            Positioned(
+              bottom: widget.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
+              right: 10.0,
+              child: widget.floatingActionWidget,
+            ),
+          ],
+        );
 
   Widget navigationBarWidget() => PersistentTabScaffold(
         controller: _controller,
@@ -144,51 +166,44 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           backgroundColor: widget.backgroundColor,
           iconSize: widget.iconSize,
           navBarHeight: widget.navBarHeight ?? kToolbarHeight,
-          selectedIndex: widget.selectedIndex,
+          selectedIndex: _controller.index,
+          previousIndex: _previousIndex,
           navBarCurve: widget.navBarCurve,
           bottomPadding: widget.bottomPadding,
           horizontalPadding: widget.horizontalPadding,
           navBarStyle: widget.navBarStyle,
           neumorphicProperties: widget.neumorphicProperties,
           customNavBarWidget: widget.customWidget,
+          popAllScreensForTheSelectedTab: (index) {
+            popAllScreens(_contextList[index]);
+          },
           onItemSelected: widget.onItemSelected != null
               ? (int index) {
+                  if (_controller.index != _previousIndex) {
+                    _previousIndex = _controller.index;
+                  }
                   widget.onItemSelected(index);
                 }
               : (int index) {
-                  //DO NOTHING
+                  if (_controller.index != _previousIndex) {
+                    _previousIndex = _controller.index;
+                  }
                 },
         ),
         tabBuilder: (BuildContext context, int index) {
-          return widget.floatingActionWidget == null
-              ? CupertinoTabView(builder: (BuildContext screenContext) {
-                  _contextList[index] = screenContext;
-                  return Material(child: widget.screens[index]);
-                })
-              : Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    SizedBox.expand(
-                      child: CupertinoTabView(
-                        builder: (BuildContext screenContext) {
-                          _contextList[index] = screenContext;
-                          return Material(child: widget.screens[index]);
-                        },
-                      ),
-                    ),
-                    Positioned(
-                      bottom:
-                          widget.navBarCurve != NavBarCurve.none ? 25.0 : 10.0,
-                      right: 10.0,
-                      child: widget.floatingActionWidget,
-                    ),
-                  ],
-                );
+          return widget.items != null &&
+                  widget.items[_controller.index].isTranslucent
+              ? SafeArea(top: false, bottom: false, child: _buildScreen(index))
+              : SafeArea(top: false, child: _buildScreen(index));
         },
       );
 
   @override
   Widget build(BuildContext context) {
+    if (_contextList.length != widget.itemCount ?? widget.items.length) {
+      _contextList = List<BuildContext>(
+          widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
+    }
     if (widget.handleAndroidBackButtonPress && widget.confineInSafeArea) {
       return WillPopScope(
         onWillPop: () async {

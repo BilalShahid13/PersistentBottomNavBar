@@ -5,6 +5,7 @@ import '../persistent-tab-view.dart';
 
 class NeumorphicBottomNavBar extends StatelessWidget {
   final int selectedIndex;
+  final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
@@ -17,10 +18,12 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   final double horizontalPadding;
   final CurveType curveType;
   final NeumorphicProperties neumorphicProperties;
+  final Function(int) popAllScreensForTheSelectedTab;
 
   NeumorphicBottomNavBar(
       {Key key,
       this.selectedIndex,
+      this.previousIndex,
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
@@ -31,6 +34,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
       this.bottomPadding,
       this.navBarCurve,
       this.horizontalPadding,
+      this.popAllScreensForTheSelectedTab,
       this.curveType = CurveType.concave,
       this.neumorphicProperties = const NeumorphicProperties()});
 
@@ -135,49 +139,39 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: getNavBarDecoration(
-        navBarCurve: this.navBarCurve,
-        showElevation: this.showElevation,
-      ),
-      child: ClipRRect(
-        borderRadius: getClipRectBorderRadius(navBarCurve: this.navBarCurve),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-          child: Container(
-            color: getBackgroundColor(
-                context, items, backgroundColor, selectedIndex),
-            child: Container(
-              width: double.infinity,
-              height: this.navBarHeight,
-              padding: EdgeInsets.only(
-                  left: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : this.horizontalPadding,
-                  right: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.04
-                      : this.horizontalPadding,
-                  top: this.navBarHeight * 0.15,
-                  bottom: this.bottomPadding == null
-                      ? this.navBarHeight * 0.12
-                      : this.bottomPadding),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
-                  return Flexible(
-                    child: GestureDetector(
-                      onTap: () {
-                        this.onItemSelected(index);
-                      },
-                      child: _buildItem(context, item, selectedIndex == index,
-                          this.navBarHeight),
-                    ),
-                  );
-                }).toList(),
+      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
+      child: Container(
+        width: double.infinity,
+        height: this.navBarHeight,
+        padding: EdgeInsets.only(
+            left: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : this.horizontalPadding,
+            right: this.horizontalPadding == null
+                ? MediaQuery.of(context).size.width * 0.04
+                : this.horizontalPadding,
+            top: this.navBarHeight * 0.15,
+            bottom: this.bottomPadding == null
+                ? this.navBarHeight * 0.12
+                : this.bottomPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: items.map((item) {
+            var index = items.indexOf(item);
+            return Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  if (this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
+                },
+                child: _buildItem(
+                    context, item, selectedIndex == index, this.navBarHeight),
               ),
-            ),
-          ),
+            );
+          }).toList(),
         ),
       ),
     );
