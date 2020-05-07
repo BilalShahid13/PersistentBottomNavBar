@@ -13,7 +13,7 @@ BoxDecoration getNavBarDecoration(
           boxShadow: [
             BoxShadow(
                 color: isTranslucent
-                    ? Colors.black12.withOpacity(tralucencyPercentage / 100.0)
+                    ? Colors.black12.withOpacity(0.0)
                     : Colors.black12,
                 blurRadius: 2)
           ],
@@ -30,7 +30,7 @@ BoxDecoration getNavBarDecoration(
                     BoxShadow(
                         color: isTranslucent
                             ? Colors.black12
-                                .withOpacity(tralucencyPercentage / 100.0)
+                                .withOpacity(0.0)
                             : Colors.black12,
                         blurRadius: 2)
                   ],
