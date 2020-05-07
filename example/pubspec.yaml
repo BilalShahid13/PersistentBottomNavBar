@@ -9,7 +9,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  persistent_bottom_nav_bar: ^1.5.1
+  persistent_bottom_nav_bar: ^1.5.2
 
 dev_dependencies:
   flutter_test:
