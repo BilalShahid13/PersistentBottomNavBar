@@ -50,9 +50,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     if (navBarStyle == NavBarStyle.style1) {
       return BottomNavStyle1(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -67,9 +65,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style2) {
       return BottomNavStyle2(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -84,9 +80,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style3) {
       return BottomNavStyle3(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -101,9 +95,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style4) {
       return BottomNavStyle4(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -118,9 +110,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style5) {
       return BottomNavStyle5(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -135,9 +125,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style6) {
       return BottomNavStyle6(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -152,9 +140,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style7) {
       return BottomNavStyle7(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -169,9 +155,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style8) {
       return BottomNavStyle8(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -186,9 +170,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style9) {
       return BottomNavStyle9(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -203,9 +185,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.style10) {
       return BottomNavStyle10(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -220,9 +200,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else if (navBarStyle == NavBarStyle.neumorphic) {
       return NeumorphicBottomNavBar(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -238,9 +216,7 @@ class PersistentBottomNavBar extends StatelessWidget {
     } else {
       return BottomNavSimple(
         items: this.items,
-        backgroundColor: this.items[this.selectedIndex].isTranslucent
-            ? Colors.transparent
-            : this.backgroundColor,
+        backgroundColor: this.backgroundColor,
         iconSize: this.iconSize,
         navBarHeight: this.navBarHeight,
         onItemSelected: this.onItemSelected,
@@ -263,31 +239,25 @@ class PersistentBottomNavBar extends StatelessWidget {
             child: SafeArea(top: false, child: this.customNavBarWidget),
           )
         : Container(
-            color: this.items[this.selectedIndex].isTranslucent
-                ? this.backgroundColor.withOpacity(
-                    this.items[this.selectedIndex].translucencyPercentage /
-                        100.0)
-                : this.backgroundColor,
-            child: Container(
-              decoration: getNavBarDecoration(
-                navBarCurve: this.navBarCurve,
-                showElevation: this.showElevation,
-              ),
-              child: ClipRRect(
-                borderRadius:
-                    getClipRectBorderRadius(navBarCurve: this.navBarCurve),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
-                    color: this.navBarStyle == NavBarStyle.custom
-                        ? this.backgroundColor
-                        : this.items[this.selectedIndex].isTranslucent
-                            ? Colors.transparent
-                            : this.backgroundColor,
-                    child: SafeArea(
-                      top: false,
-                      child: getNavBarStyle(),
-                    ),
+            decoration: getNavBarDecoration(
+              navBarCurve: this.navBarCurve,
+              showElevation: this.showElevation,
+              isTranslucent: items[selectedIndex].isTranslucent,
+              tralucencyPercentage: items[selectedIndex].isTranslucent
+                  ? items[selectedIndex].translucencyPercentage
+                  : 1.0,
+            ),
+            child: ClipRRect(
+              borderRadius:
+                  getClipRectBorderRadius(navBarCurve: this.navBarCurve),
+              child: BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                child: Container(
+                  color: getBackgroundColor(
+                      context, items, backgroundColor, selectedIndex),
+                  child: SafeArea(
+                    top: false,
+                    child: getNavBarStyle(),
                   ),
                 ),
               ),

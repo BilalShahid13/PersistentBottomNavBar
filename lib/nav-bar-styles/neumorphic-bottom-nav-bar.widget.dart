@@ -139,40 +139,37 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
-      child: Container(
-        width: double.infinity,
-        height: this.navBarHeight,
-        padding: EdgeInsets.only(
-            left: this.horizontalPadding == null
-                ? MediaQuery.of(context).size.width * 0.04
-                : this.horizontalPadding,
-            right: this.horizontalPadding == null
-                ? MediaQuery.of(context).size.width * 0.04
-                : this.horizontalPadding,
-            top: this.navBarHeight * 0.15,
-            bottom: this.bottomPadding == null
-                ? this.navBarHeight * 0.12
-                : this.bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: items.map((item) {
-            var index = items.indexOf(item);
-            return Flexible(
-              child: GestureDetector(
-                onTap: () {
-                  if (this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
-                  }
-                  this.onItemSelected(index);
-                },
-                child: _buildItem(
-                    context, item, selectedIndex == index, this.navBarHeight),
-              ),
-            );
-          }).toList(),
-        ),
+      width: double.infinity,
+      height: this.navBarHeight,
+      padding: EdgeInsets.only(
+          left: this.horizontalPadding == null
+              ? MediaQuery.of(context).size.width * 0.04
+              : this.horizontalPadding,
+          right: this.horizontalPadding == null
+              ? MediaQuery.of(context).size.width * 0.04
+              : this.horizontalPadding,
+          top: this.navBarHeight * 0.15,
+          bottom: this.bottomPadding == null
+              ? this.navBarHeight * 0.12
+              : this.bottomPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: items.map((item) {
+          var index = items.indexOf(item);
+          return Flexible(
+            child: GestureDetector(
+              onTap: () {
+                if (this.previousIndex == index) {
+                  this.popAllScreensForTheSelectedTab(index);
+                }
+                this.onItemSelected(index);
+              },
+              child: _buildItem(
+                  context, item, selectedIndex == index, this.navBarHeight),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

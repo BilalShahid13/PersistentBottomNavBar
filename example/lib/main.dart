@@ -35,7 +35,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeScreen(), HomeScreen(), HomeScreen(), HomeScreen()];
+    return [HomeScreen(), HomeScreen(), HomeScreen(), HomeScreen(),];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -52,18 +52,21 @@ class _MyHomePageState extends State<MyHomePage> {
         title: ("Search"),
         activeColor: Colors.teal,
         inactiveColor: Colors.grey,
+        isTranslucent: false,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
         title: ("Chat"),
         activeColor: Colors.deepOrange,
         inactiveColor: Colors.grey,
+        isTranslucent: false,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.settings),
         title: ("Settings"),
         activeColor: Colors.indigo,
         inactiveColor: Colors.grey,
+        isTranslucent: false,
       ),
     ];
   }
@@ -75,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
       screens: _buildScreens(),
       items: _navBarsItems(), // Redundant here but defined to demonstrate for other than custom style
       confineInSafeArea: true,
+      backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
       onItemSelected: (int) {
         setState(() {}); // This is required to update the nav bar if Android back button is pressed
@@ -89,7 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
         selectedIndex: _controller.index,
       ),
       itemCount: 4,
-      navBarStyle: NavBarStyle.custom, // Choose the nav bar style with this property
+      navBarStyle: NavBarStyle.custom // Choose the nav bar style with this property
     );
   }
 }

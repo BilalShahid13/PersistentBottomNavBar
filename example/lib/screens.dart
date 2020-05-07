@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import 'modal-screen.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key key}) : super(key: key);
 
@@ -11,19 +13,35 @@ class HomeScreen extends StatelessWidget {
         title: Text("First Screen"),
       ),
       backgroundColor: Colors.indigo,
-      body: Container(
-        child: Center(
-          child: RaisedButton(
-            color: Colors.blue,
-            onPressed: () {
-              pushNewScreen(context, screen: HomeScreen2());
-            },
-            child: Text(
-              "Go to Second Screen",
-              style: TextStyle(color: Colors.white),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: RaisedButton(
+              color: Colors.blue,
+              onPressed: () {
+                pushNewScreen(context, screen: HomeScreen2());
+              },
+              child: Text(
+                "Go to Second Screen",
+                style: TextStyle(color: Colors.white),
+              ),
             ),
           ),
-        ),
+          Center(
+            child: RaisedButton(
+              color: Colors.blue,
+              onPressed: () {
+                pushDynamicScreen(context, screen: SampleModalScreen(), withNavBar: true);
+              },
+              child: Text(
+                "Push Dynamic/Modal Screen",
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

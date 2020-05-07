@@ -39,6 +39,7 @@ class BottomNavStyle9 extends StatelessWidget {
     return AnimatedContainer(
       width: isSelected ? 120 : 50,
       height: height / 1.5,
+      curve: Curves.ease,
       duration: animationDuration,
       padding: EdgeInsets.all(item.contentPadding),
       decoration: BoxDecoration(
@@ -105,49 +106,46 @@ class BottomNavStyle9 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
-      child: Container(
-        width: double.infinity,
-        height: this.navBarHeight,
-        padding: this.bottomPadding == null
-            ? EdgeInsets.symmetric(
-                horizontal: this.horizontalPadding == null
-                    ? MediaQuery.of(context).size.width * 0.07
-                    : this.horizontalPadding,
-                vertical: this.navBarHeight * 0.15,
-              )
-            : EdgeInsets.only(
-                top: this.navBarHeight * 0.15,
-                left: this.horizontalPadding == null
-                    ? MediaQuery.of(context).size.width * 0.07
-                    : this.horizontalPadding,
-                right: this.horizontalPadding == null
-                    ? MediaQuery.of(context).size.width * 0.07
-                    : this.horizontalPadding,
-                bottom: this.bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: items.map((item) {
-            var index = items.indexOf(item);
-            return Flexible(
-              flex: selectedIndex == index ? 2 : 1,
-              child: GestureDetector(
-                onTap: () {
-                  this.onItemSelected(index);
-                  if (this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
-                  }
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: _buildItem(
-                      item, selectedIndex == index, this.navBarHeight),
-                ),
+      width: double.infinity,
+      height: this.navBarHeight,
+      padding: this.bottomPadding == null
+          ? EdgeInsets.symmetric(
+              horizontal: this.horizontalPadding == null
+                  ? MediaQuery.of(context).size.width * 0.07
+                  : this.horizontalPadding,
+              vertical: this.navBarHeight * 0.15,
+            )
+          : EdgeInsets.only(
+              top: this.navBarHeight * 0.15,
+              left: this.horizontalPadding == null
+                  ? MediaQuery.of(context).size.width * 0.07
+                  : this.horizontalPadding,
+              right: this.horizontalPadding == null
+                  ? MediaQuery.of(context).size.width * 0.07
+                  : this.horizontalPadding,
+              bottom: this.bottomPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: items.map((item) {
+          var index = items.indexOf(item);
+          return Flexible(
+            flex: selectedIndex == index ? 2 : 1,
+            child: GestureDetector(
+              onTap: () {
+                this.onItemSelected(index);
+                if (this.previousIndex == index) {
+                  this.popAllScreensForTheSelectedTab(index);
+                }
+              },
+              child: Container(
+                color: Colors.transparent,
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

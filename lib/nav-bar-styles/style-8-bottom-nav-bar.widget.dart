@@ -150,49 +150,45 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
       _animationControllerList[_lastSelectedIndex].reverse();
     }
     return Container(
-      color: getBackgroundColor(
-          context, widget.items, widget.backgroundColor, widget.selectedIndex),
-      child: Container(
-        width: double.infinity,
-        height: widget.navBarHeight,
-        padding: EdgeInsets.only(
-            left: widget.horizontalPadding == null
-                ? MediaQuery.of(context).size.width * 0.04
-                : widget.horizontalPadding,
-            right: widget.horizontalPadding == null
-                ? MediaQuery.of(context).size.width * 0.04
-                : widget.horizontalPadding,
-            top: widget.navBarHeight * 0.15,
-            bottom: widget.bottomPadding == null
-                ? widget.navBarHeight * 0.12
-                : widget.bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: widget.items.map((item) {
-            var index = widget.items.indexOf(item);
-            return Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  if (index != _selectedIndex) {
-                    _lastSelectedIndex = _selectedIndex;
-                    _selectedIndex = index;
-                    _animationControllerList[_selectedIndex].forward();
-                    _animationControllerList[_lastSelectedIndex].reverse();
-                  } else if (widget.previousIndex == index) {
-                    widget.popAllScreensForTheSelectedTab(index);
-                  }
-                  widget.onItemSelected(index);
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: _buildItem(item, widget.selectedIndex == index,
-                      widget.navBarHeight, index),
-                ),
+      width: double.infinity,
+      height: widget.navBarHeight,
+      padding: EdgeInsets.only(
+          left: widget.horizontalPadding == null
+              ? MediaQuery.of(context).size.width * 0.04
+              : widget.horizontalPadding,
+          right: widget.horizontalPadding == null
+              ? MediaQuery.of(context).size.width * 0.04
+              : widget.horizontalPadding,
+          top: widget.navBarHeight * 0.15,
+          bottom: widget.bottomPadding == null
+              ? widget.navBarHeight * 0.12
+              : widget.bottomPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: widget.items.map((item) {
+          var index = widget.items.indexOf(item);
+          return Expanded(
+            child: GestureDetector(
+              onTap: () {
+                if (index != _selectedIndex) {
+                  _lastSelectedIndex = _selectedIndex;
+                  _selectedIndex = index;
+                  _animationControllerList[_selectedIndex].forward();
+                  _animationControllerList[_lastSelectedIndex].reverse();
+                } else if (widget.previousIndex == index) {
+                  widget.popAllScreensForTheSelectedTab(index);
+                }
+                widget.onItemSelected(index);
+              },
+              child: Container(
+                color: Colors.transparent,
+                child: _buildItem(item, widget.selectedIndex == index,
+                    widget.navBarHeight, index),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

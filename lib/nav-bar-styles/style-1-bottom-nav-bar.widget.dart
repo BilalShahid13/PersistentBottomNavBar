@@ -40,6 +40,7 @@ class BottomNavStyle1 extends StatelessWidget {
       width: isSelected ? 140 : 50,
       height: height / 1.6,
       duration: animationDuration,
+      curve: Curves.ease,
       padding: EdgeInsets.all(item.contentPadding),
       decoration: BoxDecoration(
         color: isSelected
@@ -95,46 +96,43 @@ class BottomNavStyle1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
-      child: Container(
-          width: double.infinity,
-          height: this.navBarHeight,
-          padding: this.bottomPadding == null
-              ? EdgeInsets.symmetric(
-                  horizontal: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.07
-                      : this.horizontalPadding,
-                  vertical: this.navBarHeight * 0.15,
-                )
-              : EdgeInsets.only(
-                  top: this.navBarHeight * 0.15,
-                  left: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.07
-                      : this.horizontalPadding,
-                  right: this.horizontalPadding == null
-                      ? MediaQuery.of(context).size.width * 0.07
-                      : this.horizontalPadding,
-                  bottom: this.bottomPadding),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: items.map((item) {
-              var index = items.indexOf(item);
-              return Flexible(
-                flex: selectedIndex == index ? 2 : 1,
-                child: GestureDetector(
-                  onTap: () {
-                    if (this.previousIndex == index) {
-                      this.popAllScreensForTheSelectedTab(index);
-                    }
-                    this.onItemSelected(index);
-                  },
-                  child: _buildItem(
-                      item, selectedIndex == index, this.navBarHeight),
-                ),
-              );
-            }).toList(),
-          )),
-    );
+        width: double.infinity,
+        height: this.navBarHeight,
+        padding: this.bottomPadding == null
+            ? EdgeInsets.symmetric(
+                horizontal: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
+                vertical: this.navBarHeight * 0.15,
+              )
+            : EdgeInsets.only(
+                top: this.navBarHeight * 0.15,
+                left: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
+                right: this.horizontalPadding == null
+                    ? MediaQuery.of(context).size.width * 0.07
+                    : this.horizontalPadding,
+                bottom: this.bottomPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: items.map((item) {
+            var index = items.indexOf(item);
+            return Flexible(
+              flex: selectedIndex == index ? 2 : 1,
+              child: GestureDetector(
+                onTap: () {
+                  if (this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
+                },
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
+              ),
+            );
+          }).toList(),
+        ));
   }
 }

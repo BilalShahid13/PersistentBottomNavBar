@@ -39,6 +39,7 @@ class BottomNavStyle7 extends StatelessWidget {
     return AnimatedContainer(
       width: isSelected ? 140 : 50,
       height: height / 1.6,
+      curve: Curves.ease,
       duration: animationDuration,
       padding: EdgeInsets.all(item.contentPadding),
       decoration: isSelected
@@ -46,18 +47,13 @@ class BottomNavStyle7 extends StatelessWidget {
               color: isSelected
                   ? item.activeColor
                   : backgroundColor.withOpacity(0.0),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-              boxShadow: [
-                  BoxShadow(
-                      blurRadius: 7,
-                      color: Colors.black12,
-                      offset: Offset(0, 2.0))
-                ])
+              borderRadius: BorderRadius.all(Radius.circular(100)),
+            )
           : BoxDecoration(
               color: isSelected
                   ? item.activeColor
                   : backgroundColor.withOpacity(0.0),
-              borderRadius: BorderRadius.all(Radius.circular(10)),
+              borderRadius: BorderRadius.all(Radius.circular(100)),
             ),
       child: Container(
         alignment: Alignment.center,
@@ -107,47 +103,44 @@ class BottomNavStyle7 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: getBackgroundColor(context, items, backgroundColor, selectedIndex),
-      child: Container(
-        width: double.infinity,
-        height: this.navBarHeight,
-        padding: this.bottomPadding == null
-            ? EdgeInsets.symmetric(
-                horizontal: MediaQuery.of(context).size.width * 0.07,
-                vertical: this.navBarHeight * 0.15,
-              )
-            : EdgeInsets.only(
-                top: this.navBarHeight * 0.15,
-                left: this.horizontalPadding == null
-                    ? MediaQuery.of(context).size.width * 0.07
-                    : this.horizontalPadding,
-                right: this.horizontalPadding == null
-                    ? MediaQuery.of(context).size.width * 0.07
-                    : this.horizontalPadding,
-                bottom: this.bottomPadding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: items.map((item) {
-            var index = items.indexOf(item);
-            return Flexible(
-              flex: selectedIndex == index ? 2 : 1,
-              child: GestureDetector(
-                onTap: () {
-                  this.onItemSelected(index);
-                  if (this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
-                  }
-                },
-                child: Container(
-                  color: Colors.transparent,
-                  child: _buildItem(
-                      item, selectedIndex == index, this.navBarHeight),
-                ),
+      width: double.infinity,
+      height: this.navBarHeight,
+      padding: this.bottomPadding == null
+          ? EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.07,
+              vertical: this.navBarHeight * 0.15,
+            )
+          : EdgeInsets.only(
+              top: this.navBarHeight * 0.15,
+              left: this.horizontalPadding == null
+                  ? MediaQuery.of(context).size.width * 0.07
+                  : this.horizontalPadding,
+              right: this.horizontalPadding == null
+                  ? MediaQuery.of(context).size.width * 0.07
+                  : this.horizontalPadding,
+              bottom: this.bottomPadding),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: items.map((item) {
+          var index = items.indexOf(item);
+          return Flexible(
+            flex: selectedIndex == index ? 2 : 1,
+            child: GestureDetector(
+              onTap: () {
+                this.onItemSelected(index);
+                if (this.previousIndex == index) {
+                  this.popAllScreensForTheSelectedTab(index);
+                }
+              },
+              child: Container(
+                color: Colors.transparent,
+                child:
+                    _buildItem(item, selectedIndex == index, this.navBarHeight),
               ),
-            );
-          }).toList(),
-        ),
+            ),
+          );
+        }).toList(),
       ),
     );
   }

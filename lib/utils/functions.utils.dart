@@ -2,12 +2,21 @@ import 'package:flutter/material.dart';
 import '../persistent-tab-view.dart';
 
 BoxDecoration getNavBarDecoration(
-    {bool showElevation = true, NavBarCurve navBarCurve = NavBarCurve.none}) {
+    {bool showElevation = true,
+    NavBarCurve navBarCurve = NavBarCurve.none,
+    bool isTranslucent = false,
+    double tralucencyPercentage}) {
   return navBarCurve == NavBarCurve.upperCorners && showElevation
       ? BoxDecoration(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
+          boxShadow: [
+            BoxShadow(
+                color: isTranslucent
+                    ? Colors.black12.withOpacity(tralucencyPercentage / 100.0)
+                    : Colors.black12,
+                blurRadius: 2)
+          ],
         )
       : navBarCurve == NavBarCurve.upperCorners && !showElevation
           ? BoxDecoration(
@@ -17,7 +26,14 @@ BoxDecoration getNavBarDecoration(
             )
           : navBarCurve == NavBarCurve.none && showElevation
               ? BoxDecoration(
-                  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 2)],
+                  boxShadow: [
+                    BoxShadow(
+                        color: isTranslucent
+                            ? Colors.black12
+                                .withOpacity(tralucencyPercentage / 100.0)
+                            : Colors.black12,
+                        blurRadius: 2)
+                  ],
                 )
               : BoxDecoration();
 }
