@@ -16,17 +16,17 @@ A persistent/static bottom navigation bar for Flutter.
 
 | Style1  | Style7 |
 | ------------- | ------------- |
-| ![style3](gifs/style3.gif)  | ![style3](gifs/style3.gif)  |
+| ![style1](gifs/style1.gif)  | ![style7](gifs/style7.gif)  |
 
 | Style3  | Style5 |
 | ------------- | ------------- |
-| ![style3](gifs/style3.gif)  | ![style3](gifs/style3.gif)  |
+| ![style3](gifs/style3.gif)  | ![style5](gifs/style5.gif)  |
 
 | Style6  | Style8 |
 | ------------- | ------------- |
-| ![style3](gifs/style3.gif)  | ![style3](gifs/style3.gif)  |
+| ![style6](gifs/style6.gif)  | ![style8](gifs/style8.gif)  |
 
-### Note: These doesn't include all style variations
+### Note: These do not include all style variations
 
 ## Features
 
