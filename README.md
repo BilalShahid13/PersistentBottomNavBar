@@ -12,46 +12,55 @@ A persistent/static bottom navigation bar for Flutter.
 <table>
   <tr>
     <td align="center">
-      <img src="gifs/neumorphic.gif" width="100px" height="100px">
+      <img src="gifs/neumorphic.gif" width="300px" height="60px">
       <br />
       Nuemorphic
+    </td>
+    <td align="center">
+      <img src="gifs/neumorphic-nosubs.gif" width="300px" height="60px">
+      <br />
+      Neumorphic without subtitle
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="gifs/style1.gif" width="300px" height="60px">
+      <br />
+      Style1
+    </td>
+    <td align="center">
+      <img src="gifs/style7.gif" width="300px" height="60px">
+      <br />
+      Style7
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="gifs/style3.gif" width="300px" height="60px">
+      <br />
+      Style3
+    </td>
+    <td align="center">
+      <img src="gifs/style5.gif" width="300px" height="60px">
+      <br />
+      Style5
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="gifs/style6.gif" width="300px" height="60px">
+      <br />
+      Style6
+    </td>
+    <td align="center">
+      <img src="gifs/style8.gif" width="300px" height="60px">
+      <br />
+      Style8
     </td>
   </tr>
 <table>
 
-`Neumorphic`
-
-![neumorphic1](gifs/neumorphic.gif)
-
-`Style1`
-
-![style1](gifs/style1.gif)
-
-`Style3`
-
-![style3](gifs/style3.gif)
-
-`Style5`
-
-![style5](gifs/style5.gif)
-
-`Style6`
-
-![style6](gifs/style6.gif)
-
-`Style7`
-
-![style7](gifs/style7.gif)
-
-`Style8`
-
-![style8](gifs/style8.gif)
-
-`Neumorphic without subtitle`
-
-![neumorphic2](gifs/neumorphic-nosubs.gif)
-
-Note: These doesn't include all style variations.
+### Note: These doesn't include all style variations
 
 ## Features
 
