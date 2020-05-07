@@ -10,7 +10,21 @@ A persistent/static bottom navigation bar for Flutter.
 
 ## Styles
 
-<table>
+<table{
+  border-spacing:0;
+}
+
+tr:first-of-type{
+  background:lightgray;
+  }
+
+td:nth-child(odd){
+  font-weight:bold;
+}
+
+th,td{
+  padding:5px;
+}>
   <tr>
     <td align="center">
       <img src="gifs/neumorphic.gif" width="300px" height="50px">
