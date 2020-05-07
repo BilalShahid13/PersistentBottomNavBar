@@ -10,7 +10,9 @@ A persistent/static bottom navigation bar for Flutter.
 
 ## Styles
 
-<table>
+<table  tr:nth-child(even) td {
+  background: transparent;
+}>
   <tr>
     <td align="center">
       <img src="gifs/neumorphic.gif" width="300px" height="50px">
@@ -59,7 +61,7 @@ A persistent/static bottom navigation bar for Flutter.
       Style8
     </td>
   </tr>
-<table>
+</table>
 
 ### Note: These doesn't include all style variations
 
