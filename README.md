@@ -12,48 +12,48 @@ A persistent/static bottom navigation bar for Flutter.
 <table>
   <tr>
     <td align="center">
-      <img src="gifs/neumorphic.gif" width="300px" height="60px">
+      <img src="gifs/neumorphic.gif" width="300px" height="50px">
       <br />
       Nuemorphic
     </td>
     <td align="center">
-      <img src="gifs/neumorphic-nosubs.gif" width="300px" height="60px">
+      <img src="gifs/neumorphic-nosubs.gif" width="300px" height="50px">
       <br />
       Neumorphic without subtitle
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="gifs/style1.gif" width="300px" height="60px">
+      <img src="gifs/style1.gif" width="300px" height="50px">
       <br />
       Style1
     </td>
     <td align="center">
-      <img src="gifs/style7.gif" width="300px" height="60px">
+      <img src="gifs/style7.gif" width="300px" height="50px">
       <br />
       Style7
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="gifs/style3.gif" width="300px" height="60px">
+      <img src="gifs/style3.gif" width="300px" height="50px">
       <br />
       Style3
     </td>
     <td align="center">
-      <img src="gifs/style5.gif" width="300px" height="60px">
+      <img src="gifs/style5.gif" width="300px" height="50px">
       <br />
       Style5
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="gifs/style6.gif" width="300px" height="60px">
+      <img src="gifs/style6.gif" width="300px" height="50px">
       <br />
       Style6
     </td>
     <td align="center">
-      <img src="gifs/style8.gif" width="300px" height="60px">
+      <img src="gifs/style8.gif" width="300px" height="50px">
       <br />
       Style8
     </td>
