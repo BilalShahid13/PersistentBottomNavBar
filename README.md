@@ -71,7 +71,7 @@ A persistent/static bottom navigation bar for Flutter.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
-- Custom styling for the navigation bar. Click [here](##Custom-Navigation-Bar-Styling) for more information.
+- Custom styling for the navigation bar. Click [here](#custom-navigation-bar-styling) for more information.
 - Handles hardware/software Android back button.
 
 ## Getting Started
