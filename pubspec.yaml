@@ -3,7 +3,7 @@ description: A DO ALL persistent/static bottom navigation bar for flutter. In ad
 
 homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
 repository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 1.5.1
+version: 1.5.2
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
