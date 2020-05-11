@@ -35,7 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   List<Widget> _buildScreens() {
-    return [HomeScreen(), HomeScreen(), HomeScreen(), HomeScreen(),];
+    return [
+      HomeScreen(),
+      HomeScreen(),
+      HomeScreen(),
+      HomeScreen(),
+    ];
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
@@ -74,26 +79,29 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(), // Redundant here but defined to demonstrate for other than custom style
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      onItemSelected: (int) {
-        setState(() {}); // This is required to update the nav bar if Android back button is pressed
-      },
-      customWidget: CustomNavBarWidget(
-        items: _navBarsItems(),
-        onItemSelected: (index) {
-          setState(() {
-            _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
-          });
+        controller: _controller,
+        screens: _buildScreens(),
+        items:
+            _navBarsItems(), // Redundant here but defined to demonstrate for other than custom style
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        onItemSelected: (int) {
+          setState(
+              () {}); // This is required to update the nav bar if Android back button is pressed
         },
-        selectedIndex: _controller.index,
-      ),
-      itemCount: 4,
-      navBarStyle: NavBarStyle.custom // Choose the nav bar style with this property
-    );
+        customWidget: CustomNavBarWidget(
+          items: _navBarsItems(),
+          onItemSelected: (index) {
+            setState(() {
+              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
+            });
+          },
+          selectedIndex: _controller.index,
+        ),
+        itemCount: 4,
+        navBarStyle:
+            NavBarStyle.custom // Choose the nav bar style with this property
+        );
   }
 }

@@ -17,6 +17,7 @@ class BottomNavStyle6 extends StatefulWidget {
   final double bottomPadding;
   final double horizontalPadding;
   final Function(int) popAllScreensForTheSelectedTab;
+  final bool popScreensOnTapOfSelectedTab;
 
   BottomNavStyle6(
       {Key key,
@@ -25,6 +26,7 @@ class BottomNavStyle6 extends StatefulWidget {
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
+      this.popScreensOnTapOfSelectedTab,
       this.animationDuration = const Duration(milliseconds: 1000),
       this.navBarHeight = 0.0,
       @required this.items,
@@ -179,7 +181,8 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
                   _selectedIndex = index;
                   _animationControllerList[_selectedIndex].forward();
                   _animationControllerList[_lastSelectedIndex].reverse();
-                } else if (widget.previousIndex == index) {
+                } else if (widget.popScreensOnTapOfSelectedTab &&
+                    widget.previousIndex == index) {
                   widget.popAllScreensForTheSelectedTab(index);
                 }
                 widget.onItemSelected(index);

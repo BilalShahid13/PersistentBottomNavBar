@@ -3,20 +3,19 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-
 class CustomNavBarWidget extends StatelessWidget {
   final int selectedIndex;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
 
-  CustomNavBarWidget(
-      {Key key,
-      this.selectedIndex,
-      @required this.items,
-      this.onItemSelected,});
+  CustomNavBarWidget({
+    Key key,
+    this.selectedIndex,
+    @required this.items,
+    this.onItemSelected,
+  });
 
-  Widget _buildItem(
-      PersistentBottomNavBarItem item, bool isSelected) {
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected) {
     return Container(
       alignment: Alignment.center,
       height: kBottomNavigationBarHeight,
@@ -78,8 +77,7 @@ class CustomNavBarWidget extends StatelessWidget {
                 onTap: () {
                   this.onItemSelected(index);
                 },
-                child: _buildItem(
-                    item, selectedIndex == index),
+                child: _buildItem(item, selectedIndex == index),
               ),
             );
           }).toList(),

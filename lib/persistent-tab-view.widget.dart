@@ -24,6 +24,9 @@ class PersistentTabView extends StatefulWidget {
       this.floatingActionWidget,
       this.customWidget,
       this.itemCount,
+      this.bottomScreenMargin,
+      this.navBarCurveRadius = 15.0,
+      this.popAllScreensOnTapOfSelectedTab = true,
       this.navBarCurve = NavBarCurve.none,
       this.confineInSafeArea = true,
       this.handleAndroidBackButtonPress = true,
@@ -36,7 +39,7 @@ class PersistentTabView extends StatefulWidget {
     assert(navBarStyle == NavBarStyle.custom ||
         items.length >= 2 && items.length <= 5);
     assert(navBarStyle == NavBarStyle.custom && customWidget != null ||
-        navBarStyle != NavBarStyle.custom && customWidget == null);
+        navBarStyle != NavBarStyle.custom);
   }
 
   ///List of persistent bottom navigation bar items to be displayed in the navigation bar.
@@ -110,6 +113,15 @@ class PersistentTabView extends StatefulWidget {
   ///3. If there are screens pushed on the selected tab, a screen will pop on a respective back button press.
   final bool handleAndroidBackButtonPress;
 
+  ///Bottom margin of the screen.
+  final double bottomScreenMargin;
+
+  ///If an already selected tab is pressed/tapped again, all the screens pushed on that particular tab will pop until the first screen in the stack.
+  final bool popAllScreensOnTapOfSelectedTab;
+
+  ///Defines the curve radius of the upper-corners of the nav bar if `navBarCurve == NavBarStyle.upperCorners`.
+  final double navBarCurveRadius;
+
   @override
   _PersistentTabViewState createState() => _PersistentTabViewState();
 }
@@ -160,6 +172,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         controller: _controller,
         itemCount:
             widget.items == null ? widget.itemCount ?? 0 : widget.items.length,
+        bottomScreenMargin: widget.bottomScreenMargin,
         tabBar: PersistentBottomNavBar(
           showElevation: widget.showElevation,
           items: widget.items,
@@ -172,6 +185,9 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           bottomPadding: widget.bottomPadding,
           horizontalPadding: widget.horizontalPadding,
           navBarStyle: widget.navBarStyle,
+          navBarCurveRadius: widget.navBarCurveRadius,
+          popScreensOnTapOfSelectedTab:
+              widget.popAllScreensOnTapOfSelectedTab ?? true,
           neumorphicProperties: widget.neumorphicProperties,
           customNavBarWidget: widget.customWidget,
           popAllScreensForTheSelectedTab: (index) {

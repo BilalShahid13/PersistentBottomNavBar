@@ -17,6 +17,7 @@ class BottomNavStyle1 extends StatelessWidget {
   final double bottomPadding;
   final double horizontalPadding;
   final Function(int) popAllScreensForTheSelectedTab;
+  final bool popScreensOnTapOfSelectedTab;
 
   BottomNavStyle1(
       {Key key,
@@ -25,6 +26,7 @@ class BottomNavStyle1 extends StatelessWidget {
       this.showElevation = false,
       this.iconSize,
       this.backgroundColor,
+      this.popScreensOnTapOfSelectedTab,
       this.animationDuration = const Duration(milliseconds: 270),
       this.navBarHeight = 0.0,
       @required this.items,
@@ -123,7 +125,8 @@ class BottomNavStyle1 extends StatelessWidget {
               flex: selectedIndex == index ? 2 : 1,
               child: GestureDetector(
                 onTap: () {
-                  if (this.previousIndex == index) {
+                  if (this.popScreensOnTapOfSelectedTab &&
+                      this.previousIndex == index) {
                     this.popAllScreensForTheSelectedTab(index);
                   }
                   this.onItemSelected(index);

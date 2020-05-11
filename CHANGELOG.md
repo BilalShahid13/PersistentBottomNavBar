@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.5.5] - 2020-05-11
+
+- Added property `bottomScreenPadding` to control a screen's bottom padding.
+- Added property `navBarCurveRadius` to change the nav bar curve's radius.
+- Added property `popAllScreensOnTapOfSelectedTab` to toggle between the ability to pop all pushed screens of a particular selected tab on the second press of the said tab.
+
 ## [1.5.4] - 2020-05-07
 
 - Fixed background shadow issue when translucency was turned on with `showElevation == true`.

@@ -33,7 +33,8 @@ class HomeScreen extends StatelessWidget {
             child: RaisedButton(
               color: Colors.blue,
               onPressed: () {
-                pushDynamicScreen(context, screen: SampleModalScreen(), withNavBar: true);
+                pushDynamicScreen(context,
+                    screen: SampleModalScreen(), withNavBar: true);
               },
               child: Text(
                 "Push Dynamic/Modal Screen",

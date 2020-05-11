@@ -17,6 +17,7 @@ class BottomNavStyle8 extends StatefulWidget {
   final double bottomPadding;
   final double horizontalPadding;
   final Function(int) popAllScreensForTheSelectedTab;
+  final bool popScreensOnTapOfSelectedTab;
 
   BottomNavStyle8(
       {Key key,
@@ -30,6 +31,7 @@ class BottomNavStyle8 extends StatefulWidget {
       @required this.items,
       this.onItemSelected,
       this.popAllScreensForTheSelectedTab,
+      this.popScreensOnTapOfSelectedTab,
       this.bottomPadding,
       this.horizontalPadding,
       this.navBarCurve});
@@ -176,7 +178,8 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                   _selectedIndex = index;
                   _animationControllerList[_selectedIndex].forward();
                   _animationControllerList[_lastSelectedIndex].reverse();
-                } else if (widget.previousIndex == index) {
+                } else if (widget.popScreensOnTapOfSelectedTab &&
+                    widget.previousIndex == index) {
                   widget.popAllScreensForTheSelectedTab(index);
                 }
                 widget.onItemSelected(index);

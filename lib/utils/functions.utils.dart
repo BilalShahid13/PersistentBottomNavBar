@@ -5,11 +5,13 @@ BoxDecoration getNavBarDecoration(
     {bool showElevation = true,
     NavBarCurve navBarCurve = NavBarCurve.none,
     bool isTranslucent = false,
+    double navBarCurveRadius = 15.0,
     double tralucencyPercentage}) {
   return navBarCurve == NavBarCurve.upperCorners && showElevation
       ? BoxDecoration(
           borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0)),
+              topLeft: Radius.circular(navBarCurveRadius),
+              topRight: Radius.circular(navBarCurveRadius)),
           boxShadow: [
             BoxShadow(
                 color: isTranslucent
@@ -21,16 +23,15 @@ BoxDecoration getNavBarDecoration(
       : navBarCurve == NavBarCurve.upperCorners && !showElevation
           ? BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(15.0),
-                  topRight: Radius.circular(15.0)),
+                  topLeft: Radius.circular(navBarCurveRadius),
+                  topRight: Radius.circular(navBarCurveRadius)),
             )
           : navBarCurve == NavBarCurve.none && showElevation
               ? BoxDecoration(
                   boxShadow: [
                     BoxShadow(
                         color: isTranslucent
-                            ? Colors.black12
-                                .withOpacity(0.0)
+                            ? Colors.black12.withOpacity(0.0)
                             : Colors.black12,
                         blurRadius: 2)
                   ],
@@ -39,10 +40,12 @@ BoxDecoration getNavBarDecoration(
 }
 
 BorderRadius getClipRectBorderRadius(
-    {NavBarCurve navBarCurve = NavBarCurve.none}) {
+    {NavBarCurve navBarCurve = NavBarCurve.none,
+    double navBarCurveRadius = 15.0}) {
   return navBarCurve == NavBarCurve.upperCorners
       ? BorderRadius.only(
-          topLeft: Radius.circular(15.0), topRight: Radius.circular(15.0))
+          topLeft: Radius.circular(navBarCurveRadius),
+          topRight: Radius.circular(navBarCurveRadius))
       : BorderRadius.circular(0.0);
 }
 

@@ -46,6 +46,7 @@ class PersistentTabScaffold extends StatefulWidget {
     this.controller,
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
+    this.bottomScreenMargin,
     this.itemCount,
   })  : assert(tabBar != null),
         assert(tabBuilder != null),
@@ -66,6 +67,8 @@ class PersistentTabScaffold extends StatefulWidget {
   final bool resizeToAvoidBottomInset;
 
   final int itemCount;
+
+  final double bottomScreenMargin;
 
   @override
   _PersistentTabScaffoldState createState() => _PersistentTabScaffoldState();
@@ -140,42 +143,29 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     if (widget.resizeToAvoidBottomInset) {
       // Remove the view inset and add it back as a padding in the inner content.
       newMediaQuery = newMediaQuery.removeViewInsets(removeBottom: true);
-      contentPadding =
-          EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
+      //contentPadding = EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = EdgeInsets.only(bottom: 0.0);
     } else if (widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
-      // if (widget.isIOS) {
-      //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.8 > existingMediaQuery.viewInsets.bottom)) {
-      //     final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
-      //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
-      //   }
-      // } else {
       if (widget.tabBar != null &&
           (!widget.resizeToAvoidBottomInset ||
               widget.tabBar.navBarHeight * 0.8 >
                   existingMediaQuery.viewInsets.bottom)) {
-        final double bottomPadding = widget.tabBar.navBarHeight * 0.8;
+        final double bottomPadding = widget.bottomScreenMargin ??
+            widget.tabBar.navBarHeight - widget.tabBar.navBarCurveRadius;
         contentPadding = EdgeInsets.only(bottom: bottomPadding);
       }
-      //}
     } else {
-      // if (widget.isIOS) {
-      //   if (widget.tabBar != null && (!widget.resizeToAvoidBottomInset || widget.tabBar.navBarHeight * 0.6 > existingMediaQuery.viewInsets.bottom)) {
-      //     final double bottomPadding = widget.tabBar.navBarHeight;
-      //     contentPadding = EdgeInsets.only(bottom: bottomPadding);
-      //   }
-      // } else {
       if (widget.tabBar != null &&
           (!widget.resizeToAvoidBottomInset ||
               widget.tabBar.navBarHeight >
                   existingMediaQuery.viewInsets.bottom)) {
-        final double bottomPadding = widget.tabBar.navBarHeight;
+        final double bottomPadding =
+            widget.bottomScreenMargin ?? widget.tabBar.navBarHeight;
         contentPadding = EdgeInsets.only(bottom: bottomPadding);
       }
-      //}
     }
 
     content = MediaQuery(
@@ -191,8 +181,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
           ? BoxDecoration(
               color: CupertinoColors.white.withOpacity(0.0),
               borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(15.0),
-                topRight: Radius.circular(15.0),
+                topLeft: Radius.circular(widget.tabBar.navBarCurveRadius),
+                topRight: Radius.circular(widget.tabBar.navBarCurveRadius),
               ),
             )
           : BoxDecoration(color: CupertinoColors.white.withOpacity(0.0)),
