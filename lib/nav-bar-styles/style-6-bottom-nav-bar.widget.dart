@@ -1,7 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import '../persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
 class BottomNavStyle6 extends StatefulWidget {
   final int selectedIndex;
@@ -9,32 +6,29 @@ class BottomNavStyle6 extends StatefulWidget {
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
-  final Duration animationDuration;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final NavBarCurve navBarCurve;
-  final double bottomPadding;
-  final double horizontalPadding;
+  final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final ItemAnimationProperties itemAnimationProperties;
 
-  BottomNavStyle6(
-      {Key key,
-      this.selectedIndex,
-      this.previousIndex,
-      this.showElevation = false,
-      this.iconSize,
-      this.backgroundColor,
-      this.popScreensOnTapOfSelectedTab,
-      this.animationDuration = const Duration(milliseconds: 1000),
-      this.navBarHeight = 0.0,
-      @required this.items,
-      this.onItemSelected,
-      this.bottomPadding,
-      this.popAllScreensForTheSelectedTab,
-      this.horizontalPadding,
-      this.navBarCurve});
+  BottomNavStyle6({
+    Key key,
+    this.selectedIndex,
+    this.previousIndex,
+    this.showElevation = false,
+    this.iconSize,
+    this.backgroundColor,
+    this.itemAnimationProperties,
+    this.popScreensOnTapOfSelectedTab,
+    this.navBarHeight = 0.0,
+    @required this.items,
+    this.onItemSelected,
+    this.padding,
+    this.popAllScreensForTheSelectedTab,
+  });
 
   @override
   _BottomNavStyle6State createState() => _BottomNavStyle6State();
@@ -58,9 +52,12 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
 
     for (int i = 0; i < widget.items.length; ++i) {
       _animationControllerList.add(AnimationController(
-          duration: Duration(milliseconds: 400), vsync: this));
+          duration: widget.itemAnimationProperties?.duration ??
+              Duration(milliseconds: 400),
+          vsync: this));
       _animationList.add(Tween(begin: 0.95, end: 1.18)
-          .chain(CurveTween(curve: Curves.ease))
+          .chain(CurveTween(
+              curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
           .animate(_animationControllerList[i]));
     }
 
@@ -71,59 +68,63 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
 
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
       double height, int itemIndex) {
-    return AnimatedBuilder(
-      animation: _animationList[itemIndex],
-      builder: (context, child) => Transform.scale(
-        scale: _animationList[itemIndex].value,
-        child: Container(
-          width: 150.0,
-          height: height,
-          child: Container(
-            alignment: Alignment.center,
-            height: height,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: widget.iconSize,
-                        color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
-                    child: item.icon,
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0),
-                  child: Material(
-                    type: MaterialType.transparency,
-                    child: FittedBox(
-                      child: Text(
-                        item.title,
-                        style: TextStyle(
-                            color: isSelected
-                                ? (item.activeContentColor == null
-                                    ? item.activeColor
-                                    : item.activeContentColor)
-                                : item.inactiveColor,
-                            fontWeight: FontWeight.w400,
-                            fontSize: item.titleFontSize),
+    return widget.navBarHeight == 0
+        ? SizedBox.shrink()
+        : AnimatedBuilder(
+            animation: _animationList[itemIndex],
+            builder: (context, child) => Transform.scale(
+              scale: _animationList[itemIndex].value,
+              child: Container(
+                width: 150.0,
+                height: height,
+                child: Container(
+                  alignment: Alignment.center,
+                  height: height,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Expanded(
+                        child: IconTheme(
+                          data: IconThemeData(
+                              size: widget.iconSize,
+                              color: isSelected
+                                  ? (item.activeContentColor == null
+                                      ? item.activeColor
+                                      : item.activeContentColor)
+                                  : item.inactiveColor == null
+                                      ? item.activeColor
+                                      : item.inactiveColor),
+                          child: item.icon,
+                        ),
                       ),
-                    ),
+                      item.title == null
+                          ? SizedBox.shrink()
+                          : Padding(
+                              padding: const EdgeInsets.only(top: 15.0),
+                              child: Material(
+                                type: MaterialType.transparency,
+                                child: FittedBox(
+                                  child: Text(
+                                    item.title,
+                                    style: TextStyle(
+                                        color: isSelected
+                                            ? (item.activeContentColor == null
+                                                ? item.activeColor
+                                                : item.activeContentColor)
+                                            : item.inactiveColor,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: item.titleFontSize),
+                                  ),
+                                ),
+                              ),
+                            ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-    );
+          );
   }
 
   @override
@@ -142,9 +143,12 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
 
       for (int i = 0; i < widget.items.length; ++i) {
         _animationControllerList.add(AnimationController(
-            duration: Duration(milliseconds: 400), vsync: this));
+            duration: widget.itemAnimationProperties?.duration ??
+                Duration(milliseconds: 400),
+            vsync: this));
         _animationList.add(Tween(begin: 0.95, end: 1.18)
-            .chain(CurveTween(curve: Curves.ease))
+            .chain(CurveTween(
+                curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
             .animate(_animationControllerList[i]));
       }
     }
@@ -158,16 +162,12 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
       width: double.infinity,
       height: widget.navBarHeight,
       padding: EdgeInsets.only(
-          left: widget.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.04
-              : widget.horizontalPadding,
-          right: widget.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.04
-              : widget.horizontalPadding,
-          top: widget.navBarHeight * 0.15,
-          bottom: widget.bottomPadding == null
-              ? widget.navBarHeight * 0.12
-              : widget.bottomPadding),
+          left:
+              widget.padding?.left ?? MediaQuery.of(context).size.width * 0.04,
+          right:
+              widget.padding?.right ?? MediaQuery.of(context).size.width * 0.04,
+          top: widget.padding?.top ?? widget.navBarHeight * 0.15,
+          bottom: widget.padding?.bottom ?? widget.navBarHeight * 0.12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -176,16 +176,20 @@ class _BottomNavStyle6State extends State<BottomNavStyle6>
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                if (index != _selectedIndex) {
-                  _lastSelectedIndex = _selectedIndex;
-                  _selectedIndex = index;
-                  _animationControllerList[_selectedIndex].forward();
-                  _animationControllerList[_lastSelectedIndex].reverse();
-                } else if (widget.popScreensOnTapOfSelectedTab &&
-                    widget.previousIndex == index) {
-                  widget.popAllScreensForTheSelectedTab(index);
+                if (widget.items[index].onPressed != null) {
+                  widget.items[index].onPressed();
+                } else {
+                  if (index != _selectedIndex) {
+                    _lastSelectedIndex = _selectedIndex;
+                    _selectedIndex = index;
+                    _animationControllerList[_selectedIndex].forward();
+                    _animationControllerList[_lastSelectedIndex].reverse();
+                  } else if (widget.popScreensOnTapOfSelectedTab &&
+                      widget.previousIndex == index) {
+                    widget.popAllScreensForTheSelectedTab(index);
+                  }
+                  widget.onItemSelected(index);
                 }
-                widget.onItemSelected(index);
               },
               child: Container(
                 color: Colors.transparent,

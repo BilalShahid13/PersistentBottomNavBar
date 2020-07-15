@@ -1,7 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import '../persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
 class BottomNavStyle2 extends StatelessWidget {
   final int selectedIndex;
@@ -9,81 +6,80 @@ class BottomNavStyle2 extends StatelessWidget {
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
-  final Duration animationDuration;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final NavBarCurve navBarCurve;
-  final double bottomPadding;
-  final double horizontalPadding;
+  final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final ItemAnimationProperties itemAnimationProperties;
 
-  BottomNavStyle2(
-      {Key key,
-      this.selectedIndex,
-      this.previousIndex,
-      this.showElevation = false,
-      this.iconSize,
-      this.backgroundColor,
-      this.animationDuration = const Duration(milliseconds: 1000),
-      this.navBarHeight = 0.0,
-      this.popScreensOnTapOfSelectedTab,
-      this.popAllScreensForTheSelectedTab,
-      @required this.items,
-      this.onItemSelected,
-      this.bottomPadding,
-      this.navBarCurve,
-      this.horizontalPadding});
+  BottomNavStyle2({
+    Key key,
+    this.selectedIndex,
+    this.previousIndex,
+    this.showElevation = false,
+    this.iconSize,
+    this.backgroundColor,
+    this.itemAnimationProperties,
+    this.navBarHeight = 0.0,
+    this.popScreensOnTapOfSelectedTab,
+    this.popAllScreensForTheSelectedTab,
+    @required this.items,
+    this.onItemSelected,
+    this.padding,
+  });
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return AnimatedContainer(
-      width: 150.0,
-      height: height / 1,
-      duration: animationDuration,
-      child: AnimatedContainer(
-        duration: animationDuration,
-        alignment: Alignment.center,
-        height: height / 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: IconTheme(
-                data: IconThemeData(
-                    size: iconSize,
-                    color: isSelected
-                        ? (item.activeContentColor == null
-                            ? item.activeColor
-                            : item.activeContentColor)
-                        : item.inactiveColor == null
-                            ? item.activeColor
-                            : item.inactiveColor),
-                child: item.icon,
+    return this.navBarHeight == 0
+        ? SizedBox.shrink()
+        : Container(
+            width: 150.0,
+            height: height / 1,
+            child: Container(
+              alignment: Alignment.center,
+              height: height / 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: IconTheme(
+                      data: IconThemeData(
+                          size: iconSize,
+                          color: isSelected
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
+                              : item.inactiveColor == null
+                                  ? item.activeColor
+                                  : item.inactiveColor),
+                      child: item.icon,
+                    ),
+                  ),
+                  item.title == null
+                      ? SizedBox.shrink()
+                      : Padding(
+                          padding: const EdgeInsets.only(top: 15.0),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: FittedBox(
+                                child: Text(
+                              isSelected ? item.title : " ",
+                              style: TextStyle(
+                                  color: (item.activeContentColor == null
+                                      ? item.activeColor
+                                      : item.activeContentColor),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: item.titleFontSize),
+                            )),
+                          ),
+                        )
+                ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: Material(
-                type: MaterialType.transparency,
-                child: FittedBox(
-                    child: Text(
-                  isSelected ? item.title : " ",
-                  style: TextStyle(
-                      color: (item.activeContentColor == null
-                          ? item.activeColor
-                          : item.activeContentColor),
-                      fontWeight: FontWeight.w400,
-                      fontSize: item.titleFontSize),
-                )),
-              ),
-            )
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   @override
@@ -92,16 +88,11 @@ class BottomNavStyle2 extends StatelessWidget {
       width: double.infinity,
       height: this.navBarHeight,
       padding: EdgeInsets.only(
-          left: this.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.05
-              : this.horizontalPadding,
-          right: this.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.05
-              : this.horizontalPadding,
-          top: this.navBarHeight * 0.15,
-          bottom: this.bottomPadding == null
-              ? this.navBarHeight * 0.12
-              : this.bottomPadding),
+          left: this.padding?.left ?? MediaQuery.of(context).size.width * 0.05,
+          right:
+              this.padding?.right ?? MediaQuery.of(context).size.width * 0.05,
+          top: this.padding?.top ?? this.navBarHeight * 0.15,
+          bottom: this.padding?.bottom ?? this.navBarHeight * 0.12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,11 +101,15 @@ class BottomNavStyle2 extends StatelessWidget {
           return Flexible(
             child: GestureDetector(
               onTap: () {
-                if (this.popScreensOnTapOfSelectedTab &&
-                    this.previousIndex == index) {
-                  this.popAllScreensForTheSelectedTab(index);
+                if (this.items[index].onPressed != null) {
+                  this.items[index].onPressed();
+                } else {
+                  if (this.popScreensOnTapOfSelectedTab &&
+                      this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
                 }
-                this.onItemSelected(index);
               },
               child: Container(
                 color: Colors.transparent,

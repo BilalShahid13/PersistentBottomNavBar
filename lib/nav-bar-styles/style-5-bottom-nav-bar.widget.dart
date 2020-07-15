@@ -1,7 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/material.dart';
-import '../persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
 class BottomNavStyle5 extends StatelessWidget {
   final int selectedIndex;
@@ -9,76 +6,73 @@ class BottomNavStyle5 extends StatelessWidget {
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
-  final Duration animationDuration;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
-  final NavBarCurve navBarCurve;
-  final double bottomPadding;
-  final double horizontalPadding;
+  final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final ItemAnimationProperties itemAnimationProperties;
 
-  BottomNavStyle5(
-      {Key key,
-      this.selectedIndex,
-      this.previousIndex,
-      this.showElevation = false,
-      this.iconSize,
-      this.backgroundColor,
-      this.popScreensOnTapOfSelectedTab,
-      this.animationDuration = const Duration(milliseconds: 1000),
-      this.navBarHeight = 0.0,
-      @required this.items,
-      this.onItemSelected,
-      this.horizontalPadding,
-      this.popAllScreensForTheSelectedTab,
-      this.bottomPadding,
-      this.navBarCurve});
+  BottomNavStyle5({
+    Key key,
+    this.selectedIndex,
+    this.previousIndex,
+    this.showElevation = false,
+    this.iconSize,
+    this.backgroundColor,
+    this.itemAnimationProperties,
+    this.popScreensOnTapOfSelectedTab,
+    this.navBarHeight = 0.0,
+    @required this.items,
+    this.onItemSelected,
+    this.padding,
+    this.popAllScreensForTheSelectedTab,
+  });
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return AnimatedContainer(
-      width: 150.0,
-      height: height / 1,
-      duration: animationDuration,
-      child: AnimatedContainer(
-        duration: animationDuration,
-        alignment: Alignment.center,
-        height: height / 1,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Expanded(
-              child: IconTheme(
-                data: IconThemeData(
-                    size: iconSize,
-                    color: isSelected
-                        ? (item.activeContentColor == null
-                            ? item.activeColor
-                            : item.activeContentColor)
-                        : item.inactiveColor == null
-                            ? item.activeColor
-                            : item.inactiveColor),
-                child: item.icon,
+    return this.navBarHeight == 0
+        ? SizedBox.shrink()
+        : Container(
+            width: 150.0,
+            height: height / 1,
+            child: Container(
+              alignment: Alignment.center,
+              height: height / 1,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: IconTheme(
+                      data: IconThemeData(
+                          size: iconSize,
+                          color: isSelected
+                              ? (item.activeContentColor == null
+                                  ? item.activeColor
+                                  : item.activeContentColor)
+                              : item.inactiveColor == null
+                                  ? item.activeColor
+                                  : item.inactiveColor),
+                      child: item.icon,
+                    ),
+                  ),
+                  Container(
+                    height: 5.0,
+                    width: 5.0,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(100.0),
+                        color: isSelected
+                            ? (item.activeContentColor == null
+                                ? item.activeColor
+                                : item.activeContentColor)
+                            : Colors.transparent),
+                  ),
+                ],
               ),
             ),
-            Container(
-              height: 5.0,
-              width: 5.0,
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(100.0),
-                  color: isSelected
-                      ? (item.activeContentColor == null
-                          ? item.activeColor
-                          : item.activeContentColor)
-                      : Colors.transparent),
-            ),
-          ],
-        ),
-      ),
-    );
+          );
   }
 
   @override
@@ -87,16 +81,11 @@ class BottomNavStyle5 extends StatelessWidget {
       width: double.infinity,
       height: this.navBarHeight,
       padding: EdgeInsets.only(
-          left: this.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.05
-              : this.horizontalPadding,
-          right: this.horizontalPadding == null
-              ? MediaQuery.of(context).size.width * 0.05
-              : this.horizontalPadding,
-          top: this.navBarHeight * 0.06,
-          bottom: this.bottomPadding == null
-              ? this.navBarHeight * 0.16
-              : this.bottomPadding),
+          left: this.padding?.left ?? MediaQuery.of(context).size.width * 0.05,
+          right:
+              this.padding?.right ?? MediaQuery.of(context).size.width * 0.05,
+          top: this.padding?.top ?? this.navBarHeight * 0.06,
+          bottom: this.padding?.bottom ?? this.navBarHeight * 0.16),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -105,11 +94,15 @@ class BottomNavStyle5 extends StatelessWidget {
           return Flexible(
             child: GestureDetector(
               onTap: () {
-                if (this.popScreensOnTapOfSelectedTab &&
-                    this.previousIndex == index) {
-                  this.popAllScreensForTheSelectedTab(index);
+                if (this.items[index].onPressed != null) {
+                  this.items[index].onPressed();
+                } else {
+                  if (this.popScreensOnTapOfSelectedTab &&
+                      this.previousIndex == index) {
+                    this.popAllScreensForTheSelectedTab(index);
+                  }
+                  this.onItemSelected(index);
                 }
-                this.onItemSelected(index);
               },
               child: Container(
                 color: Colors.transparent,

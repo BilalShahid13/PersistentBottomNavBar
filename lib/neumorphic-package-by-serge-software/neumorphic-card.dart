@@ -1,6 +1,6 @@
 /// Based on the code by Ivan Cherepanov
 /// https://medium.com/flutter-community/neumorphic-designs-in-flutter-eab9a4de2059
-import 'package:flutter/material.dart';
+part of persistent_bottom_nav_bar;
 
 enum CurveType {
   concave,

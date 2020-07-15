@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2020-07-15
+
+### These are not all the changes introduced in this update. Only the major ones. They were simply too many and couldn't be listed down here
+
+- Added transition animations to the Navigator functions.
+- Padding simplified into a single property and uses `NavBarPadding` instead of EdgeInsets.
+- New property called 'decoration' where are decoration related properties have been moved like curveRadius, boxShadow etc.
+- New property to hide the Navigation Bar when keyboard appears.
+- For those wanting to display a custom dialog when user tries to exit the app on **Android only**, use `onWillPop` the callback function.
+- 8 new styles added.
+- Animation properties for all styles can now be controlled through the property `itemAnimationProperties`.
+- Ability to turn off state management.
+- Screen transition animation added. Can be controlled with the property `screenTransitionAnimation`.
+- Ability to use custom behavior on tapping of a navigation bar's tab/item through `onPressed` callback method in the `PersistentBottomNavBarItem`.
+- Minor new features, bug fixes and stability improvements.
+
+## [1.5.6] - 2020-07-15
+
+- Test run.
+
 ## [1.5.5] - 2020-05-11
 
 - Added property `bottomScreenPadding` to control a screen's bottom padding.

@@ -1,9 +1,9 @@
 name: persistent_bottom_nav_bar
-description: A DO ALL persistent/static bottom navigation bar for flutter. In addition to being optionally platform specific, it includes more than 10 styles including neumorphic design.
+description: A do all, highly customizable persistent/static bottom navigation bar for flutter. Includes up-to 20 styles.
 
 homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
 repository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 1.5.5
+version: 1.5.6
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -15,7 +15,6 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
 
 flutter:
   uses-material-design: true

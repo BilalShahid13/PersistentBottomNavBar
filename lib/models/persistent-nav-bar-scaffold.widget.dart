@@ -1,4 +1,4 @@
-import '../persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
 ///Navigation bar controller for `PersistentTabView`.
 class PersistentTabController extends ChangeNotifier {
@@ -47,6 +47,9 @@ class PersistentTabScaffold extends StatefulWidget {
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
     this.bottomScreenMargin,
+    this.stateManagement,
+    this.screenTransitionAnimation,
+    this.hideNavigationBarWhenKeyboardShows,
     this.itemCount,
   })  : assert(tabBar != null),
         assert(tabBuilder != null),
@@ -69,6 +72,12 @@ class PersistentTabScaffold extends StatefulWidget {
   final int itemCount;
 
   final double bottomScreenMargin;
+
+  final bool stateManagement;
+
+  final ScreenTransitionAnimation screenTransitionAnimation;
+
+  final bool hideNavigationBarWhenKeyboardShows;
 
   @override
   _PersistentTabScaffoldState createState() => _PersistentTabScaffoldState();
@@ -137,8 +146,11 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
       currentTabIndex: _controller.index,
       tabCount: widget.itemCount,
       tabBuilder: widget.tabBuilder,
+      stateManagement: widget.stateManagement,
+      screenTransitionAnimation: widget.screenTransitionAnimation,
+      backgroundColor: widget.tabBar.backgroundColor,
     );
-    EdgeInsets contentPadding = EdgeInsets.zero;
+    double contentPadding = 0.0;
 
     if (widget.resizeToAvoidBottomInset) {
       // Remove the view inset and add it back as a padding in the inner content.
@@ -147,45 +159,72 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     }
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
-      contentPadding = EdgeInsets.only(bottom: 0.0);
-    } else if (widget.tabBar.navBarCurve == NavBarCurve.upperCorners) {
-      if (widget.tabBar != null &&
-          (!widget.resizeToAvoidBottomInset ||
-              widget.tabBar.navBarHeight * 0.8 >
-                  existingMediaQuery.viewInsets.bottom)) {
-        final double bottomPadding = widget.bottomScreenMargin ??
-            widget.tabBar.navBarHeight - widget.tabBar.navBarCurveRadius;
-        contentPadding = EdgeInsets.only(bottom: bottomPadding);
-      }
+      contentPadding = 0.0;
+    } else if (widget.tabBar.decoration.adjustScreenBottomPaddingOnCurve &&
+        widget.tabBar.decoration.borderRadius != BorderRadius.zero) {
+      final double bottomPadding = widget.bottomScreenMargin ??
+          widget.tabBar.navBarHeight -
+              min(
+                  widget.tabBar.navBarHeight,
+                  max(
+                          widget.tabBar.decoration.borderRadius.topRight.y ??
+                              0.0,
+                          widget.tabBar.decoration.borderRadius.topLeft.y ??
+                              0.0) +
+                      (widget.tabBar.decoration?.border != null
+                          ? widget.tabBar.decoration.border.dimensions.vertical
+                          : 0.0));
+      contentPadding = bottomPadding;
     } else {
       if (widget.tabBar != null &&
           (!widget.resizeToAvoidBottomInset ||
               widget.tabBar.navBarHeight >
                   existingMediaQuery.viewInsets.bottom)) {
-        final double bottomPadding =
-            widget.bottomScreenMargin ?? widget.tabBar.navBarHeight;
-        contentPadding = EdgeInsets.only(bottom: bottomPadding);
+        final double bottomPadding = widget.bottomScreenMargin ??
+            widget.tabBar.navBarHeight +
+                (widget.tabBar.decoration?.border != null
+                    ? widget.tabBar.decoration.border.dimensions.vertical
+                    : 0.0);
+        contentPadding = bottomPadding;
       }
     }
 
-    content = MediaQuery(
-      data: newMediaQuery,
-      child: Padding(
-        padding: contentPadding,
-        child: content,
-      ),
-    );
+    if (widget.tabBar.hideNavigationBar != null) {
+      content = MediaQuery(
+        data: newMediaQuery,
+        child: AnimatedContainer(
+          duration: Duration(
+              milliseconds: !widget.tabBar.opaque(_selectedIndex) ||
+                      (widget.resizeToAvoidBottomInset &&
+                          MediaQuery.of(context).viewInsets.bottom > 0 &&
+                          widget.hideNavigationBarWhenKeyboardShows)
+                  ? 0
+                  : widget.tabBar.hideNavigationBar ? 200 : 400),
+          curve:
+              widget.tabBar.hideNavigationBar ? Curves.linear : Curves.easeIn,
+          color: widget.tabBar.decoration.colorBehindNavBar,
+          padding: EdgeInsets.only(bottom: contentPadding),
+          child: content,
+        ),
+      );
+    } else {
+      content = MediaQuery(
+        data: newMediaQuery,
+        child: Container(
+          color: widget.tabBar.decoration.colorBehindNavBar,
+          padding: EdgeInsets.only(bottom: contentPadding),
+          child: content,
+        ),
+      );
+    }
 
     return DecoratedBox(
-      decoration: widget.tabBar.navBarCurve == NavBarCurve.upperCorners
+      decoration: widget.tabBar.decoration.borderRadius != BorderRadius.zero
           ? BoxDecoration(
-              color: CupertinoColors.white.withOpacity(0.0),
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(widget.tabBar.navBarCurveRadius),
-                topRight: Radius.circular(widget.tabBar.navBarCurveRadius),
-              ),
+              color: CupertinoColors.black.withOpacity(0.0),
+              borderRadius: widget.tabBar.decoration.borderRadius,
             )
-          : BoxDecoration(color: CupertinoColors.white.withOpacity(0.0)),
+          : BoxDecoration(color: CupertinoColors.black.withOpacity(1.0)),
       child: Stack(
         children: <Widget>[
           content,
@@ -229,7 +268,10 @@ class _TabSwitchingView extends StatefulWidget {
   const _TabSwitchingView({
     @required this.currentTabIndex,
     @required this.tabCount,
+    @required this.stateManagement,
     @required this.tabBuilder,
+    @required this.screenTransitionAnimation,
+    @required this.backgroundColor,
   })  : assert(currentTabIndex != null),
         assert(tabCount != null && tabCount > 0),
         assert(tabBuilder != null);
@@ -237,20 +279,169 @@ class _TabSwitchingView extends StatefulWidget {
   final int currentTabIndex;
   final int tabCount;
   final IndexedWidgetBuilder tabBuilder;
+  final bool stateManagement;
+  final ScreenTransitionAnimation screenTransitionAnimation;
+  final Color backgroundColor;
 
   @override
   _TabSwitchingViewState createState() => _TabSwitchingViewState();
 }
 
-class _TabSwitchingViewState extends State<_TabSwitchingView> {
+class _TabSwitchingViewState extends State<_TabSwitchingView>
+    with TickerProviderStateMixin {
   final List<bool> shouldBuildTab = <bool>[];
   final List<FocusScopeNode> tabFocusNodes = <FocusScopeNode>[];
   final List<FocusScopeNode> discardedNodes = <FocusScopeNode>[];
+  List<AnimationController> _animationControllers;
+  List<Animation<double>> _animations;
+  int _tabCount;
+  int _lastIndex;
+  bool _animationCompletionIndex = false;
+  bool _showAnimation;
+  double _animationValue;
+  Curve _animationCurve;
+  Key key;
 
   @override
   void initState() {
     super.initState();
     shouldBuildTab.addAll(List<bool>.filled(widget.tabCount, false));
+    _lastIndex = widget.currentTabIndex;
+    _tabCount = widget.tabCount;
+    _animationCompletionIndex = false;
+    _showAnimation = widget.screenTransitionAnimation.animateTabTransition;
+
+    if (!widget.stateManagement) {
+      key = UniqueKey();
+    }
+
+    _initAniamtionControllers();
+  }
+
+  _initAniamtionControllers() {
+    if (widget.screenTransitionAnimation.animateTabTransition) {
+      _animationControllers = List<AnimationController>(widget.tabCount);
+      _animations = List<Animation<double>>(widget.tabCount);
+      _animationCurve = widget.screenTransitionAnimation.curve;
+      for (int i = 0; i < widget.tabCount; ++i) {
+        _animationControllers[i] = AnimationController(
+            vsync: this, duration: widget.screenTransitionAnimation.duration);
+        _animations[i] = Tween(begin: 0.0, end: 0.0)
+            .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
+            .animate(_animationControllers[i]);
+      }
+
+      for (int i = 0; i < widget.tabCount; ++i) {
+        _animationControllers[i].addListener(() {
+          if (_animationControllers[i].isCompleted &&
+              _animationCompletionIndex) {
+            setState(() {
+              if (!widget.stateManagement) {
+                key = UniqueKey();
+              }
+              _lastIndex = widget.currentTabIndex;
+            });
+            _animationCompletionIndex = false;
+          }
+        });
+      }
+    }
+  }
+
+  void _focusActiveTab() {
+    if (widget.screenTransitionAnimation.animateTabTransition)
+      _newPageAnimation();
+    if (tabFocusNodes.length != widget.tabCount) {
+      if (tabFocusNodes.length > widget.tabCount) {
+        discardedNodes.addAll(tabFocusNodes.sublist(widget.tabCount));
+        tabFocusNodes.removeRange(widget.tabCount, tabFocusNodes.length);
+      } else {
+        tabFocusNodes.addAll(
+          List<FocusScopeNode>.generate(
+            widget.tabCount - tabFocusNodes.length,
+            (int index) => FocusScopeNode(
+                debugLabel:
+                    '$CupertinoTabScaffold Tab ${index + tabFocusNodes.length}'),
+          ),
+        );
+      }
+    }
+    FocusScope.of(context).setFirstFocus(tabFocusNodes[widget.currentTabIndex]);
+    if (widget.screenTransitionAnimation.animateTabTransition)
+      _lastPageAnimation();
+  }
+
+  _lastPageAnimation() {
+    if (_lastIndex > widget.currentTabIndex) {
+      _animationControllers[_lastIndex].reset();
+      _animations[_lastIndex] = Tween(begin: 0.0, end: _animationValue)
+          .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
+          .animate(_animationControllers[_lastIndex]);
+      _animationControllers[_lastIndex].forward();
+    } else if (_lastIndex < widget.currentTabIndex) {
+      _animationControllers[_lastIndex].reset();
+      _animations[_lastIndex] = Tween(begin: 0.0, end: -_animationValue)
+          .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
+          .animate(_animationControllers[_lastIndex]);
+      _animationControllers[_lastIndex].forward();
+    }
+  }
+
+  _newPageAnimation() {
+    if (_lastIndex > widget.currentTabIndex) {
+      _animationControllers[widget.currentTabIndex].reset();
+      _animations[widget.currentTabIndex] =
+          Tween(begin: -_animationValue, end: 0.0)
+              .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
+              .animate(_animationControllers[widget.currentTabIndex]);
+      _animationControllers[widget.currentTabIndex].forward();
+      _animationCompletionIndex = true;
+    } else if (_lastIndex < widget.currentTabIndex) {
+      _animationControllers[widget.currentTabIndex].reset();
+      _animations[widget.currentTabIndex] =
+          Tween(begin: _animationValue, end: 0.0)
+              .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
+              .animate(_animationControllers[widget.currentTabIndex]);
+      _animationControllers[widget.currentTabIndex].forward();
+      _animationCompletionIndex = true;
+    }
+  }
+
+  Widget _buildScreens() {
+    return Container(
+      color: CupertinoColors.black,
+      child: Stack(
+        fit: StackFit.expand,
+        children: List<Widget>.generate(widget.tabCount, (int index) {
+          final bool active =
+              index == widget.currentTabIndex || index == _lastIndex;
+          shouldBuildTab[index] = active || shouldBuildTab[index];
+
+          return Offstage(
+            offstage: !active,
+            child: TickerMode(
+              enabled: active,
+              child: FocusScope(
+                node: tabFocusNodes[index],
+                child: Builder(builder: (BuildContext context) {
+                  return shouldBuildTab[index]
+                      ? (widget.screenTransitionAnimation.animateTabTransition
+                          ? AnimatedBuilder(
+                              animation: _animations[index],
+                              builder: (context, child) => Transform.translate(
+                                offset: Offset(_animations[index].value, 0),
+                                child: widget.tabBuilder(context, index),
+                              ),
+                            )
+                          : widget.tabBuilder(context, index))
+                      : Container();
+                }),
+              ),
+            ),
+          );
+        }),
+      ),
+    );
   }
 
   @override
@@ -271,25 +462,6 @@ class _TabSwitchingViewState extends State<_TabSwitchingView> {
     _focusActiveTab();
   }
 
-  void _focusActiveTab() {
-    if (tabFocusNodes.length != widget.tabCount) {
-      if (tabFocusNodes.length > widget.tabCount) {
-        discardedNodes.addAll(tabFocusNodes.sublist(widget.tabCount));
-        tabFocusNodes.removeRange(widget.tabCount, tabFocusNodes.length);
-      } else {
-        tabFocusNodes.addAll(
-          List<FocusScopeNode>.generate(
-            widget.tabCount - tabFocusNodes.length,
-            (int index) => FocusScopeNode(
-                debugLabel:
-                    '$CupertinoTabScaffold Tab ${index + tabFocusNodes.length}'),
-          ),
-        );
-      }
-    }
-    FocusScope.of(context).setFirstFocus(tabFocusNodes[widget.currentTabIndex]);
-  }
-
   @override
   void dispose() {
     for (FocusScopeNode focusScopeNode in tabFocusNodes) {
@@ -298,32 +470,40 @@ class _TabSwitchingViewState extends State<_TabSwitchingView> {
     for (FocusScopeNode focusScopeNode in discardedNodes) {
       focusScopeNode.dispose();
     }
+    if (widget.screenTransitionAnimation.animateTabTransition) {
+      for (AnimationController controller in _animationControllers) {
+        controller.dispose();
+      }
+    }
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      fit: StackFit.expand,
-      children: List<Widget>.generate(widget.tabCount, (int index) {
-        final bool active = index == widget.currentTabIndex;
-        shouldBuildTab[index] = active || shouldBuildTab[index];
-
-        return Offstage(
-          offstage: !active,
-          child: TickerMode(
-            enabled: active,
-            child: FocusScope(
-              node: tabFocusNodes[index],
-              child: Builder(builder: (BuildContext context) {
-                return shouldBuildTab[index]
-                    ? widget.tabBuilder(context, index)
-                    : Container();
-              }),
+    _animationValue = MediaQuery.of(context).size.width;
+    if (_tabCount != widget.tabCount) {
+      _tabCount = widget.tabCount;
+      _initAniamtionControllers();
+    }
+    if (widget.screenTransitionAnimation.animateTabTransition &&
+            _animationControllers.first.duration !=
+                widget.screenTransitionAnimation.duration ||
+        _animationCurve != widget.screenTransitionAnimation.curve) {
+      _initAniamtionControllers();
+    }
+    if (_showAnimation !=
+        widget.screenTransitionAnimation.animateTabTransition) {
+      _showAnimation = widget.screenTransitionAnimation.animateTabTransition;
+      key = UniqueKey();
+    }
+    return Container(
+      color: widget.backgroundColor,
+      child: widget.stateManagement
+          ? _buildScreens()
+          : KeyedSubtree(
+              key: key,
+              child: _buildScreens(),
             ),
-          ),
-        );
-      }),
     );
   }
 }

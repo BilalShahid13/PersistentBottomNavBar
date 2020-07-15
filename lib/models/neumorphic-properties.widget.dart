@@ -1,4 +1,4 @@
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
 class NeumorphicProperties {
   final double bevel;

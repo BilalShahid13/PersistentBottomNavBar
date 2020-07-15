@@ -1,11 +1,12 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavStyle8 extends StatefulWidget {
+class BottomNavStyle14 extends StatefulWidget {
   final int selectedIndex;
   final int previousIndex;
   final double iconSize;
   final Color backgroundColor;
   final bool showElevation;
+  final Duration animationDuration;
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
@@ -13,31 +14,34 @@ class BottomNavStyle8 extends StatefulWidget {
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final ItemAnimationProperties itemAnimationProperties;
+  final NavBarDecoration decoration;
 
-  BottomNavStyle8({
+  BottomNavStyle14({
     Key key,
     this.selectedIndex,
     this.previousIndex,
     this.showElevation = false,
     this.iconSize,
     this.backgroundColor,
+    this.decoration,
     this.itemAnimationProperties,
+    this.popScreensOnTapOfSelectedTab,
+    this.animationDuration = const Duration(milliseconds: 1000),
     this.navBarHeight = 0.0,
     @required this.items,
     this.onItemSelected,
-    this.popAllScreensForTheSelectedTab,
-    this.popScreensOnTapOfSelectedTab,
     this.padding,
+    this.popAllScreensForTheSelectedTab,
   });
 
   @override
-  _BottomNavStyle8State createState() => _BottomNavStyle8State();
+  _BottomNavStyle14State createState() => _BottomNavStyle14State();
 }
 
-class _BottomNavStyle8State extends State<BottomNavStyle8>
+class _BottomNavStyle14State extends State<BottomNavStyle14>
     with TickerProviderStateMixin {
   List<AnimationController> _animationControllerList;
-  List<Animation<double>> _animationList;
+  List<Animation<Offset>> _animationList;
 
   int _lastSelectedIndex;
   int _selectedIndex;
@@ -48,14 +52,15 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
     _lastSelectedIndex = 0;
     _selectedIndex = 0;
     _animationControllerList = List<AnimationController>();
-    _animationList = List<Animation<double>>();
+    _animationList = List<Animation<Offset>>();
 
     for (int i = 0; i < widget.items.length; ++i) {
       _animationControllerList.add(AnimationController(
           duration: widget.itemAnimationProperties?.duration ??
               Duration(milliseconds: 400),
           vsync: this));
-      _animationList.add(Tween(begin: 0.95, end: 1.2)
+      _animationList.add(Tween(
+              begin: Offset(0, widget.navBarHeight / 1.5), end: Offset(0, 0.0))
           .chain(CurveTween(
               curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
           .animate(_animationControllerList[i]));
@@ -68,38 +73,45 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
 
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
       double height, int itemIndex) {
+    double itemWidth = ((MediaQuery.of(context).size.width -
+            ((widget.padding?.left ??
+                    MediaQuery.of(context).size.width * 0.05) +
+                (widget.padding?.right ??
+                    MediaQuery.of(context).size.width * 0.05))) /
+        widget.items.length);
     return widget.navBarHeight == 0
         ? SizedBox.shrink()
-        : Container(
-            alignment: Alignment.center,
-            height: height,
-            width: double.maxFinite,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: widget.iconSize,
-                        color: isSelected
-                            ? (item.activeContentColor == null
-                                ? item.activeColor
-                                : item.activeContentColor)
-                            : item.inactiveColor == null
-                                ? item.activeColor
-                                : item.inactiveColor),
-                    child: item.icon,
-                  ),
-                ),
-                item.title == null
-                    ? SizedBox.shrink()
-                    : AnimatedBuilder(
-                        animation: _animationList[itemIndex],
-                        builder: (context, child) => Transform.scale(
-                          scale: _animationList[itemIndex].value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 15.0),
+        : AnimatedBuilder(
+            animation: _animationList[itemIndex],
+            builder: (context, child) => Container(
+              width: 150.0,
+              height: height,
+              child: Container(
+                alignment: Alignment.center,
+                height: height,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Expanded(
+                      child: IconTheme(
+                        data: IconThemeData(
+                            size: widget.iconSize,
+                            color: isSelected
+                                ? (item.activeContentColor == null
+                                    ? item.activeColor
+                                    : item.activeContentColor)
+                                : item.inactiveColor == null
+                                    ? item.activeColor
+                                    : item.inactiveColor),
+                        child: item.icon,
+                      ),
+                    ),
+                    item.title == null
+                        ? SizedBox.shrink()
+                        : Padding(
+                            padding:
+                                const EdgeInsets.only(top: 12.0, bottom: 2.0),
                             child: Material(
                               type: MaterialType.transparency,
                               child: FittedBox(
@@ -117,9 +129,25 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
                               ),
                             ),
                           ),
-                        ),
-                      )
-              ],
+                    Transform.translate(
+                      offset: _animationList[itemIndex].value,
+                      child: AnimatedContainer(
+                        duration: widget.itemAnimationProperties?.duration ??
+                            Duration(milliseconds: 400),
+                        height: 5.0,
+                        width: itemWidth * 0.8,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100.0),
+                            color: isSelected
+                                ? (item.activeContentColor == null
+                                    ? item.activeColor
+                                    : item.activeContentColor)
+                                : Colors.transparent),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
   }
@@ -136,14 +164,16 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
   Widget build(BuildContext context) {
     if (widget.items.length != _animationControllerList.length) {
       _animationControllerList = List<AnimationController>();
-      _animationList = List<Animation<double>>();
+      _animationList = List<Animation<Offset>>();
 
       for (int i = 0; i < widget.items.length; ++i) {
         _animationControllerList.add(AnimationController(
             duration: widget.itemAnimationProperties?.duration ??
                 Duration(milliseconds: 400),
             vsync: this));
-        _animationList.add(Tween(begin: 0.95, end: 1.18)
+        _animationList.add(Tween(
+                begin: Offset(0, widget.navBarHeight / 2.0),
+                end: Offset(0, 0.0))
             .chain(CurveTween(
                 curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
             .animate(_animationControllerList[i]));
@@ -163,8 +193,8 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
               widget.padding?.left ?? MediaQuery.of(context).size.width * 0.04,
           right:
               widget.padding?.right ?? MediaQuery.of(context).size.width * 0.04,
-          top: widget.padding?.top ?? widget.navBarHeight * 0.15,
-          bottom: widget.padding?.bottom ?? widget.navBarHeight * 0.12),
+          top: widget.padding?.top ?? widget.navBarHeight * 0.12,
+          bottom: widget.padding?.bottom ?? widget.navBarHeight * 0.03),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,

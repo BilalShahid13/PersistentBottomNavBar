@@ -6,25 +6,35 @@
 
 A persistent/static bottom navigation bar for Flutter.
 
+NOTE: Those migrating from **pre 2.0.0** version should check the latest Readme and instructions as there are many breaking changes introduced in the 2.0.0 update
+
 ![Persistent Behavior](gifs/persistent.gif)
 
 ## Styles
 
+| Style15  | Style16 |
+| ------------- | ------------- |
+| ![style1](gifs/style-15.gif)  | ![style10](gifs/style-16.gif)  |
+
+| Style1  | Style9 |
+| ------------- | ------------- |
+| ![style1](gifs/style-1.gif)  | ![style10](gifs/style-9.gif)  |
+
+| Style7  | Style9 |
+| ------------- | ------------- |
+| ![style3](gifs/style-7.gif)  | ![style5](gifs/style-9.gif)  |
+
+| Style12  | Style13 |
+| ------------- | ------------- |
+| ![style6](gifs/style-12.gif)  | ![style8](gifs/style-13.gif)  |
+
+| Style3 | Style6 |
+| ------------- | ------------- |
+| ![style6](gifs/style-3.gif)  | ![style8](gifs/style-6.gif)  |
+
 | Neumorphic  | Neumorphic without subtitle |
 | ------------- | ------------- |
 | ![neumorphic1](gifs/neumorphic.gif)  | ![neumorphic2](gifs/neumorphic-nosubs.gif)  |
-
-| Style1  | Style7 |
-| ------------- | ------------- |
-| ![style1](gifs/style1.gif)  | ![style7](gifs/style7.gif)  |
-
-| Style3  | Style5 |
-| ------------- | ------------- |
-| ![style3](gifs/style3.gif)  | ![style5](gifs/style5.gif)  |
-
-| Style6  | Style8 |
-| ------------- | ------------- |
-| ![style6](gifs/style6.gif)  | ![style8](gifs/style8.gif)  |
 
 ### Note: These do not include all style variations
 
@@ -33,7 +43,7 @@ A persistent/static bottom navigation bar for Flutter.
 - Highly customizable `persistent` bottom navigation bar.
 - Ability to push new screens with or without bottom navigation bar.
 - Includes platform specific behavior as an option (specify it in the two navigator functions).
-- 12 styles for the bottom navigation bar (includes `BottomNavyBar` and `Neumorphic` style).
+- 20 styles for the bottom navigation bar.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
 - Can be `translucent` for a particular tab.
@@ -47,6 +57,12 @@ In your flutter project add the dependency:
 ```yaml
 dependencies:
   persistent_bottom_nav_bar: any
+```
+
+Import the package:
+
+```dart
+    import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 ```
 
 Persistent bottom navigation bar uses `PersistentTabController` as its controller. Here is how to declare it:
@@ -69,17 +85,29 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return PersistentTabView(
       controller: _controller,
-      items: _navBarsItems(),
       screens: _buildScreens(),
-      showElevation: true,
-      navBarCurve: NavBarCurve.upperCorners,
+      items: _navBarsItems(),
       confineInSafeArea: true,
+      backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
-      iconSize: 26.0,
+      resizeToAvoidBottomInset: true,
+      stateManagement: true,
+      hideNavigationBarWhenKeyboardShows: true,
+      decoration: NavBarDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        colorBehindNavBar: Colors.white,
+      ),
+      popAllScreensOnTapOfSelectedTab: true,
+      itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        curve: Curves.ease,
+        duration: Duration(milliseconds: 200),
+      ),
       navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
-      onItemSelected: (index) {
-        print(index);
-      },
     );
   }
 }
@@ -90,7 +118,7 @@ class MyApp extends StatelessWidget {
 
     List<Widget> _buildScreens() {
         return [
-        HomeScreen(),
+        MainScreen(),
         SettingsScreen()
         ];
     }
@@ -101,18 +129,18 @@ class MyApp extends StatelessWidget {
 
     List<PersistentBottomNavBarItem> _navBarsItems() {
         return [
-        PersistentBottomNavBarItem(
-            icon: Icon(CupertinoIcons.home),
-            title: ("Home"),
-            activeColor: CupertinoColors.activeBlue,
-            inactiveColor: CupertinoColors.systemGrey,
-        ),
-        PersistentBottomNavBarItem(
-            icon: Icon(CupertinoIcons.settings),
-            title: ("Settings"),
-            activeColor: CupertinoColors.activeBlue,
-            inactiveColor: CupertinoColors.systemGrey,
-        ),
+            PersistentBottomNavBarItem(
+                icon: Icon(CupertinoIcons.home),
+                title: ("Home"),
+                activeColor: CupertinoColors.activeBlue,
+                inactiveColor: CupertinoColors.systemGrey,
+            ),
+            PersistentBottomNavBarItem(
+                icon: Icon(CupertinoIcons.settings),
+                title: ("Settings"),
+                activeColor: CupertinoColors.activeBlue,
+                inactiveColor: CupertinoColors.systemGrey,
+            ),
         ];
     }
 
@@ -128,9 +156,10 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
 
     pushNewScreen(
         context,
-        screen: HomeScreen(),
+        screen: MainScreen(),
         platformSpecific: false, // OPTIONAL VALUE. False by default, which means the bottom nav bar will persist
         withNavBar: true, // OPTIONAL VALUE. True by default.
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
     );
 
 ```
@@ -139,10 +168,11 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
 
     pushNewScreenWithRouteSettings(
         context,
-        settings: RouteSettings(name: HomeScreen.routeName),
-        screen: HomeScreen(),
+        settings: RouteSettings(name: MainScreen.routeName),
+        screen: MainScreen(),
         platformSpecific: false,
         withNavBar: true,
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
     );
 
 ```
@@ -162,30 +192,32 @@ If you are pushing a new `modal` screen, use the following function:
 
 ### Some Useful Tips
 
-Pop to any screen in the navigation graph for a given tab:
+- Pop to any screen in the navigation graph for a given tab:
 
-```dart
-    Navigator.of(context).popUntil((route) {
-        return route.settings.name == "ScreenToPopBackTo";
-    });
-```
+    ```dart
+        Navigator.of(context).popUntil((route) {
+            return route.settings.name == "ScreenToPopBackTo";
+        });
+    ```
 
-Pop back to first screen in the navigation graph for a given tab:
+- Pop back to first screen in the navigation graph for a given tab:
 
-```dart
-    Navigator.of(context).popUntil(ModalRoute.withName("/"));
-```
+    ```dart
+        Navigator.of(context).popUntil(ModalRoute.withName("/"));
+    ```
 
-```dart
-    Navigator.of(context).pushAndRemoveUntil(
-    CupertinoPageRoute(
-      builder: (BuildContext context) {
-        return FirstScreen();
-      },
-    ),
-    (_) => false,
-  );
-```
+    ```dart
+        Navigator.of(context).pushAndRemoveUntil(
+        CupertinoPageRoute(
+        builder: (BuildContext context) {
+            return FirstScreen();
+        },
+        ),
+        (_) => false,
+    );
+    ```
+
+- To push bottom sheet on top of the Navigation Bar, use showModalBottomScreen and set it's property `useRootNavigator` to true. See example project for an illustration.
 
 ## Custom Navigation Bar Styling
 

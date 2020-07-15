@@ -1,52 +1,28 @@
-import 'package:flutter/material.dart';
-import '../persistent-tab-view.dart';
+part of persistent_bottom_nav_bar;
 
-BoxDecoration getNavBarDecoration(
-    {bool showElevation = true,
-    NavBarCurve navBarCurve = NavBarCurve.none,
-    bool isTranslucent = false,
-    double navBarCurveRadius = 15.0,
-    double tralucencyPercentage}) {
-  return navBarCurve == NavBarCurve.upperCorners && showElevation
-      ? BoxDecoration(
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(navBarCurveRadius),
-              topRight: Radius.circular(navBarCurveRadius)),
-          boxShadow: [
-            BoxShadow(
-                color: isTranslucent
-                    ? Colors.black12.withOpacity(0.0)
-                    : Colors.black12,
-                blurRadius: 2)
-          ],
-        )
-      : navBarCurve == NavBarCurve.upperCorners && !showElevation
-          ? BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(navBarCurveRadius),
-                  topRight: Radius.circular(navBarCurveRadius)),
-            )
-          : navBarCurve == NavBarCurve.none && showElevation
-              ? BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                        color: isTranslucent
-                            ? Colors.black12.withOpacity(0.0)
-                            : Colors.black12,
-                        blurRadius: 2)
-                  ],
-                )
-              : BoxDecoration();
-}
-
-BorderRadius getClipRectBorderRadius(
-    {NavBarCurve navBarCurve = NavBarCurve.none,
-    double navBarCurveRadius = 15.0}) {
-  return navBarCurve == NavBarCurve.upperCorners
-      ? BorderRadius.only(
-          topLeft: Radius.circular(navBarCurveRadius),
-          topRight: Radius.circular(navBarCurveRadius))
-      : BorderRadius.circular(0.0);
+BoxDecoration getNavBarDecoration({
+  bool showElevation = true,
+  NavBarDecoration decoration = const NavBarDecoration(),
+  double opacity,
+  bool showBorder = true,
+  bool showOpacity = true,
+  Color color = Colors.white,
+}) {
+  if (opacity < 1.0) {
+    return BoxDecoration(
+      border: showBorder ? decoration.border : null,
+      borderRadius: decoration.borderRadius,
+      color: color.withOpacity(opacity),
+    );
+  } else {
+    return BoxDecoration(
+      border: showBorder ? decoration.border : null,
+      borderRadius: decoration.borderRadius,
+      color: color,
+      gradient: decoration.gradient,
+      boxShadow: decoration.boxShadow,
+    );
+  }
 }
 
 bool isColorOpaque(BuildContext context, Color color) {
@@ -57,7 +33,7 @@ bool isColorOpaque(BuildContext context, Color color) {
 
 bool opaque(List<PersistentBottomNavBarItem> items, int selectedIndex) {
   for (int i = 0; i < items.length; ++i) {
-    if (items[i].isTranslucent && i == selectedIndex) {
+    if (items[i].opacity < 1.0 && i == selectedIndex) {
       return false;
     }
   }
@@ -67,8 +43,8 @@ bool opaque(List<PersistentBottomNavBarItem> items, int selectedIndex) {
 double getTranslucencyAmount(
     List<PersistentBottomNavBarItem> items, int selectedIndex) {
   for (int i = 0; i < items.length; ++i) {
-    if (items[i].isTranslucent && i == selectedIndex) {
-      return items[i].translucencyPercentage / 100.0;
+    if (items[i].opacity < 1.0 && i == selectedIndex) {
+      return items[i].opacity;
     }
   }
   return 1.0;
@@ -82,15 +58,5 @@ Color getBackgroundColor(BuildContext context,
     return color.withOpacity(getTranslucencyAmount(items, selectedIndex));
   } else {
     return color;
-  }
-}
-
-void popAllScreens(BuildContext context) {
-  while (true) {
-    if (Navigator.canPop(context)) {
-      Navigator.pop(context);
-    } else {
-      break;
-    }
   }
 }
