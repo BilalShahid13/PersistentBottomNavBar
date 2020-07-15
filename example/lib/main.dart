@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'custom-widget.dart';
-import 'screens.dart';
+
+import 'custom-widget-example/custom-widget-tabs.widget.dart';
+import 'provided-styles-example/provided-styles-tabs.widget.dart';
 
 void main() => runApp(MyApp());
 
@@ -13,95 +14,54 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: MainMenu(),
+      initialRoute: '/',
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key}) : super(key: key);
+class MainMenu extends StatefulWidget {
+  MainMenu({Key key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MainMenuState createState() => _MainMenuState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  PersistentTabController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = PersistentTabController(initialIndex: 0);
-  }
-
-  List<Widget> _buildScreens() {
-    return [
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-      HomeScreen(),
-    ];
-  }
-
-  List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
-        title: ("Home"),
-        activeColor: Colors.blue,
-        inactiveColor: Colors.grey,
-        isTranslucent: false,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.search),
-        title: ("Search"),
-        activeColor: Colors.teal,
-        inactiveColor: Colors.grey,
-        isTranslucent: false,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.message),
-        title: ("Chat"),
-        activeColor: Colors.deepOrange,
-        inactiveColor: Colors.grey,
-        isTranslucent: false,
-      ),
-      PersistentBottomNavBarItem(
-        icon: Icon(Icons.settings),
-        title: ("Settings"),
-        activeColor: Colors.indigo,
-        inactiveColor: Colors.grey,
-        isTranslucent: false,
-      ),
-    ];
-  }
-
+class _MainMenuState extends State<MainMenu> {
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-        controller: _controller,
-        screens: _buildScreens(),
-        items:
-            _navBarsItems(), // Redundant here but defined to demonstrate for other than custom style
-        confineInSafeArea: true,
-        backgroundColor: Colors.white,
-        handleAndroidBackButtonPress: true,
-        onItemSelected: (int) {
-          setState(
-              () {}); // This is required to update the nav bar if Android back button is pressed
-        },
-        customWidget: CustomNavBarWidget(
-          items: _navBarsItems(),
-          onItemSelected: (index) {
-            setState(() {
-              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
-            });
-          },
-          selectedIndex: _controller.index,
-        ),
-        itemCount: 4,
-        navBarStyle:
-            NavBarStyle.custom // Choose the nav bar style with this property
-        );
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Sample Project"),
+      ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: RaisedButton(
+              child: Text("Custom widget example"),
+              onPressed: () => pushNewScreen(
+                context,
+                screen: CustomWidgetExample(
+                  menuScreenContext: context,
+                ),
+              ),
+            ),
+          ),
+          SizedBox(height: 20.0),
+          Center(
+            child: RaisedButton(
+              child: Text("Built-in styles example"),
+              onPressed: () => pushNewScreen(
+                context,
+                screen: ProvidedStylesExample(
+                  menuScreenContext: context,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

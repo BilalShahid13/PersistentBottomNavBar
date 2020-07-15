@@ -3,53 +3,148 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'modal-screen.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({Key key}) : super(key: key);
+class MainScreen extends StatelessWidget {
+  final BuildContext menuScreenContext;
+  final Function onScreenHideButtonPressed;
+  final bool hideStatus;
+  const MainScreen({Key key, this.menuScreenContext, this.onScreenHideButtonPressed, this.hideStatus = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("First Screen"),
-      ),
-      backgroundColor: Colors.indigo,
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Center(
-            child: RaisedButton(
-              color: Colors.blue,
-              onPressed: () {
-                pushNewScreen(context, screen: HomeScreen2());
-              },
-              child: Text(
-                "Go to Second Screen",
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+    return SingleChildScrollView(
+      child: SizedBox(
+        height: MediaQuery.of(context).size.height,
+        width: MediaQuery.of(context).size.width,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Text("First Screen"),
           ),
-          Center(
-            child: RaisedButton(
-              color: Colors.blue,
-              onPressed: () {
-                pushDynamicScreen(context,
-                    screen: SampleModalScreen(), withNavBar: true);
-              },
-              child: Text(
-                "Push Dynamic/Modal Screen",
-                style: TextStyle(color: Colors.white),
+          backgroundColor: Colors.indigo,
+          body: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                child: TextField(
+                  decoration: InputDecoration(hintText: "Test Text Field"),
+                ),
               ),
-            ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.blue,
+                  onPressed: () {
+                    pushNewScreenWithRouteSettings(context,
+                        settings: RouteSettings(name: '/home'), screen: MainScreen2(), pageTransitionAnimation: PageTransitionAnimation.scaleRotate);
+                  },
+                  child: Text(
+                    "Go to Second Screen ->",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.deepOrange,
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      useRootNavigator: true,
+                      builder: (context) => Center(
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: Colors.blue,
+                          child: Text(
+                            "Exit",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Push bottom sheet on TOP of Nav Bar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.deepOrange,
+                  onPressed: () {
+                    showModalBottomSheet(
+                      context: context,
+                      backgroundColor: Colors.white,
+                      useRootNavigator: false,
+                      builder: (context) => Center(
+                        child: RaisedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          color: Colors.blue,
+                          child: Text(
+                            "Exit",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "Push bottom sheet BEHIND the Nav Bar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.lime,
+                  onPressed: () {
+                    pushDynamicScreen(context, screen: SampleModalScreen(), withNavBar: true);
+                  },
+                  child: Text(
+                    "Push Dynamic/Modal Screen",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.purpleAccent,
+                  onPressed: () {
+                    this.onScreenHideButtonPressed();
+                  },
+                  child: Text(
+                    this.hideStatus ? "Unhide Navigation Bar" : "Hide Navigation Bar",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+              Center(
+                child: RaisedButton(
+                  color: Colors.red,
+                  onPressed: () {
+                    Navigator.of(this.menuScreenContext).pop();
+                  },
+                  child: Text(
+                    "<- Main Menu",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
 }
 
-class HomeScreen2 extends StatelessWidget {
-  const HomeScreen2({Key key}) : super(key: key);
+class MainScreen2 extends StatelessWidget {
+  const MainScreen2({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +161,7 @@ class HomeScreen2 extends StatelessWidget {
               RaisedButton(
                 color: Colors.indigo,
                 onPressed: () {
-                  pushNewScreen(context, screen: HomeScreen3());
+                  pushNewScreen(context, screen: MainScreen3());
                 },
                 child: Text(
                   "Go to Third Screen",
@@ -91,8 +186,8 @@ class HomeScreen2 extends StatelessWidget {
   }
 }
 
-class HomeScreen3 extends StatelessWidget {
-  const HomeScreen3({Key key}) : super(key: key);
+class MainScreen3 extends StatelessWidget {
+  const MainScreen3({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,25 +207,6 @@ class HomeScreen3 extends StatelessWidget {
               "Go Back to Second Screen",
               style: TextStyle(color: Colors.white),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({Key key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black12,
-      body: Container(
-        child: Center(
-          child: Text(
-            "This is Settings Screen",
-            style: TextStyle(color: Colors.white),
           ),
         ),
       ),

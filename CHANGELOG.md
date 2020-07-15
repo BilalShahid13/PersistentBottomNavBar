@@ -21,10 +21,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to use custom behavior on tapping of a navigation bar's tab/item through `onPressed` callback method in the `PersistentBottomNavBarItem`.
 - Minor new features, bug fixes and stability improvements.
 
-## [1.5.6] - 2020-07-15
-
-- Test run.
-
 ## [1.5.5] - 2020-05-11
 
 - Added property `bottomScreenPadding` to control a screen's bottom padding.
