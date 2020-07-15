@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Ability to turn off state management.
 - Screen transition animation added. Can be controlled with the property `screenTransitionAnimation`.
 - Ability to use custom behavior on tapping of a navigation bar's tab/item through `onPressed` callback method in the `PersistentBottomNavBarItem`.
+- Removed `platformSpecific` property from Navigator functions to make it compatible with Flutter-Web.
 - Minor new features, bug fixes and stability improvements.
 
 ## [1.5.5] - 2020-05-11

@@ -157,7 +157,6 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
     pushNewScreen(
         context,
         screen: MainScreen(),
-        platformSpecific: false, // OPTIONAL VALUE. False by default, which means the bottom nav bar will persist
         withNavBar: true, // OPTIONAL VALUE. True by default.
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
     );
@@ -170,7 +169,6 @@ If `platform specific` is enabled while pushing a new screen, on `Android` it wi
         context,
         settings: RouteSettings(name: MainScreen.routeName),
         screen: MainScreen(),
-        platformSpecific: false,
         withNavBar: true,
         pageTransitionAnimation: PageTransitionAnimation.cupertino,
     );
@@ -184,7 +182,6 @@ If you are pushing a new `modal` screen, use the following function:
     pushDynamicScreen(
         context,
         screen: HomeModalScreen(),
-        platformSpecific: false,
         withNavBar: true,
     );
 
