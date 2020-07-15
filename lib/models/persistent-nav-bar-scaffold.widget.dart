@@ -51,6 +51,7 @@ class PersistentTabScaffold extends StatefulWidget {
     this.screenTransitionAnimation,
     this.hideNavigationBarWhenKeyboardShows,
     this.itemCount,
+    this.animatePadding = false,
   })  : assert(tabBar != null),
         assert(tabBuilder != null),
         assert(
@@ -78,6 +79,8 @@ class PersistentTabScaffold extends StatefulWidget {
   final ScreenTransitionAnimation screenTransitionAnimation;
 
   final bool hideNavigationBarWhenKeyboardShows;
+
+  final bool animatePadding;
 
   @override
   _PersistentTabScaffoldState createState() => _PersistentTabScaffoldState();
@@ -153,9 +156,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     double contentPadding = 0.0;
 
     if (widget.resizeToAvoidBottomInset) {
-      // Remove the view inset and add it back as a padding in the inner content.
       newMediaQuery = newMediaQuery.removeViewInsets(removeBottom: true);
-      //contentPadding = EdgeInsets.only(bottom: existingMediaQuery.viewInsets.bottom);
     }
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
@@ -194,12 +195,10 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
         data: newMediaQuery,
         child: AnimatedContainer(
           duration: Duration(
-              milliseconds: !widget.tabBar.opaque(_selectedIndex) ||
-                      (widget.resizeToAvoidBottomInset &&
-                          MediaQuery.of(context).viewInsets.bottom > 0 &&
-                          widget.hideNavigationBarWhenKeyboardShows)
-                  ? 0
-                  : widget.tabBar.hideNavigationBar ? 200 : 400),
+              milliseconds:
+                  widget.animatePadding || widget.tabBar.hideNavigationBar
+                      ? widget.tabBar.hideNavigationBar ? 200 : 400
+                      : 0),
           curve:
               widget.tabBar.hideNavigationBar ? Curves.linear : Curves.easeIn,
           color: widget.tabBar.decoration.colorBehindNavBar,

@@ -42,7 +42,6 @@ NOTE: Those migrating from **pre 2.0.0** version should check the latest Readme 
 
 - Highly customizable `persistent` bottom navigation bar.
 - Ability to push new screens with or without bottom navigation bar.
-- Includes platform specific behavior as an option (specify it in the two navigator functions).
 - 20 styles for the bottom navigation bar.
 - Includes functions for pushing screen with or without the bottom navigation bar i.e. pushNewScreen() and pushNewScreenWithRouteSettings().
 - Based on flutter's Cupertino(iOS) bottom navigation bar.
@@ -148,9 +147,9 @@ class MyApp extends StatelessWidget {
 
 ## Navigator Functions
 
-To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. Additionally, `platform specific` behavior can be enabled or disabled from here (`disabled` by default).
+To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. You can use your own logic to implement `platform-specific` behavior. One of the solutions could be to use the property `withNavBar` and toggle it according to the Platform.
 
-If `platform specific` is enabled while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is the default behavior specified by each platform.
+In `platform-specific` behavior, while pushing a new screen, on `Android` it will push the screen WITHOUT the bottom navigation bar but on `iOS` it will persist the bottom navigation bar. This is the default behavior specified by each platform.
 
 ```dart
 

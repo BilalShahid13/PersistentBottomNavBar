@@ -353,6 +353,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           hideNavigationBarWhenKeyboardShows:
               widget.hideNavigationBarWhenKeyboardShows,
           resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
+          animatePadding: _isAnimating || _isCompleted,
           tabBar: PersistentBottomNavBar(
             items: widget.items,
             backgroundColor: widget.backgroundColor,
@@ -421,8 +422,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               left: false,
               bottom: (widget.items != null &&
                           widget.items[_controller.index].opacity < 1.0) ||
-                      (widget.hideNavigationBar != null &&
-                          (_isAnimating || _isCompleted))
+                      (widget.hideNavigationBar != null && _isCompleted)
                   ? false
                   : widget.confineInSafeArea ?? false,
               child: _buildScreen(index),
