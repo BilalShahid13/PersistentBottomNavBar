@@ -119,7 +119,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       stateManagement: true,
       hideNavigationBarWhenKeyboardShows: true,
       hideNavigationBar: _hideNavBar,
-      decoration: NavBarDecoration(colorBehindNavBar: Colors.indigo, borderRadius: BorderRadius.circular(20.0)),
+      decoration: NavBarDecoration(
+          colorBehindNavBar: Colors.indigo,
+          borderRadius: BorderRadius.circular(20.0)),
       popAllScreensOnTapOfSelectedTab: true,
       itemAnimationProperties: ItemAnimationProperties(
         duration: Duration(milliseconds: 400),
@@ -130,7 +132,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style12, // Choose the nav bar style with this property
+      navBarStyle:
+          NavBarStyle.style12, // Choose the nav bar style with this property
     );
   }
 }

@@ -7,7 +7,12 @@ class MainScreen extends StatelessWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
-  const MainScreen({Key key, this.menuScreenContext, this.onScreenHideButtonPressed, this.hideStatus = false}) : super(key: key);
+  const MainScreen(
+      {Key key,
+      this.menuScreenContext,
+      this.onScreenHideButtonPressed,
+      this.hideStatus = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,8 @@ class MainScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 30.0, vertical: 20.0),
                 child: TextField(
                   decoration: InputDecoration(hintText: "Test Text Field"),
                 ),
@@ -35,7 +41,10 @@ class MainScreen extends StatelessWidget {
                   color: Colors.blue,
                   onPressed: () {
                     pushNewScreenWithRouteSettings(context,
-                        settings: RouteSettings(name: '/home'), screen: MainScreen2(), pageTransitionAnimation: PageTransitionAnimation.scaleRotate);
+                        settings: RouteSettings(name: '/home'),
+                        screen: MainScreen2(),
+                        pageTransitionAnimation:
+                            PageTransitionAnimation.scaleRotate);
                   },
                   child: Text(
                     "Go to Second Screen ->",
@@ -103,7 +112,8 @@ class MainScreen extends StatelessWidget {
                 child: RaisedButton(
                   color: Colors.lime,
                   onPressed: () {
-                    pushDynamicScreen(context, screen: SampleModalScreen(), withNavBar: true);
+                    pushDynamicScreen(context,
+                        screen: SampleModalScreen(), withNavBar: true);
                   },
                   child: Text(
                     "Push Dynamic/Modal Screen",
@@ -118,7 +128,9 @@ class MainScreen extends StatelessWidget {
                     this.onScreenHideButtonPressed();
                   },
                   child: Text(
-                    this.hideStatus ? "Unhide Navigation Bar" : "Hide Navigation Bar",
+                    this.hideStatus
+                        ? "Unhide Navigation Bar"
+                        : "Hide Navigation Bar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),
