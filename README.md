@@ -20,9 +20,9 @@ NOTE: Those migrating from **pre 2.0.0** version should check the latest Readme 
 | ------------- | ------------- |
 | ![style1](gifs/style-1.gif)  | ![style10](gifs/style-9.gif)  |
 
-| Style7  | Style9 |
+| Style7  | Style10 |
 | ------------- | ------------- |
-| ![style3](gifs/style-7.gif)  | ![style5](gifs/style-9.gif)  |
+| ![style3](gifs/style-7.gif)  | ![style5](gifs/style-10.gif)  |
 
 | Style12  | Style13 |
 | ------------- | ------------- |
