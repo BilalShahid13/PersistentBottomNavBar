@@ -165,16 +165,20 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
         widget.tabBar.decoration.borderRadius != BorderRadius.zero) {
       final double bottomPadding = widget.bottomScreenMargin ??
           widget.tabBar.navBarHeight -
-              min(
-                  widget.tabBar.navBarHeight,
-                  max(
-                          widget.tabBar.decoration.borderRadius.topRight.y ??
-                              0.0,
-                          widget.tabBar.decoration.borderRadius.topLeft.y ??
-                              0.0) +
-                      (widget.tabBar.decoration?.border != null
-                          ? widget.tabBar.decoration.border.dimensions.vertical
-                          : 0.0));
+              (widget.tabBar.decoration.borderRadius != null
+                  ? min(
+                      widget.tabBar.navBarHeight,
+                      max(
+                              widget.tabBar.decoration.borderRadius.topRight
+                                      .y ??
+                                  0.0,
+                              widget.tabBar.decoration.borderRadius.topLeft.y ??
+                                  0.0) +
+                          (widget.tabBar.decoration?.border != null
+                              ? widget
+                                  .tabBar.decoration.border.dimensions.vertical
+                              : 0.0))
+                  : 0.0);
       contentPadding = bottomPadding;
     } else {
       if (widget.tabBar != null &&

@@ -74,7 +74,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                 opacity: items[selectedIndex].opacity,
               ),
               child: ClipRRect(
-                borderRadius: this.decoration.borderRadius,
+                borderRadius: this.decoration.borderRadius ?? BorderRadius.zero,
                 child: BackdropFilter(
                   filter: this.items[this.selectedIndex].filter ??
                       ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),

@@ -45,7 +45,7 @@ class NavBarDecoration {
   const NavBarDecoration({
     this.border,
     this.gradient,
-    this.borderRadius = BorderRadius.zero,
+    this.borderRadius,
     this.colorBehindNavBar = CupertinoColors.black,
     this.boxShadow,
     this.adjustScreenBottomPaddingOnCurve = true,

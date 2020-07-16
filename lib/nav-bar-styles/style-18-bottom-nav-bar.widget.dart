@@ -157,7 +157,7 @@ class BottomNavStyle18 extends StatelessWidget {
   Widget build(BuildContext context) {
     final midIndex = (this.items.length / 2).floor();
     return ClipRRect(
-      borderRadius: this.decoration.borderRadius,
+      borderRadius: this.decoration.borderRadius ?? BorderRadius.zero,
       child: Stack(
         children: <Widget>[
           Container(
