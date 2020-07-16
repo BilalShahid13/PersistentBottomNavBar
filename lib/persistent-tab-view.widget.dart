@@ -163,10 +163,9 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       _controller = widget.controller;
     }
     _previousIndex = _controller.index;
-    if (widget.hideNavigationBar != null) {
-      _isCompleted = false;
-      _isAnimating = false;
-    }
+
+    _isCompleted = false;
+    _isAnimating = false;
   }
 
   @override
@@ -353,7 +352,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           hideNavigationBarWhenKeyboardShows:
               widget.hideNavigationBarWhenKeyboardShows,
           resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-          animatePadding: _isAnimating ?? false || _isCompleted ?? false,
+          animatePadding: _isAnimating || _isCompleted,
           tabBar: PersistentBottomNavBar(
             items: widget.items,
             backgroundColor: widget.backgroundColor,
