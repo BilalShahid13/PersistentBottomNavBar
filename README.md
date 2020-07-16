@@ -89,15 +89,15 @@ class MyApp extends StatelessWidget {
       confineInSafeArea: true,
       backgroundColor: Colors.white,
       handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
+      resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears.
       stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
+      hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument.
       decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
       ),
       popAllScreensOnTapOfSelectedTab: true,
-      itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties
+      itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,
       ),
@@ -106,7 +106,7 @@ class MyApp extends StatelessWidget {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property
+      navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property.
     );
   }
 }
