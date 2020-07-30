@@ -9,6 +9,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.backgroundColor,
       this.items,
       this.navBarHeight,
+      this.margin,
       this.onItemSelected,
       this.decoration,
       this.padding,
@@ -30,6 +31,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
+  final EdgeInsets margin;
   final NavBarDecoration decoration;
   final NavBarStyle navBarStyle;
   final NavBarPadding padding;
@@ -42,45 +44,16 @@ class PersistentBottomNavBar extends StatelessWidget {
   final bool hideNavigationBar;
   final Function(bool, bool) onAnimationComplete;
 
-  Widget _navBarWidget() => this.navBarStyle == NavBarStyle.custom
-      ? Container(
-          color: this.backgroundColor,
-          child: SafeArea(top: false, child: this.customNavBarWidget),
-        )
-      : this.navBarStyle == NavBarStyle.style15 ||
-              this.navBarStyle == NavBarStyle.style16
-          ? Container(
-              decoration: getNavBarDecoration(
-                decoration: this.decoration,
+  Widget _navBarWidget() => Padding(
+        padding: margin,
+        child: this.navBarStyle == NavBarStyle.custom
+            ? Container(
                 color: this.backgroundColor,
-                opacity: items[selectedIndex].opacity,
-              ),
-              child: SafeArea(
-                top: false,
-                right: false,
-                left: false,
-                bottom: this.navBarHeight == 0.0 ||
-                        (this.hideNavigationBar ?? false)
-                    ? false
-                    : confineToSafeArea ?? true,
-                child: getNavBarStyle(),
-              ),
-            )
-          : Container(
-              decoration: getNavBarDecoration(
-                decoration: this.decoration,
-                showBorder: false,
-                color: this.backgroundColor,
-                opacity: items[selectedIndex].opacity,
-              ),
-              child: ClipRRect(
-                borderRadius: this.decoration.borderRadius ?? BorderRadius.zero,
-                child: BackdropFilter(
-                  filter: this.items[this.selectedIndex].filter ??
-                      ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
-                  child: Container(
+                child: SafeArea(top: false, child: this.customNavBarWidget),
+              )
+            : this.navBarStyle == NavBarStyle.style15 || this.navBarStyle == NavBarStyle.style16
+                ? Container(
                     decoration: getNavBarDecoration(
-                      showOpacity: false,
                       decoration: this.decoration,
                       color: this.backgroundColor,
                       opacity: items[selectedIndex].opacity,
@@ -89,16 +62,45 @@ class PersistentBottomNavBar extends StatelessWidget {
                       top: false,
                       right: false,
                       left: false,
-                      bottom: this.navBarHeight == 0.0 ||
-                              (this.hideNavigationBar ?? false)
+                      bottom: this.navBarHeight == 0.0 || (this.hideNavigationBar ?? false)
                           ? false
                           : confineToSafeArea ?? true,
                       child: getNavBarStyle(),
                     ),
+                  )
+                : Container(
+                    decoration: getNavBarDecoration(
+                      decoration: this.decoration,
+                      showBorder: false,
+                      color: this.backgroundColor,
+                      opacity: items[selectedIndex].opacity,
+                    ),
+                    child: ClipRRect(
+                      borderRadius: this.decoration.borderRadius ?? BorderRadius.zero,
+                      child: BackdropFilter(
+                        filter: this.items[this.selectedIndex].filter ??
+                            ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
+                        child: Container(
+                          decoration: getNavBarDecoration(
+                            showOpacity: false,
+                            decoration: this.decoration,
+                            color: this.backgroundColor,
+                            opacity: items[selectedIndex].opacity,
+                          ),
+                          child: SafeArea(
+                            top: false,
+                            right: false,
+                            left: false,
+                            bottom: this.navBarHeight == 0.0 || (this.hideNavigationBar ?? false)
+                                ? false
+                                : confineToSafeArea ?? true,
+                            child: getNavBarStyle(),
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            );
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +125,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       List<PersistentBottomNavBarItem> items,
       ValueChanged<int> onItemSelected,
       double navBarHeight,
+      EdgeInsets margin,
       NavBarStyle navBarStyle,
       double horizontalPadding,
       NeumorphicProperties neumorphicProperties,
@@ -142,12 +145,12 @@ class PersistentBottomNavBar extends StatelessWidget {
         confineToSafeArea: confineToSafeArea ?? this.confineToSafeArea,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         items: items ?? this.items,
-        itemAnimationProperties:
-            itemAnimationProperties ?? this.itemAnimationProperties,
-        popAllScreensForTheSelectedTab: popAllScreensForTheSelectedTab ??
-            this.popAllScreensForTheSelectedTab,
+        itemAnimationProperties: itemAnimationProperties ?? this.itemAnimationProperties,
+        popAllScreensForTheSelectedTab:
+            popAllScreensForTheSelectedTab ?? this.popAllScreensForTheSelectedTab,
         onItemSelected: onItemSelected ?? this.onItemSelected,
         navBarHeight: navBarHeight ?? this.navBarHeight,
+        margin: margin ?? this.margin,
         neumorphicProperties: neumorphicProperties ?? this.neumorphicProperties,
         navBarStyle: navBarStyle ?? this.navBarStyle,
         padding: padding ?? this.padding,
