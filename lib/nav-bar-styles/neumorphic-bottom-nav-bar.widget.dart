@@ -13,7 +13,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   final NavBarPadding padding;
   final CurveType curveType;
   final NeumorphicProperties neumorphicProperties;
-  final Function(int) popAllScreensForTheSelectedTab;
+  final Function(int) popActionScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final ItemAnimationProperties itemAnimationProperties;
 
@@ -31,7 +31,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
       @required this.items,
       this.onItemSelected,
       this.padding,
-      this.popAllScreensForTheSelectedTab,
+      this.popActionScreensForTheSelectedTab,
       this.curveType = CurveType.concave,
       this.neumorphicProperties = const NeumorphicProperties()});
 
@@ -159,7 +159,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
                 } else {
                   if (this.popScreensOnTapOfSelectedTab &&
                       this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
+                    this.popActionScreensForTheSelectedTab(index);
                   }
                   this.onItemSelected(index);
                 }

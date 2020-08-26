@@ -124,7 +124,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
       decoration: NavBarDecoration(
           colorBehindNavBar: Colors.indigo,
           borderRadius: BorderRadius.circular(20.0)),
-      popAllScreensOnTapOfSelectedTab: true,
+      popActionScreensOnTapOfSelectedTab: popActionScreens.all,
       itemAnimationProperties: ItemAnimationProperties(
         duration: Duration(milliseconds: 400),
         curve: Curves.ease,

@@ -10,7 +10,7 @@ class BottomNavStyle1 extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
+  final Function(int) popActionScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final ItemAnimationProperties itemAnimationProperties;
 
@@ -27,7 +27,7 @@ class BottomNavStyle1 extends StatelessWidget {
     @required this.items,
     this.onItemSelected,
     this.padding,
-    this.popAllScreensForTheSelectedTab,
+    this.popActionScreensForTheSelectedTab,
   });
 
   Widget _buildItem(
@@ -128,7 +128,7 @@ class BottomNavStyle1 extends StatelessWidget {
                   } else {
                     if (this.popScreensOnTapOfSelectedTab &&
                         this.previousIndex == index) {
-                      this.popAllScreensForTheSelectedTab(index);
+                      this.popActionScreensForTheSelectedTab(index);
                     }
                     this.onItemSelected(index);
                   }

@@ -15,7 +15,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       this.confineToSafeArea,
       this.customNavBarWidget,
       this.popScreensOnTapOfSelectedTab,
-      this.popAllScreensForTheSelectedTab,
+      this.popActionScreensForTheSelectedTab,
       this.itemAnimationProperties,
       this.hideNavigationBar,
       this.onAnimationComplete,
@@ -35,7 +35,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final NavBarPadding padding;
   final NeumorphicProperties neumorphicProperties;
   final Widget customNavBarWidget;
-  final Function(int) popAllScreensForTheSelectedTab;
+  final Function(int) popActionScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final bool confineToSafeArea;
   final ItemAnimationProperties itemAnimationProperties;
@@ -127,7 +127,7 @@ class PersistentBottomNavBar extends StatelessWidget {
       double horizontalPadding,
       NeumorphicProperties neumorphicProperties,
       Widget customNavBarWidget,
-      Function(int) popAllScreensForTheSelectedTab,
+      Function(int) popActionScreensForTheSelectedTab,
       bool popScreensOnTapOfSelectedTab,
       NavBarDecoration decoration,
       bool confineToSafeArea,
@@ -144,8 +144,8 @@ class PersistentBottomNavBar extends StatelessWidget {
         items: items ?? this.items,
         itemAnimationProperties:
             itemAnimationProperties ?? this.itemAnimationProperties,
-        popAllScreensForTheSelectedTab: popAllScreensForTheSelectedTab ??
-            this.popAllScreensForTheSelectedTab,
+        popActionScreensForTheSelectedTab: popActionScreensForTheSelectedTab ??
+            this.popActionScreensForTheSelectedTab,
         onItemSelected: onItemSelected ?? this.onItemSelected,
         navBarHeight: navBarHeight ?? this.navBarHeight,
         neumorphicProperties: neumorphicProperties ?? this.neumorphicProperties,
@@ -177,7 +177,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -191,7 +192,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -205,7 +207,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -219,7 +222,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -233,7 +237,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -247,7 +252,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -261,7 +267,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -275,7 +282,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -289,7 +297,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -303,7 +312,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );
@@ -317,7 +327,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           decoration: this.decoration,
           padding: this.padding,
@@ -332,7 +343,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -347,7 +359,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -362,7 +375,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -377,7 +391,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -392,7 +407,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -407,7 +423,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -422,7 +439,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           decoration: this.decoration,
@@ -437,7 +455,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
           neumorphicProperties: this.neumorphicProperties,
@@ -452,7 +471,8 @@ class PersistentBottomNavBar extends StatelessWidget {
           selectedIndex: this.selectedIndex,
           itemAnimationProperties: itemAnimationProperties,
           previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
+          popActionScreensForTheSelectedTab:
+              this.popActionScreensForTheSelectedTab,
           popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
           padding: this.padding,
         );

@@ -11,7 +11,7 @@ class BottomNavSimple extends StatelessWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
+  final Function(int) popActionScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final ItemAnimationProperties itemAnimationProperties;
 
@@ -25,7 +25,7 @@ class BottomNavSimple extends StatelessWidget {
     this.itemAnimationProperties,
     this.animationDuration = const Duration(milliseconds: 1000),
     this.navBarHeight = 60.0,
-    this.popAllScreensForTheSelectedTab,
+    this.popActionScreensForTheSelectedTab,
     this.popScreensOnTapOfSelectedTab,
     @required this.items,
     this.onItemSelected,
@@ -119,7 +119,7 @@ class BottomNavSimple extends StatelessWidget {
                 } else {
                   if (this.popScreensOnTapOfSelectedTab &&
                       this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
+                    this.popActionScreensForTheSelectedTab(index);
                   }
                   this.onItemSelected(index);
                 }

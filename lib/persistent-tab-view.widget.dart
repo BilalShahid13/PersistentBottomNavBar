@@ -25,7 +25,7 @@ class PersistentTabView extends StatefulWidget {
       this.resizeToAvoidBottomInset = false,
       this.bottomScreenMargin,
       this.onWillPop,
-      this.popAllScreensOnTapOfSelectedTab = true,
+      this.popActionScreensOnTapOfSelectedTab = popActionScreens.all,
       this.confineInSafeArea = true,
       this.stateManagement = true,
       this.hideNavigationBarWhenKeyboardShows = true,
@@ -119,7 +119,7 @@ class PersistentTabView extends StatefulWidget {
   final double bottomScreenMargin;
 
   ///If an already selected tab is pressed/tapped again, all the screens pushed on that particular tab will pop until the first screen in the stack. Defaults to `true`.
-  final bool popAllScreensOnTapOfSelectedTab;
+  final popActionScreens popActionScreensOnTapOfSelectedTab;
 
   final bool resizeToAvoidBottomInset;
 
@@ -367,7 +367,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             hideNavigationBar: widget.hideNavigationBar,
             navBarStyle: widget.navBarStyle,
             popScreensOnTapOfSelectedTab:
-                widget.popAllScreensOnTapOfSelectedTab ?? true,
+                widget.popActionScreensOnTapOfSelectedTab ??
+                    popActionScreens.all,
             neumorphicProperties: widget.neumorphicProperties,
             customNavBarWidget: widget.customWidget,
             onAnimationComplete: (isAnimating, isCompleted) {
@@ -382,8 +383,9 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                 });
               }
             },
-            popAllScreensForTheSelectedTab: (index) {
-              if (widget.popAllScreensOnTapOfSelectedTab) {
+            popActionScreensForTheSelectedTab: (index) async {
+              if (widget.popActionScreensOnTapOfSelectedTab !=
+                  popActionScreens.none) {
                 if (widget.items[_controller.index]
                             .onSelectedTabPressWhenNoScreensPushed !=
                         null &&
@@ -391,10 +393,23 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   widget.items[_controller.index]
                       .onSelectedTabPressWhenNoScreensPushed();
                 }
-                Navigator.popUntil(
-                    _contextList[_controller.index],
-                    ModalRoute.withName(
-                        '/9f580fc5-c252-45d0-af25-9429992db112'));
+
+                switch (widget.popActionScreensOnTapOfSelectedTab) {
+                  case popActionScreens.once:
+                    if (!await Navigator.maybePop(context)) {
+                      Navigator.popUntil(
+                          _contextList[_controller.index],
+                          ModalRoute.withName(
+                              '/9f580fc5-c252-45d0-af25-9429992db112'));
+                    }
+                    break;
+                  case popActionScreens.all:
+                    Navigator.popUntil(
+                        _contextList[_controller.index],
+                        ModalRoute.withName(
+                            '/9f580fc5-c252-45d0-af25-9429992db112'));
+                    break;
+                }
               }
             },
             onItemSelected: widget.onItemSelected != null

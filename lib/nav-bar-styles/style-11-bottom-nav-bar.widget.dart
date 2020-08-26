@@ -10,7 +10,7 @@ class BottomNavStyle11 extends StatefulWidget {
   final ValueChanged<int> onItemSelected;
   final double navBarHeight;
   final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
+  final Function(int) popActionScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
   final ItemAnimationProperties itemAnimationProperties;
   final NavBarDecoration decoration;
@@ -29,7 +29,7 @@ class BottomNavStyle11 extends StatefulWidget {
     this.onItemSelected,
     this.decoration,
     this.padding,
-    this.popAllScreensForTheSelectedTab,
+    this.popActionScreensForTheSelectedTab,
   });
 
   @override
@@ -190,7 +190,7 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
                     _animationControllerList[_lastSelectedIndex].reverse();
                   } else if (widget.popScreensOnTapOfSelectedTab &&
                       widget.previousIndex == index) {
-                    widget.popAllScreensForTheSelectedTab(index);
+                    widget.popActionScreensForTheSelectedTab(index);
                   }
                   widget.onItemSelected(index);
                 }
