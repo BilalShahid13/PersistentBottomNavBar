@@ -12,6 +12,7 @@ class BottomNavStyle3 extends StatelessWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   BottomNavStyle3({
@@ -26,6 +27,7 @@ class BottomNavStyle3 extends StatelessWidget {
     this.navBarHeight = 0.0,
     @required this.items,
     this.popAllScreensForTheSelectedTab,
+    this.popActionScreens,
     this.onItemSelected,
     this.padding,
   });

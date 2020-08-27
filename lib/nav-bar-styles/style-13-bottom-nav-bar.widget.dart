@@ -13,6 +13,7 @@ class BottomNavStyle13 extends StatefulWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
   final NavBarDecoration decoration;
 
@@ -25,6 +26,7 @@ class BottomNavStyle13 extends StatefulWidget {
     this.backgroundColor,
     this.itemAnimationProperties,
     this.popScreensOnTapOfSelectedTab,
+    this.popActionScreens,
     this.decoration,
     this.animationDuration = const Duration(milliseconds: 1000),
     this.navBarHeight = 0.0,

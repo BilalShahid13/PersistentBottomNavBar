@@ -12,6 +12,7 @@ class BottomNavStyle8 extends StatefulWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   BottomNavStyle8({
@@ -27,6 +28,7 @@ class BottomNavStyle8 extends StatefulWidget {
     this.onItemSelected,
     this.popAllScreensForTheSelectedTab,
     this.popScreensOnTapOfSelectedTab,
+    this.popActionScreens,
     this.padding,
   });
 
