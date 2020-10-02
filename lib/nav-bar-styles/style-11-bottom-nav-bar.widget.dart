@@ -12,7 +12,6 @@ class BottomNavStyle11 extends StatefulWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
-  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
   final NavBarDecoration decoration;
 
@@ -25,7 +24,6 @@ class BottomNavStyle11 extends StatefulWidget {
     this.backgroundColor,
     this.itemAnimationProperties,
     this.popScreensOnTapOfSelectedTab,
-    this.popActionScreens,
     this.navBarHeight = 0.0,
     @required this.items,
     this.onItemSelected,
@@ -112,14 +110,23 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
                                 child: FittedBox(
                                   child: Text(
                                     item.title,
-                                    style: TextStyle(
-                                        color: isSelected
-                                            ? (item.activeContentColor == null
-                                                ? item.activeColor
-                                                : item.activeContentColor)
-                                            : item.inactiveColor,
-                                        fontWeight: FontWeight.w400,
-                                        fontSize: item.titleFontSize),
+                                    style: item.titleStyle != null
+                                        ? (item.titleStyle.apply(
+                                            color: isSelected
+                                                ? (item.activeContentColor ==
+                                                        null
+                                                    ? item.activeColor
+                                                    : item.activeContentColor)
+                                                : item.inactiveColor))
+                                        : TextStyle(
+                                            color: isSelected
+                                                ? (item.activeContentColor ==
+                                                        null
+                                                    ? item.activeColor
+                                                    : item.activeContentColor)
+                                                : item.inactiveColor,
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: item.titleFontSize),
                                   ),
                                 ),
                               ),

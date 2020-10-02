@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
         colorBehindNavBar: Colors.white,
       ),
       popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: popActionScreensType.all;
+      popActionScreens: PopActionScreensType.all;
       itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,

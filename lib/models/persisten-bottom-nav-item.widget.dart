@@ -1,7 +1,5 @@
 part of persistent_bottom_nav_bar;
 
-enum popActionScreensType { once, all }
-
 ///An item widget for the `PersistentTabView`.
 class PersistentBottomNavBarItem {
   ///Icon for the bar item.
@@ -49,6 +47,8 @@ class PersistentBottomNavBarItem {
   ///By default -> `ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0)`.
   final ImageFilter filter;
 
+  final TextStyle titleStyle;
+
   PersistentBottomNavBarItem(
       {@required this.icon,
       this.title,
@@ -59,6 +59,7 @@ class PersistentBottomNavBarItem {
       this.opacity = 1.0,
       this.inactiveColor,
       this.filter,
+      this.titleStyle,
       this.onSelectedTabPressWhenNoScreensPushed,
       this.onPressed}) {
     assert(icon != null);

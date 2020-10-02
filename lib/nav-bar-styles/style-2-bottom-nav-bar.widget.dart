@@ -12,7 +12,6 @@ class BottomNavStyle2 extends StatelessWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
-  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   BottomNavStyle2({
@@ -26,7 +25,6 @@ class BottomNavStyle2 extends StatelessWidget {
     this.navBarHeight = 0.0,
     this.popScreensOnTapOfSelectedTab,
     this.popAllScreensForTheSelectedTab,
-    this.popActionScreens,
     @required this.items,
     this.onItemSelected,
     this.padding,
@@ -69,12 +67,19 @@ class BottomNavStyle2 extends StatelessWidget {
                             child: FittedBox(
                                 child: Text(
                               isSelected ? item.title : " ",
-                              style: TextStyle(
-                                  color: (item.activeContentColor == null
-                                      ? item.activeColor
-                                      : item.activeContentColor),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: item.titleFontSize),
+                              style: item.titleStyle != null
+                                  ? (item.titleStyle.apply(
+                                      color: isSelected
+                                          ? (item.activeContentColor == null
+                                              ? item.activeColor
+                                              : item.activeContentColor)
+                                          : item.inactiveColor))
+                                  : TextStyle(
+                                      color: (item.activeContentColor == null
+                                          ? item.activeColor
+                                          : item.activeContentColor),
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: item.titleFontSize),
                             )),
                           ),
                         )

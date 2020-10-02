@@ -24,6 +24,8 @@ enum NavBarStyle {
   simple,
 }
 
+enum PopActionScreensType { once, all }
+
 class NavBarDecoration {
   ///Defines the curve radius of the corners of the NavBar.
   final BorderRadius borderRadius;

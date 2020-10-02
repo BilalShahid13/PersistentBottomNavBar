@@ -12,7 +12,6 @@ class BottomNavStyle15 extends StatelessWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
-  final popActionScreensType popActionScreens;
   final NavBarDecoration decoration;
   final ItemAnimationProperties itemAnimationProperties;
 
@@ -27,7 +26,6 @@ class BottomNavStyle15 extends StatelessWidget {
     this.navBarHeight = 60.0,
     this.popAllScreensForTheSelectedTab,
     this.popScreensOnTapOfSelectedTab,
-    this.popActionScreens,
     @required this.items,
     this.onItemSelected,
     this.padding,
@@ -80,14 +78,21 @@ class BottomNavStyle15 extends StatelessWidget {
                                 child: FittedBox(
                                     child: Text(
                                   item.title,
-                                  style: TextStyle(
-                                      color: isSelected
-                                          ? (item.activeContentColor == null
-                                              ? item.activeColor
-                                              : item.activeContentColor)
-                                          : item.inactiveColor,
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: item.titleFontSize),
+                                  style: item.titleStyle != null
+                                      ? (item.titleStyle.apply(
+                                          color: isSelected
+                                              ? (item.activeContentColor == null
+                                                  ? item.activeColor
+                                                  : item.activeContentColor)
+                                              : item.inactiveColor))
+                                      : TextStyle(
+                                          color: isSelected
+                                              ? (item.activeContentColor == null
+                                                  ? item.activeColor
+                                                  : item.activeContentColor)
+                                              : item.inactiveColor,
+                                          fontWeight: FontWeight.w400,
+                                          fontSize: item.titleFontSize),
                                 )),
                               ),
                             )
@@ -164,12 +169,19 @@ class BottomNavStyle15 extends StatelessWidget {
                             child: FittedBox(
                                 child: Text(
                               item.title,
-                              style: TextStyle(
-                                  color: isSelected
-                                      ? (item.activeColor)
-                                      : item.inactiveColor,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: item.titleFontSize),
+                              style: item.titleStyle != null
+                                  ? (item.titleStyle.apply(
+                                      color: isSelected
+                                          ? (item.activeContentColor == null
+                                              ? item.activeColor
+                                              : item.activeContentColor)
+                                          : item.inactiveColor))
+                                  : TextStyle(
+                                      color: isSelected
+                                          ? (item.activeColor)
+                                          : item.inactiveColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: item.titleFontSize),
                             )),
                           ),
                         ),

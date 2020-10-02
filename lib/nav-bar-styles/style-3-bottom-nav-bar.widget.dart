@@ -12,7 +12,6 @@ class BottomNavStyle3 extends StatelessWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
-  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   BottomNavStyle3({
@@ -27,7 +26,6 @@ class BottomNavStyle3 extends StatelessWidget {
     this.navBarHeight = 0.0,
     @required this.items,
     this.popAllScreensForTheSelectedTab,
-    this.popActionScreens,
     this.onItemSelected,
     this.padding,
   });
@@ -75,11 +73,18 @@ class BottomNavStyle3 extends StatelessWidget {
                             type: MaterialType.transparency,
                             child: DefaultTextStyle.merge(
                               style: TextStyle(
-                                  color: isSelected
-                                      ? (item.activeContentColor == null
-                                          ? item.activeColor
-                                          : item.activeContentColor)
-                                      : item.inactiveColor,
+                                  color: item.titleStyle != null
+                                      ? (item.titleStyle.apply(
+                                          color: isSelected
+                                              ? (item.activeContentColor == null
+                                                  ? item.activeColor
+                                                  : item.activeContentColor)
+                                              : item.inactiveColor))
+                                      : isSelected
+                                          ? (item.activeContentColor == null
+                                              ? item.activeColor
+                                              : item.activeContentColor)
+                                          : item.inactiveColor,
                                   fontWeight: FontWeight.w400,
                                   fontSize: item.titleFontSize),
                               child: FittedBox(child: Text(item.title)),

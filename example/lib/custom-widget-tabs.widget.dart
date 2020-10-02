@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import '../screens.dart';
-import 'custom-widget.dart';
+import 'main.dart';
+import 'screens.dart';
+
 
 class CustomWidgetExample extends StatefulWidget {
   final BuildContext menuScreenContext;
@@ -110,41 +111,54 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
 
   @override
   Widget build(BuildContext context) {
-    return PersistentTabView(
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true,
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true,
-      hideNavigationBar: _hideNavBar,
-      decoration: NavBarDecoration(
-          colorBehindNavBar: Colors.indigo,
-          borderRadius: BorderRadius.circular(20.0)),
-      popAllScreensOnTapOfSelectedTab: true,
-      itemAnimationProperties: ItemAnimationProperties(
-        duration: Duration(milliseconds: 400),
-        curve: Curves.ease,
+    return Scaffold(
+      appBar: AppBar(title: const Text('Navigation Bar Demo')),
+      drawer: Drawer(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('This is the Drawer'),
+            ],
+          ),
+        ),
       ),
-      screenTransitionAnimation: ScreenTransitionAnimation(
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+      body: PersistentTabView(
+        controller: _controller,
+        screens: _buildScreens(),
+        confineInSafeArea: true,
+        itemCount: 5,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        hideNavigationBar: _hideNavBar,
+        decoration: NavBarDecoration(
+            colorBehindNavBar: Colors.indigo,
+            borderRadius: BorderRadius.circular(20.0)),
+        popAllScreensOnTapOfSelectedTab: true,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Duration(milliseconds: 400),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        customWidget: CustomNavBarWidget(
+          items: _navBarsItems(),
+          onItemSelected: (index) {
+            setState(() {
+              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
+            });
+          },
+          selectedIndex: _controller.index,
+        ),
+        navBarStyle:
+            NavBarStyle.custom, // Choose the nav bar style with this property
       ),
-      customWidget: CustomNavBarWidget(
-        items: _navBarsItems(),
-        onItemSelected: (index) {
-          setState(() {
-            _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
-          });
-        },
-        selectedIndex: _controller.index,
-      ),
-      navBarStyle:
-          NavBarStyle.custom, // Choose the nav bar style with this property
     );
   }
 }

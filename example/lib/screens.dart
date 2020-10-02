@@ -21,9 +21,6 @@ class MainScreen extends StatelessWidget {
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Scaffold(
-          appBar: AppBar(
-            title: Text("First Screen"),
-          ),
           backgroundColor: Colors.indigo,
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -147,6 +144,7 @@ class MainScreen extends StatelessWidget {
                   ),
                 ),
               ),
+              SizedBox(height: 60.0,),
             ],
           ),
         ),
@@ -162,9 +160,6 @@ class MainScreen2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.teal,
-      appBar: AppBar(
-        title: Text("Second Screen"),
-      ),
       body: Container(
         child: Center(
           child: Column(
@@ -204,9 +199,6 @@ class MainScreen3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Third Screen"),
-      ),
       backgroundColor: Colors.deepOrangeAccent,
       body: Container(
         child: Center(

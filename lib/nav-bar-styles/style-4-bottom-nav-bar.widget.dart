@@ -12,7 +12,6 @@ class BottomNavStyle4 extends StatelessWidget {
   final NavBarPadding padding;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
-  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   BottomNavStyle4({
@@ -28,7 +27,6 @@ class BottomNavStyle4 extends StatelessWidget {
     @required this.items,
     this.onItemSelected,
     this.popAllScreensForTheSelectedTab,
-    this.popActionScreens,
     this.padding,
   });
 
@@ -73,14 +71,21 @@ class BottomNavStyle4 extends StatelessWidget {
                           child: Material(
                             type: MaterialType.transparency,
                             child: DefaultTextStyle.merge(
-                              style: TextStyle(
-                                  color: isSelected
-                                      ? (item.activeContentColor == null
-                                          ? item.activeColor
-                                          : item.activeContentColor)
-                                      : item.inactiveColor,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: item.titleFontSize),
+                              style: item.titleStyle != null
+                                  ? (item.titleStyle.apply(
+                                      color: isSelected
+                                          ? (item.activeContentColor == null
+                                              ? item.activeColor
+                                              : item.activeContentColor)
+                                          : item.inactiveColor))
+                                  : TextStyle(
+                                      color: isSelected
+                                          ? (item.activeContentColor == null
+                                              ? item.activeColor
+                                              : item.activeContentColor)
+                                          : item.inactiveColor,
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: item.titleFontSize),
                               child: FittedBox(
                                   child: Text(isSelected ? item.title : " ")),
                             ),

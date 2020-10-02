@@ -11,7 +11,7 @@ Future<T> pushNewScreen<T extends Object>(
   if (withNavBar == null) {
     withNavBar = true;
   }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(
+  return Navigator.of(context, rootNavigator: !withNavBar).push<T>(
       customPageRoute ??
           getPageRoute(pageTransitionAnimation, enterPage: screen));
 }
@@ -24,7 +24,7 @@ Future<T> pushDynamicScreen<T extends Object>(
   if (withNavBar == null) {
     withNavBar = true;
   }
-  return Navigator.of(context, rootNavigator: !withNavBar).push(screen);
+  return Navigator.of(context, rootNavigator: !withNavBar).push<T>(screen);
 }
 
 Future<T> pushNewScreenWithRouteSettings<T extends Object>(
@@ -40,7 +40,7 @@ Future<T> pushNewScreenWithRouteSettings<T extends Object>(
     withNavBar = true;
   }
 
-  return Navigator.of(context, rootNavigator: !withNavBar).push(
+  return Navigator.of(context, rootNavigator: !withNavBar).push<T>(
       customPageRoute ??
           getPageRoute(pageTransitionAnimation,
               enterPage: screen, settings: settings));

@@ -6,7 +6,7 @@ class ScreenTransitionAnimation {
   final Curve curve;
 
   const ScreenTransitionAnimation({
-    this.animateTabTransition = true,
+    this.animateTabTransition = false,
     this.duration = const Duration(milliseconds: 200),
     this.curve = Curves.ease,
   });

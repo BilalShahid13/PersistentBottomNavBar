@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
-import 'custom-widget-example/custom-widget-tabs.widget.dart';
-import 'provided-styles-example/provided-styles-tabs.widget.dart';
+import 'custom-widget-tabs.widget.dart';
+import 'screens.dart';
 
 void main() => runApp(MyApp());
 
@@ -65,3 +65,263 @@ class _MainMenuState extends State<MainMenu> {
     );
   }
 }
+
+// ----------------------------------------- Provided Style ----------------------------------------- //
+
+class ProvidedStylesExample extends StatefulWidget {
+  final BuildContext menuScreenContext;
+  ProvidedStylesExample({Key key, this.menuScreenContext}) : super(key: key);
+
+  @override
+  _ProvidedStylesExampleState createState() => _ProvidedStylesExampleState();
+}
+
+class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
+  PersistentTabController _controller;
+  bool _hideNavBar;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = PersistentTabController(initialIndex: 0);
+    _hideNavBar = false;
+  }
+
+  List<Widget> _buildScreens() {
+    return [
+      MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+      ),
+      MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+      ),
+      MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+      ),
+      MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+      ),
+      MainScreen(
+        menuScreenContext: widget.menuScreenContext,
+        hideStatus: _hideNavBar,
+        onScreenHideButtonPressed: () {
+          setState(() {
+            _hideNavBar = !_hideNavBar;
+          });
+        },
+      ),
+    ];
+  }
+
+  List<PersistentBottomNavBarItem> _navBarsItems() {
+    return [
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.home),
+        title: "Home",
+        activeColor: Colors.blue,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.search),
+        title: ("Search"),
+        activeColor: Colors.teal,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.add),
+        title: ("Add"),
+        activeColor: Colors.blueAccent,
+        inactiveColor: Colors.grey,
+        activeContentColor: Colors.white,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.message),
+        title: ("Messages"),
+        activeColor: Colors.deepOrange,
+        inactiveColor: Colors.grey,
+      ),
+      PersistentBottomNavBarItem(
+        icon: Icon(Icons.settings),
+        title: ("Settings"),
+        activeColor: Colors.indigo,
+        inactiveColor: Colors.grey,
+      ),
+    ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Navigation Bar Demo')),
+      drawer: Drawer(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Text('This is the Drawer'),
+            ],
+          ),
+        ),
+      ),
+      body: PersistentTabView(
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true,
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardShows: true,
+        hideNavigationBar: _hideNavBar,
+        margin: EdgeInsets.all(10.0),
+        popActionScreens: PopActionScreensType.once,
+        bottomScreenMargin: 0.0,
+        // onWillPop: () async {
+        //   await showDialog(
+        //     context: context,
+        //     useSafeArea: true,
+        //     builder: (context) => Container(
+        //       height: 50.0,
+        //       width: 50.0,
+        //       color: Colors.white,
+        //       child: RaisedButton(
+        //         child: Text("Close"),
+        //         onPressed: () {
+        //           Navigator.pop(context);
+        //         },
+        //       ),
+        //     ),
+        //   );
+        //   return false;
+        // },
+        decoration: NavBarDecoration(
+            colorBehindNavBar: Colors.indigo,
+            borderRadius: BorderRadius.circular(20.0)),
+        popAllScreensOnTapOfSelectedTab: true,
+        itemAnimationProperties: ItemAnimationProperties(
+          duration: Duration(milliseconds: 400),
+          curve: Curves.ease,
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation(
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+        ),
+        navBarStyle:
+            NavBarStyle.style15, // Choose the nav bar style with this property
+      ),
+    );
+  }
+}
+
+// ----------------------------------------- Custom Style ----------------------------------------- //
+
+class CustomNavBarWidget extends StatelessWidget {
+  final int selectedIndex;
+  final List<PersistentBottomNavBarItem> items;
+  final ValueChanged<int> onItemSelected;
+
+  CustomNavBarWidget({
+    Key key,
+    this.selectedIndex,
+    @required this.items,
+    this.onItemSelected,
+  });
+
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected) {
+    return Container(
+      alignment: Alignment.center,
+      height: kBottomNavigationBarHeight,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          Flexible(
+            child: IconTheme(
+              data: IconThemeData(
+                  size: 26.0,
+                  color: isSelected
+                      ? (item.activeContentColor == null
+                          ? item.activeColor
+                          : item.activeContentColor)
+                      : item.inactiveColor == null
+                          ? item.activeColor
+                          : item.inactiveColor),
+              child: item.icon,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 5.0),
+            child: Material(
+              type: MaterialType.transparency,
+              child: FittedBox(
+                  child: Text(
+                item.title,
+                style: TextStyle(
+                    color: isSelected
+                        ? (item.activeContentColor == null
+                            ? item.activeColor
+                            : item.activeContentColor)
+                        : item.inactiveColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: item.titleFontSize),
+              )),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Container(
+        width: double.infinity,
+        height: kBottomNavigationBarHeight,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: items.map((item) {
+            var index = items.indexOf(item);
+            return Flexible(
+              child: GestureDetector(
+                onTap: () {
+                  this.onItemSelected(index);
+                },
+                child: _buildItem(item, selectedIndex == index),
+              ),
+            );
+          }).toList(),
+        ),
+      ),
+    );
+  }
+}
+

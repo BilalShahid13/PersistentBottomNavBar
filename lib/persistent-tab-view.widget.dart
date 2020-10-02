@@ -3,8 +3,6 @@
 
 part of persistent_bottom_nav_bar;
 
-enum popActionScreens { once, all }
-
 ///A highly customizable persistent navigation bar for flutter.
 ///
 ///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
@@ -29,7 +27,8 @@ class PersistentTabView extends StatefulWidget {
       this.bottomScreenMargin,
       this.onWillPop,
       this.popAllScreensOnTapOfSelectedTab = true,
-      this.popActionScreens = popActionScreensType.all,
+      this.routeName,
+      this.popActionScreens = PopActionScreensType.all,
       this.confineInSafeArea = true,
       this.stateManagement = true,
       this.hideNavigationBarWhenKeyboardShows = true,
@@ -44,7 +43,9 @@ class PersistentTabView extends StatefulWidget {
     assert(items == null && itemCount != null || items != null,
         "In case of custom navigation bar style, the property itemCount is required!");
     assert(screens != null, "screens property is required");
-    assert(assertMidButtonStyles(navBarStyle, items.length),
+    assert(
+        navBarStyle == NavBarStyle.custom ||
+            assertMidButtonStyles(navBarStyle, items?.length ?? itemCount),
         "NavBar styles 15-18 only accept 3 or 5 PersistentBottomNavBarItem items.");
     assert(navBarStyle == NavBarStyle.custom || items.length == screens.length,
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
@@ -127,7 +128,7 @@ class PersistentTabView extends StatefulWidget {
   final bool popAllScreensOnTapOfSelectedTab;
 
   ///If set all pop until to first screen else set once pop once
-  final popActionScreensType popActionScreens;
+  final PopActionScreensType popActionScreens;
 
   final bool resizeToAvoidBottomInset;
 
@@ -135,7 +136,7 @@ class PersistentTabView extends StatefulWidget {
   final bool stateManagement;
 
   ///If you want to perform a custom action on Android when exiting the app, you can write your logic here.
-  final Future<bool> onWillPop;
+  final Future<bool> Function() onWillPop;
 
   ///Screen transition animation properties when switching tabs.
   final ScreenTransitionAnimation screenTransitionAnimation;
@@ -147,6 +148,11 @@ class PersistentTabView extends StatefulWidget {
 
   ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool hideNavigationBar;
+
+  ///Define navigation bar route name here.
+  ///
+  ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
+  final String routeName;
 
   @override
   _PersistentTabViewState createState() => _PersistentTabViewState();
@@ -176,18 +182,13 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     _isAnimating = false;
   }
 
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
   Widget _buildScreen(int index) => widget.floatingActionButton != null
       ? Stack(
           fit: StackFit.expand,
           children: <Widget>[
             SizedBox.expand(
               child: CustomTabView(
+                routeName: widget.routeName,
                 builder: (BuildContext screenContext) {
                   _contextList[index] = screenContext;
                   return Material(elevation: 0, child: widget.screens[index]);
@@ -207,6 +208,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               children: <Widget>[
                 SizedBox.expand(
                   child: CustomTabView(
+                    routeName: widget.routeName,
                     builder: (BuildContext screenContext) {
                       _contextList[index] = screenContext;
                       return Material(elevation: 0, child: widget.screens[index]);
@@ -216,40 +218,40 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                 _navBarHeight == 0
                     ? SizedBox.shrink()
                     : Positioned(
-                        bottom: 0.0,
+                        bottom: (_navBarHeight - (widget.bottomScreenMargin ?? _navBarHeight + widget.margin.top)).abs(),
                         child: GestureDetector(
-                          onTap: () {
-                            if (widget.items[(widget.items.length / 2).floor()].onPressed != null) {
-                              widget.items[(widget.items.length / 2).floor()].onPressed();
-                            } else {
-                              setState(() {
-                                _controller.index = (widget.items.length / 2).floor();
-                              });
-                            }
-                          },
-                          child: Center(
-                            child: Container(
-                              height: 21.0 +
-                                  min(
-                                      widget.navBarHeight,
-                                      max(widget.decoration.borderRadius.topRight.y ?? 0.0,
-                                              widget.decoration.borderRadius.topLeft.y ?? 0.0) +
-                                          (widget.decoration?.border != null
-                                              ? widget.decoration.border.dimensions.vertical
-                                              : 0.0)),
-                              margin: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width / 2 -
-                                      (MediaQuery.of(context).size.width / 5.0 - 30.0) / 2),
-                              width: MediaQuery.of(context).size.width / 5.0 - 30.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(100.0),
-                                    topRight: Radius.circular(100.0),
-                                  )),
+                            onTap: () {
+                              if (widget.items[(widget.items.length / 2).floor()].onPressed != null) {
+                                widget.items[(widget.items.length / 2).floor()].onPressed();
+                              } else {
+                                setState(() {
+                                  _controller.index = (widget.items.length / 2).floor();
+                                });
+                              }
+                            },
+                            child: Center(
+                              child: Container(
+                                height: 21.0 +
+                                    min(
+                                        widget.navBarHeight,
+                                        max(widget.decoration.borderRadius.topRight.y ?? 0.0,
+                                                widget.decoration.borderRadius.topLeft.y ?? 0.0) +
+                                            (widget.decoration?.border != null
+                                                ? widget.decoration.border.dimensions.vertical
+                                                : 0.0)),
+                                margin: EdgeInsets.only(
+                                    left: MediaQuery.of(context).size.width / 2 -
+                                        (MediaQuery.of(context).size.width / 5.0 - 30.0) / 2),
+                                width: MediaQuery.of(context).size.width / 5.0 - 30.0,
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(100.0),
+                                      topRight: Radius.circular(100.0),
+                                    )),
+                              ),
                             ),
                           ),
-                        ),
                       ),
               ],
             )
@@ -259,6 +261,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   children: <Widget>[
                     SizedBox.expand(
                       child: CustomTabView(
+                        routeName: widget.routeName,
                         builder: (BuildContext screenContext) {
                           _contextList[index] = screenContext;
                           return Material(elevation: 0, child: widget.screens[index]);
@@ -268,7 +271,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                     _navBarHeight == 0
                         ? SizedBox.shrink()
                         : Positioned(
-                            bottom: 0.0,
+                            bottom: (_navBarHeight - (widget.bottomScreenMargin ?? _navBarHeight + widget.margin.top)).abs(),
                             child: GestureDetector(
                               onTap: () {
                                 if (widget.items[(widget.items.length / 2).floor()].onPressed !=
@@ -303,10 +306,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                           ),
                   ],
                 )
-              : CustomTabView(builder: (BuildContext screenContext) {
-                  _contextList[index] = screenContext;
-                  return Material(elevation: 0, child: widget.screens[index]);
-                });
+              : CustomTabView(
+                  routeName: widget.routeName,
+                  builder: (BuildContext screenContext) {
+                    _contextList[index] = screenContext;
+                    return Material(elevation: 0, child: widget.screens[index]);
+                  });
 
   Widget navigationBarWidget() => CupertinoPageScaffold(
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
@@ -338,8 +343,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             navBarStyle: widget.navBarStyle,
             popScreensOnTapOfSelectedTab:
                 widget.popAllScreensOnTapOfSelectedTab ?? true,
-            popActionScreens:
-                widget.popActionScreens ?? popActionScreensType.all,
             neumorphicProperties: widget.neumorphicProperties,
             customNavBarWidget: widget.customWidget,
             onAnimationComplete: (isAnimating, isCompleted) {

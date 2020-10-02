@@ -9,6 +9,7 @@ class CustomTabView extends StatefulWidget {
     this.routes,
     this.onGenerateRoute,
     this.onUnknownRoute,
+    this.routeName,
     this.navigatorObservers = const <NavigatorObserver>[],
   })  : assert(navigatorObservers != null),
         super(key: key);
@@ -24,6 +25,8 @@ class CustomTabView extends StatefulWidget {
   final RouteFactory onUnknownRoute;
 
   final List<NavigatorObserver> navigatorObservers;
+
+  final String routeName;
 
   @override
   _CustomTabViewState createState() {
@@ -45,15 +48,13 @@ class _CustomTabViewState extends State<CustomTabView> {
   @override
   void didUpdateWidget(CustomTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.navigatorKey != oldWidget.navigatorKey ||
-        widget.navigatorObservers != oldWidget.navigatorObservers) {
+    if (widget.navigatorKey != oldWidget.navigatorKey || widget.navigatorObservers != oldWidget.navigatorObservers) {
       _updateObservers();
     }
   }
 
   void _updateObservers() {
-    _navigatorObservers = List<NavigatorObserver>.from(widget.navigatorObservers)
-      ..add(_heroController);
+    _navigatorObservers = List<NavigatorObserver>.from(widget.navigatorObservers)..add(_heroController);
   }
 
   @override
@@ -82,7 +83,7 @@ class _CustomTabViewState extends State<CustomTabView> {
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         },
-        settings: RouteSettings(name: '/9f580fc5-c252-45d0-af25-9429992db112'),
+        settings: RouteSettings(name: widget.routeName ?? '/9f580fc5-c252-45d0-af25-9429992db112'),
       );
     }
     if (widget.onGenerateRoute != null) return widget.onGenerateRoute(settings);

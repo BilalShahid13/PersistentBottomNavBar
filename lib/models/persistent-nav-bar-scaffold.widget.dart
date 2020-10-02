@@ -375,13 +375,15 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
   }
 
   _lastPageAnimation() {
-    if (_lastIndex > widget.currentTabIndex) {
+    if (_lastIndex > widget.currentTabIndex &&
+        !_animationControllers[_lastIndex].isAnimating) {
       _animationControllers[_lastIndex].reset();
       _animations[_lastIndex] = Tween(begin: 0.0, end: _animationValue)
           .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
           .animate(_animationControllers[_lastIndex]);
       _animationControllers[_lastIndex].forward();
-    } else if (_lastIndex < widget.currentTabIndex) {
+    } else if (_lastIndex < widget.currentTabIndex &&
+        !_animationControllers[_lastIndex].isAnimating) {
       _animationControllers[_lastIndex].reset();
       _animations[_lastIndex] = Tween(begin: 0.0, end: -_animationValue)
           .chain(CurveTween(curve: widget.screenTransitionAnimation.curve))
@@ -391,7 +393,8 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
   }
 
   _newPageAnimation() {
-    if (_lastIndex > widget.currentTabIndex) {
+    if (_lastIndex > widget.currentTabIndex &&
+        !_animationControllers[widget.currentTabIndex].isAnimating) {
       _animationControllers[widget.currentTabIndex].reset();
       _animations[widget.currentTabIndex] =
           Tween(begin: -_animationValue, end: 0.0)
@@ -399,7 +402,8 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
               .animate(_animationControllers[widget.currentTabIndex]);
       _animationControllers[widget.currentTabIndex].forward();
       _animationCompletionIndex = true;
-    } else if (_lastIndex < widget.currentTabIndex) {
+    } else if (_lastIndex < widget.currentTabIndex &&
+        !_animationControllers[widget.currentTabIndex].isAnimating) {
       _animationControllers[widget.currentTabIndex].reset();
       _animations[widget.currentTabIndex] =
           Tween(begin: _animationValue, end: 0.0)
@@ -416,8 +420,9 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
       child: Stack(
         fit: StackFit.expand,
         children: List<Widget>.generate(widget.tabCount, (int index) {
-          final bool active =
-              index == widget.currentTabIndex || index == _lastIndex;
+          final bool active = index == widget.currentTabIndex ||
+              (widget.screenTransitionAnimation.animateTabTransition &&
+                  index == _lastIndex);
           shouldBuildTab[index] = active || shouldBuildTab[index];
 
           return Offstage(
