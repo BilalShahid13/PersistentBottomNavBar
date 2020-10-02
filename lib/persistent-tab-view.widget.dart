@@ -15,6 +15,7 @@ class PersistentTabView extends StatefulWidget {
       @required this.screens,
       this.controller,
       this.navBarHeight = kBottomNavigationBarHeight,
+      this.margin = EdgeInsets.zero,
       this.backgroundColor = CupertinoColors.white,
       this.iconSize = 26.0,
       this.onItemSelected,
@@ -47,9 +48,7 @@ class PersistentTabView extends StatefulWidget {
         "NavBar styles 15-18 only accept 3 or 5 PersistentBottomNavBarItem items.");
     assert(navBarStyle == NavBarStyle.custom || items.length == screens.length,
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
-    assert(
-        navBarStyle == NavBarStyle.custom ||
-            items.length >= 2 && items.length <= 6,
+    assert(navBarStyle == NavBarStyle.custom || items.length >= 2 && items.length <= 6,
         "NavBar should have at least 2 or maximum 6 items (Except for styles 15-18)");
     assert(
         navBarStyle == NavBarStyle.custom && customWidget != null ||
@@ -100,6 +99,9 @@ class PersistentTabView extends StatefulWidget {
   ///
   ///Defaults to `kBottomNavigationBarHeight` which is `56.0`.
   final double navBarHeight;
+
+  ///The margin around the navigation bar.
+  final EdgeInsets margin;
 
   ///Custom navigation bar widget. To be only used when `navBarStyle` is set to `NavBarStyle.custom`.
   final Widget customWidget;
@@ -161,8 +163,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   @override
   void initState() {
     super.initState();
-    _contextList = List<BuildContext>(
-        widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
+    _contextList =
+        List<BuildContext>(widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
     if (widget.controller == null) {
       _controller = PersistentTabController(initialIndex: 0);
     } else {
@@ -193,9 +195,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               ),
             ),
             Positioned(
-              bottom: widget.decoration.borderRadius != BorderRadius.zero
-                  ? 25.0
-                  : 10.0,
+              bottom: widget.decoration.borderRadius != BorderRadius.zero ? 25.0 : 10.0,
               right: 10.0,
               child: widget.floatingActionButton,
             ),
@@ -209,8 +209,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   child: CustomTabView(
                     builder: (BuildContext screenContext) {
                       _contextList[index] = screenContext;
-                      return Material(
-                          elevation: 0, child: widget.screens[index]);
+                      return Material(elevation: 0, child: widget.screens[index]);
                     },
                   ),
                 ),
@@ -220,15 +219,11 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                         bottom: 0.0,
                         child: GestureDetector(
                           onTap: () {
-                            if (widget.items[(widget.items.length / 2).floor()]
-                                    .onPressed !=
-                                null) {
-                              widget.items[(widget.items.length / 2).floor()]
-                                  .onPressed();
+                            if (widget.items[(widget.items.length / 2).floor()].onPressed != null) {
+                              widget.items[(widget.items.length / 2).floor()].onPressed();
                             } else {
                               setState(() {
-                                _controller.index =
-                                    (widget.items.length / 2).floor();
+                                _controller.index = (widget.items.length / 2).floor();
                               });
                             }
                           },
@@ -237,24 +232,15 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                               height: 21.0 +
                                   min(
                                       widget.navBarHeight,
-                                      max(
-                                              widget.decoration.borderRadius
-                                                      .topRight.y ??
-                                                  0.0,
-                                              widget.decoration.borderRadius
-                                                      .topLeft.y ??
-                                                  0.0) +
+                                      max(widget.decoration.borderRadius.topRight.y ?? 0.0,
+                                              widget.decoration.borderRadius.topLeft.y ?? 0.0) +
                                           (widget.decoration?.border != null
-                                              ? widget.decoration.border
-                                                  .dimensions.vertical
+                                              ? widget.decoration.border.dimensions.vertical
                                               : 0.0)),
                               margin: EdgeInsets.only(
                                   left: MediaQuery.of(context).size.width / 2 -
-                                      (MediaQuery.of(context).size.width / 5.0 -
-                                              30.0) /
-                                          2),
-                              width: MediaQuery.of(context).size.width / 5.0 -
-                                  30.0,
+                                      (MediaQuery.of(context).size.width / 5.0 - 30.0) / 2),
+                              width: MediaQuery.of(context).size.width / 5.0 - 30.0,
                               decoration: BoxDecoration(
                                   color: Colors.transparent,
                                   borderRadius: BorderRadius.only(
@@ -275,8 +261,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                       child: CustomTabView(
                         builder: (BuildContext screenContext) {
                           _contextList[index] = screenContext;
-                          return Material(
-                              elevation: 0, child: widget.screens[index]);
+                          return Material(elevation: 0, child: widget.screens[index]);
                         },
                       ),
                     ),
@@ -286,18 +271,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                             bottom: 0.0,
                             child: GestureDetector(
                               onTap: () {
-                                if (widget
-                                        .items[
-                                            (widget.items.length / 2).floor()]
-                                        .onPressed !=
+                                if (widget.items[(widget.items.length / 2).floor()].onPressed !=
                                     null) {
-                                  widget
-                                      .items[(widget.items.length / 2).floor()]
-                                      .onPressed();
+                                  widget.items[(widget.items.length / 2).floor()].onPressed();
                                 } else {
                                   setState(() {
-                                    _controller.index =
-                                        (widget.items.length / 2).floor();
+                                    _controller.index = (widget.items.length / 2).floor();
                                   });
                                 }
                               },
@@ -306,27 +285,15 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                                   height: 21 +
                                       min(
                                           widget.navBarHeight,
-                                          max(
-                                                  widget.decoration.borderRadius
-                                                          .topRight.y ??
-                                                      0.0,
-                                                  widget.decoration.borderRadius
-                                                          .topLeft.y ??
-                                                      0.0) +
+                                          max(widget.decoration.borderRadius.topRight.y ?? 0.0,
+                                                  widget.decoration.borderRadius.topLeft.y ?? 0.0) +
                                               (widget.decoration?.border != null
-                                                  ? widget.decoration.border
-                                                      .dimensions.vertical
+                                                  ? widget.decoration.border.dimensions.vertical
                                                   : 0.0)),
                                   margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width /
-                                              2 -
-                                          (MediaQuery.of(context).size.width /
-                                                      5.0 -
-                                                  30.0) /
-                                              2),
-                                  width:
-                                      MediaQuery.of(context).size.width / 5.0 -
-                                          30.0,
+                                      left: MediaQuery.of(context).size.width / 2 -
+                                          (MediaQuery.of(context).size.width / 5.0 - 30.0) / 2),
+                                  width: MediaQuery.of(context).size.width / 5.0 - 30.0,
                                   decoration: BoxDecoration(
                                     color: Colors.transparent,
                                   ),
@@ -346,17 +313,13 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         backgroundColor: Colors.transparent,
         child: PersistentTabScaffold(
           controller: _controller,
-          itemCount: widget.items == null
-              ? widget.itemCount ?? 0
-              : widget.items.length,
-          bottomScreenMargin:
-              widget.hideNavigationBar != null && widget.hideNavigationBar
-                  ? 0.0
-                  : widget.bottomScreenMargin,
+          itemCount: widget.items == null ? widget.itemCount ?? 0 : widget.items.length,
+          bottomScreenMargin: widget.hideNavigationBar != null && widget.hideNavigationBar
+              ? 0.0
+              : widget.bottomScreenMargin,
           stateManagement: widget.stateManagement,
           screenTransitionAnimation: widget.screenTransitionAnimation,
-          hideNavigationBarWhenKeyboardShows:
-              widget.hideNavigationBarWhenKeyboardShows,
+          hideNavigationBarWhenKeyboardShows: widget.hideNavigationBarWhenKeyboardShows,
           resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
           animatePadding: _isAnimating || _isCompleted,
           tabBar: PersistentBottomNavBar(
@@ -364,6 +327,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             backgroundColor: widget.backgroundColor,
             iconSize: widget.iconSize,
             navBarHeight: _navBarHeight,
+            margin: widget.margin,
             selectedIndex: _controller.index,
             previousIndex: _previousIndex,
             decoration: widget.decoration,
@@ -400,17 +364,17 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                       .onSelectedTabPressWhenNoScreensPushed();
                 }
 
-                if (widget.popActionScreens == popActionScreensType.once) {
+                if (widget.popActionScreens == PopActionScreensType.once) {
                   if (Navigator.of(_contextList[_controller.index]).canPop()) {
                     Navigator.of(_contextList[_controller.index]).pop(context);
                     return;
                   }
+                } else {
+                  Navigator.popUntil(
+                      _contextList[_controller.index],
+                      ModalRoute.withName(widget.routeName ??
+                          '/9f580fc5-c252-45d0-af25-9429992db112'));
                 }
-
-                Navigator.popUntil(
-                    _contextList[_controller.index],
-                    ModalRoute.withName(
-                        '/9f580fc5-c252-45d0-af25-9429992db112'));
               }
             },
             onItemSelected: widget.onItemSelected != null
@@ -435,8 +399,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               top: false,
               right: false,
               left: false,
-              bottom: (widget.items != null &&
-                          widget.items[_controller.index].opacity < 1.0) ||
+              bottom: (widget.items != null && widget.items[_controller.index].opacity < 1.0) ||
                       (widget.hideNavigationBar != null && _isCompleted)
                   ? false
                   : widget.confineInSafeArea ?? false,
@@ -454,16 +417,15 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         ? 0.0
         : widget.navBarHeight ?? kBottomNavigationBarHeight;
     if (_contextList.length != widget.itemCount ?? widget.items.length) {
-      _contextList = List<BuildContext>(
-          widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
+      _contextList =
+          List<BuildContext>(widget.items == null ? widget.itemCount ?? 0 : widget.items.length);
     }
     if (widget.handleAndroidBackButtonPress) {
       return WillPopScope(
         onWillPop: widget.onWillPop != null
             ? widget.onWillPop
             : () async {
-                if (_controller.index == 0 &&
-                    !Navigator.canPop(_contextList.first)) {
+                if (_controller.index == 0 && !Navigator.canPop(_contextList.first)) {
                   return true;
                 } else {
                   if (Navigator.canPop(_contextList[_controller.index])) {
