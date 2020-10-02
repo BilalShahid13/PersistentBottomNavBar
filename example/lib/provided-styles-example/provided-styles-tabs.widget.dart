@@ -123,6 +123,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           colorBehindNavBar: Colors.indigo,
           borderRadius: BorderRadius.circular(20.0)),
       popAllScreensOnTapOfSelectedTab: true,
+      popActionScreens: popActionScreensType.once,
       itemAnimationProperties: ItemAnimationProperties(
         duration: Duration(milliseconds: 400),
         curve: Curves.ease,

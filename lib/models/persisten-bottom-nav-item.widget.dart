@@ -1,5 +1,7 @@
 part of persistent_bottom_nav_bar;
 
+enum popActionScreensType { once, all }
+
 ///An item widget for the `PersistentTabView`.
 class PersistentBottomNavBarItem {
   ///Icon for the bar item.

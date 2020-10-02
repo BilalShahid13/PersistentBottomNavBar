@@ -15,6 +15,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   final NeumorphicProperties neumorphicProperties;
   final Function(int) popAllScreensForTheSelectedTab;
   final bool popScreensOnTapOfSelectedTab;
+  final popActionScreensType popActionScreens;
   final ItemAnimationProperties itemAnimationProperties;
 
   NeumorphicBottomNavBar(
@@ -26,6 +27,7 @@ class NeumorphicBottomNavBar extends StatelessWidget {
       this.backgroundColor,
       this.itemAnimationProperties,
       this.popScreensOnTapOfSelectedTab,
+      this.popActionScreens,
       this.animationDuration = const Duration(milliseconds: 1000),
       this.navBarHeight = 0.0,
       @required this.items,

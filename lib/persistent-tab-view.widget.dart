@@ -3,6 +3,8 @@
 
 part of persistent_bottom_nav_bar;
 
+enum popActionScreens { once, all }
+
 ///A highly customizable persistent navigation bar for flutter.
 ///
 ///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
@@ -26,6 +28,7 @@ class PersistentTabView extends StatefulWidget {
       this.bottomScreenMargin,
       this.onWillPop,
       this.popAllScreensOnTapOfSelectedTab = true,
+      this.popActionScreens = popActionScreensType.all,
       this.confineInSafeArea = true,
       this.stateManagement = true,
       this.hideNavigationBarWhenKeyboardShows = true,
@@ -120,6 +123,9 @@ class PersistentTabView extends StatefulWidget {
 
   ///If an already selected tab is pressed/tapped again, all the screens pushed on that particular tab will pop until the first screen in the stack. Defaults to `true`.
   final bool popAllScreensOnTapOfSelectedTab;
+
+  ///If set all pop until to first screen else set once pop once
+  final popActionScreensType popActionScreens;
 
   final bool resizeToAvoidBottomInset;
 
@@ -368,6 +374,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             navBarStyle: widget.navBarStyle,
             popScreensOnTapOfSelectedTab:
                 widget.popAllScreensOnTapOfSelectedTab ?? true,
+            popActionScreens:
+                widget.popActionScreens ?? popActionScreensType.all,
             neumorphicProperties: widget.neumorphicProperties,
             customNavBarWidget: widget.customWidget,
             onAnimationComplete: (isAnimating, isCompleted) {
@@ -391,6 +399,14 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   widget.items[_controller.index]
                       .onSelectedTabPressWhenNoScreensPushed();
                 }
+
+                if (widget.popActionScreens == popActionScreensType.once) {
+                  if (Navigator.of(_contextList[_controller.index]).canPop()) {
+                    Navigator.of(_contextList[_controller.index]).pop(context);
+                    return;
+                  }
+                }
+
                 Navigator.popUntil(
                     _contextList[_controller.index],
                     ModalRoute.withName(
