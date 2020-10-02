@@ -63,7 +63,8 @@ class PersistentBottomNavBar extends StatelessWidget {
                       top: false,
                       right: false,
                       left: false,
-                      bottom: this.navBarHeight == 0.0 || (this.hideNavigationBar ?? false)
+                      bottom: this.navBarHeight == 0.0 ||
+                              (this.hideNavigationBar ?? false)
                           ? false
                           : confineToSafeArea ?? true,
                       child: getNavBarStyle(),

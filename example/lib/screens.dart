@@ -144,7 +144,9 @@ class MainScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 60.0,),
+              SizedBox(
+                height: 60.0,
+              ),
             ],
           ),
         ),

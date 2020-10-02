@@ -324,4 +324,3 @@ class CustomNavBarWidget extends StatelessWidget {
     );
   }
 }
-

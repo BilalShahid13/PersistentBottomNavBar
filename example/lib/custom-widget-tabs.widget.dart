@@ -4,7 +4,6 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'main.dart';
 import 'screens.dart';
 
-
 class CustomWidgetExample extends StatefulWidget {
   final BuildContext menuScreenContext;
   CustomWidgetExample({Key key, this.menuScreenContext}) : super(key: key);
