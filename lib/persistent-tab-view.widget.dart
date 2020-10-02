@@ -3,6 +3,8 @@
 
 part of persistent_bottom_nav_bar;
 
+enum popActionScreens { once, all }
+
 ///A highly customizable persistent navigation bar for flutter.
 ///
 ///To learn more, check out the [Readme](https://github.com/BilalShahid13/PersistentBottomNavBar).
@@ -27,6 +29,7 @@ class PersistentTabView extends StatefulWidget {
       this.bottomScreenMargin,
       this.onWillPop,
       this.popAllScreensOnTapOfSelectedTab = true,
+      this.popActionScreens = popActionScreensType.all,
       this.confineInSafeArea = true,
       this.stateManagement = true,
       this.hideNavigationBarWhenKeyboardShows = true,
@@ -122,6 +125,9 @@ class PersistentTabView extends StatefulWidget {
 
   ///If an already selected tab is pressed/tapped again, all the screens pushed on that particular tab will pop until the first screen in the stack. Defaults to `true`.
   final bool popAllScreensOnTapOfSelectedTab;
+
+  ///If set all pop until to first screen else set once pop once
+  final popActionScreensType popActionScreens;
 
   final bool resizeToAvoidBottomInset;
 
@@ -330,7 +336,10 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             confineToSafeArea: widget.confineInSafeArea,
             hideNavigationBar: widget.hideNavigationBar,
             navBarStyle: widget.navBarStyle,
-            popScreensOnTapOfSelectedTab: widget.popAllScreensOnTapOfSelectedTab ?? true,
+            popScreensOnTapOfSelectedTab:
+                widget.popAllScreensOnTapOfSelectedTab ?? true,
+            popActionScreens:
+                widget.popActionScreens ?? popActionScreensType.all,
             neumorphicProperties: widget.neumorphicProperties,
             customNavBarWidget: widget.customWidget,
             onAnimationComplete: (isAnimating, isCompleted) {
@@ -347,12 +356,25 @@ class _PersistentTabViewState extends State<PersistentTabView> {
             },
             popAllScreensForTheSelectedTab: (index) {
               if (widget.popAllScreensOnTapOfSelectedTab) {
-                if (widget.items[_controller.index].onSelectedTabPressWhenNoScreensPushed != null &&
+                if (widget.items[_controller.index]
+                            .onSelectedTabPressWhenNoScreensPushed !=
+                        null &&
                     !Navigator.of(_contextList[_controller.index]).canPop()) {
-                  widget.items[_controller.index].onSelectedTabPressWhenNoScreensPushed();
+                  widget.items[_controller.index]
+                      .onSelectedTabPressWhenNoScreensPushed();
                 }
-                Navigator.popUntil(_contextList[_controller.index],
-                    ModalRoute.withName('/9f580fc5-c252-45d0-af25-9429992db112'));
+
+                if (widget.popActionScreens == PopActionScreensType.once) {
+                  if (Navigator.of(_contextList[_controller.index]).canPop()) {
+                    Navigator.of(_contextList[_controller.index]).pop(context);
+                    return;
+                  }
+                } else {
+                  Navigator.popUntil(
+                      _contextList[_controller.index],
+                      ModalRoute.withName(widget.routeName ??
+                          '/9f580fc5-c252-45d0-af25-9429992db112'));
+                }
               }
             },
             onItemSelected: widget.onItemSelected != null
