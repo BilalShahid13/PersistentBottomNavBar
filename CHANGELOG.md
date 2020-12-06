@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [3.1.0] - 2020-12-06
 - Argument `routeAndNavigatorSettings` added to handle `Navigator.pushNamed(context, 'routeName')`. Please define your routes and other navigator settings like navigator observers here as well.
 - **Breaking Changes**
-    - Argument `initalRoute` removed and shifted to `routeAndNavigatorSettings`.
+    - Arguments `initalRoute`, `navigatorObservers` and `navigatorKeys` removed and shifted to `routeAndNavigatorSettings`.
 
 ## [3.0.0] - 2020-12-06
 
