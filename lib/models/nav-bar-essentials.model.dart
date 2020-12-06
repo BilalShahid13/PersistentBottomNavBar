@@ -47,9 +47,12 @@ class NavBarEssentials {
       onItemSelected: onItemSelected ?? this.onItemSelected,
       navBarHeight: navBarHeight ?? this.navBarHeight,
       padding: padding ?? this.padding,
-      popAllScreensForTheSelectedTab: popAllScreensForTheSelectedTab ?? this.popAllScreensForTheSelectedTab,
-      popScreensOnTapOfSelectedTab: popScreensOnTapOfSelectedTab ?? this.popScreensOnTapOfSelectedTab,
-      itemAnimationProperties: itemAnimationProperties ?? this.itemAnimationProperties,
+      popAllScreensForTheSelectedTab:
+          popAllScreensForTheSelectedTab ?? this.popAllScreensForTheSelectedTab,
+      popScreensOnTapOfSelectedTab:
+          popScreensOnTapOfSelectedTab ?? this.popScreensOnTapOfSelectedTab,
+      itemAnimationProperties:
+          itemAnimationProperties ?? this.itemAnimationProperties,
     );
   }
 }

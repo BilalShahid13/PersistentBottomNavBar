@@ -10,7 +10,7 @@ class PersistentTabController extends ChangeNotifier {
   bool _isDisposed = false;
   int get index => _index;
   int _index;
-  
+
   set index(int value) {
     assert(value != null);
     assert(value >= 0);
@@ -102,7 +102,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
 
   void _updateTabController({bool shouldDisposeOldController = false}) {
     final PersistentTabController newController = widget.controller ??
-        PersistentTabController(initialIndex: widget.tabBar.navBarEssentials.selectedIndex);
+        PersistentTabController(
+            initialIndex: widget.tabBar.navBarEssentials.selectedIndex);
 
     if (newController == _controller) {
       return;
@@ -162,7 +163,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = 0.0;
-    } else if (widget.tabBar.navBarDecoration.adjustScreenBottomPaddingOnCurve &&
+    } else if (widget
+            .tabBar.navBarDecoration.adjustScreenBottomPaddingOnCurve &&
         widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero) {
       final double bottomPadding = widget.bottomScreenMargin ??
           widget.tabBar.navBarEssentials.navBarHeight -
@@ -170,14 +172,15 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                   ? min(
                       widget.tabBar.navBarEssentials.navBarHeight,
                       max(
-                              widget.tabBar.navBarDecoration.borderRadius.topRight
-                                      .y ??
+                              widget.tabBar.navBarDecoration.borderRadius
+                                      .topRight.y ??
                                   0.0,
-                              widget.tabBar.navBarDecoration.borderRadius.topLeft.y ??
+                              widget.tabBar.navBarDecoration.borderRadius
+                                      .topLeft.y ??
                                   0.0) +
                           (widget.tabBar.navBarDecoration?.border != null
-                              ? widget
-                                  .tabBar.navBarDecoration.border.dimensions.vertical
+                              ? widget.tabBar.navBarDecoration.border.dimensions
+                                  .vertical
                               : 0.0))
                   : 0.0);
       contentPadding = bottomPadding;
@@ -202,7 +205,9 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
           duration: Duration(
               milliseconds:
                   widget.animatePadding || widget.tabBar.hideNavigationBar
-                      ? widget.tabBar.hideNavigationBar ? 200 : 400
+                      ? widget.tabBar.hideNavigationBar
+                          ? 200
+                          : 400
                       : 0),
           curve:
               widget.tabBar.hideNavigationBar ? Curves.linear : Curves.easeIn,
@@ -223,12 +228,13 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     }
 
     return DecoratedBox(
-      decoration: widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero
-          ? BoxDecoration(
-              color: CupertinoColors.black.withOpacity(0.0),
-              borderRadius: widget.tabBar.navBarDecoration.borderRadius,
-            )
-          : BoxDecoration(color: CupertinoColors.black.withOpacity(1.0)),
+      decoration:
+          widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero
+              ? BoxDecoration(
+                  color: CupertinoColors.black.withOpacity(0.0),
+                  borderRadius: widget.tabBar.navBarDecoration.borderRadius,
+                )
+              : BoxDecoration(color: CupertinoColors.black.withOpacity(1.0)),
       child: Stack(
         children: <Widget>[
           content,
