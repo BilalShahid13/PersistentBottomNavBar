@@ -10,6 +10,7 @@ class PersistentTabController extends ChangeNotifier {
   bool _isDisposed = false;
   int get index => _index;
   int _index;
+  
   set index(int value) {
     assert(value != null);
     assert(value >= 0);
@@ -57,7 +58,7 @@ class PersistentTabScaffold extends StatefulWidget {
         assert(
             controller == null || controller.index < itemCount,
             "The PersistentTabController's current index ${controller.index} is "
-            'out of bounds for the tab bar with ${tabBar.items.length} tabs'),
+            'out of bounds for the tab bar with ${tabBar.navBarEssentials.items.length} tabs'),
         super(key: key);
 
   final PersistentBottomNavBar tabBar;
@@ -101,7 +102,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
 
   void _updateTabController({bool shouldDisposeOldController = false}) {
     final PersistentTabController newController = widget.controller ??
-        PersistentTabController(initialIndex: widget.tabBar.selectedIndex);
+        PersistentTabController(initialIndex: widget.tabBar.navBarEssentials.selectedIndex);
 
     if (newController == _controller) {
       return;
@@ -143,7 +144,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     if (_isTapAction) {
       _isTapAction = false;
     } else {
-      _selectedIndex = widget.tabBar.selectedIndex;
+      _selectedIndex = widget.tabBar.navBarEssentials.selectedIndex;
     }
     Widget content = _TabSwitchingView(
       currentTabIndex: _controller.index,
@@ -151,7 +152,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
       tabBuilder: widget.tabBuilder,
       stateManagement: widget.stateManagement,
       screenTransitionAnimation: widget.screenTransitionAnimation,
-      backgroundColor: widget.tabBar.backgroundColor,
+      backgroundColor: widget.tabBar.navBarEssentials.backgroundColor,
     );
     double contentPadding = 0.0;
 
@@ -161,34 +162,34 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
 
     if (!widget.tabBar.opaque(_selectedIndex)) {
       contentPadding = 0.0;
-    } else if (widget.tabBar.decoration.adjustScreenBottomPaddingOnCurve &&
-        widget.tabBar.decoration.borderRadius != BorderRadius.zero) {
+    } else if (widget.tabBar.navBarDecoration.adjustScreenBottomPaddingOnCurve &&
+        widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero) {
       final double bottomPadding = widget.bottomScreenMargin ??
-          widget.tabBar.navBarHeight -
-              (widget.tabBar.decoration.borderRadius != null
+          widget.tabBar.navBarEssentials.navBarHeight -
+              (widget.tabBar.navBarDecoration.borderRadius != null
                   ? min(
-                      widget.tabBar.navBarHeight,
+                      widget.tabBar.navBarEssentials.navBarHeight,
                       max(
-                              widget.tabBar.decoration.borderRadius.topRight
+                              widget.tabBar.navBarDecoration.borderRadius.topRight
                                       .y ??
                                   0.0,
-                              widget.tabBar.decoration.borderRadius.topLeft.y ??
+                              widget.tabBar.navBarDecoration.borderRadius.topLeft.y ??
                                   0.0) +
-                          (widget.tabBar.decoration?.border != null
+                          (widget.tabBar.navBarDecoration?.border != null
                               ? widget
-                                  .tabBar.decoration.border.dimensions.vertical
+                                  .tabBar.navBarDecoration.border.dimensions.vertical
                               : 0.0))
                   : 0.0);
       contentPadding = bottomPadding;
     } else {
       if (widget.tabBar != null &&
           (!widget.resizeToAvoidBottomInset ||
-              widget.tabBar.navBarHeight >
+              widget.tabBar.navBarEssentials.navBarHeight >
                   existingMediaQuery.viewInsets.bottom)) {
         final double bottomPadding = widget.bottomScreenMargin ??
-            widget.tabBar.navBarHeight +
-                (widget.tabBar.decoration?.border != null
-                    ? widget.tabBar.decoration.border.dimensions.vertical
+            widget.tabBar.navBarEssentials.navBarHeight +
+                (widget.tabBar.navBarDecoration?.border != null
+                    ? widget.tabBar.navBarDecoration.border.dimensions.vertical
                     : 0.0);
         contentPadding = bottomPadding;
       }
@@ -205,7 +206,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                       : 0),
           curve:
               widget.tabBar.hideNavigationBar ? Curves.linear : Curves.easeIn,
-          color: widget.tabBar.decoration.colorBehindNavBar,
+          color: widget.tabBar.navBarDecoration.colorBehindNavBar,
           padding: EdgeInsets.only(bottom: contentPadding),
           child: content,
         ),
@@ -214,7 +215,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
       content = MediaQuery(
         data: newMediaQuery,
         child: Container(
-          color: widget.tabBar.decoration.colorBehindNavBar,
+          color: widget.tabBar.navBarDecoration.colorBehindNavBar,
           padding: EdgeInsets.only(bottom: contentPadding),
           child: content,
         ),
@@ -222,10 +223,10 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     }
 
     return DecoratedBox(
-      decoration: widget.tabBar.decoration.borderRadius != BorderRadius.zero
+      decoration: widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero
           ? BoxDecoration(
               color: CupertinoColors.black.withOpacity(0.0),
-              borderRadius: widget.tabBar.decoration.borderRadius,
+              borderRadius: widget.tabBar.navBarDecoration.borderRadius,
             )
           : BoxDecoration(color: CupertinoColors.black.withOpacity(1.0)),
       child: Stack(
@@ -239,11 +240,11 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
                 selectedIndex: _controller.index,
                 onItemSelected: (int newIndex) {
                   _controller.index = newIndex;
-                  if (widget.tabBar.onItemSelected != null) {
+                  if (widget.tabBar.navBarEssentials.onItemSelected != null) {
                     setState(() {
                       _selectedIndex = newIndex;
                       _isTapAction = true;
-                      widget.tabBar.onItemSelected(newIndex);
+                      widget.tabBar.navBarEssentials.onItemSelected(newIndex);
                     });
                   }
                 },

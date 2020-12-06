@@ -1,7 +1,6 @@
 part of persistent_bottom_nav_bar;
 
 enum NavBarStyle {
-  custom,
   style1,
   style2,
   style3,

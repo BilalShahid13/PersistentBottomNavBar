@@ -1,100 +1,133 @@
 part of persistent_bottom_nav_bar;
 
 class PersistentBottomNavBar extends StatelessWidget {
-  const PersistentBottomNavBar(
-      {Key key,
-      this.selectedIndex,
-      this.previousIndex,
-      this.iconSize,
-      this.backgroundColor,
-      this.items,
-      this.navBarHeight,
-      this.margin,
-      this.onItemSelected,
-      this.decoration,
-      this.padding,
-      this.confineToSafeArea,
-      this.customNavBarWidget,
-      this.popScreensOnTapOfSelectedTab,
-      this.popAllScreensForTheSelectedTab,
-      this.itemAnimationProperties,
-      this.hideNavigationBar,
-      this.onAnimationComplete,
-      this.neumorphicProperties = const NeumorphicProperties(),
-      this.navBarStyle})
-      : super(key: key);
+  const PersistentBottomNavBar({
+    Key key,
+    this.margin,
+    this.confineToSafeArea,
+    this.customNavBarWidget,
+    this.hideNavigationBar,
+    this.onAnimationComplete,
+    this.neumorphicProperties = const NeumorphicProperties(),
+    this.navBarEssentials,
+    this.navBarDecoration,
+    this.navBarStyle,
+    this.isCustomWidget = false,
+  }) : super(key: key);
 
-  final int selectedIndex;
-  final int previousIndex;
-  final double iconSize;
-  final Color backgroundColor;
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
-  final double navBarHeight;
+  final NavBarEssentials navBarEssentials;
   final EdgeInsets margin;
-  final NavBarDecoration decoration;
+  final NavBarDecoration navBarDecoration;
   final NavBarStyle navBarStyle;
-  final NavBarPadding padding;
   final NeumorphicProperties neumorphicProperties;
   final Widget customNavBarWidget;
-  final Function(int) popAllScreensForTheSelectedTab;
-  final bool popScreensOnTapOfSelectedTab;
   final bool confineToSafeArea;
-  final ItemAnimationProperties itemAnimationProperties;
   final bool hideNavigationBar;
   final Function(bool, bool) onAnimationComplete;
+  final bool isCustomWidget;
 
   Widget _navBarWidget() => Padding(
         padding: this.margin,
-        child: this.navBarStyle == NavBarStyle.custom
-            ? Container(
-                color: this.backgroundColor,
-                child: SafeArea(top: false, child: this.customNavBarWidget),
-              )
-            : this.navBarStyle == NavBarStyle.style15 ||
-                    this.navBarStyle == NavBarStyle.style16
-                ? Container(
-                    decoration: getNavBarDecoration(
-                      decoration: this.decoration,
-                      color: this.backgroundColor,
-                      opacity: items[selectedIndex].opacity,
-                    ),
-                    child: SafeArea(
-                      top: false,
-                      right: false,
-                      left: false,
-                      bottom: this.navBarHeight == 0.0 ||
-                              (this.hideNavigationBar ?? false)
-                          ? false
-                          : confineToSafeArea ?? true,
-                      child: getNavBarStyle(),
+        child: isCustomWidget
+            ? this.margin.bottom > 0
+                ? SafeArea(
+                    top: false,
+                    bottom: this.navBarEssentials.navBarHeight == 0.0 ||
+                            (this.hideNavigationBar ?? false)
+                        ? false
+                        : confineToSafeArea ?? true,
+                    child: Container(
+                      color: this.navBarEssentials.backgroundColor,
+                      child: this.customNavBarWidget,
                     ),
                   )
                 : Container(
+                    color: this.navBarEssentials.backgroundColor,
+                    child: SafeArea(
+                        top: false,
+                        bottom: this.navBarEssentials.navBarHeight == 0.0 ||
+                                (this.hideNavigationBar ?? false)
+                            ? false
+                            : confineToSafeArea ?? true,
+                        child: this.customNavBarWidget),
+                  )
+            : this.navBarStyle == NavBarStyle.style15 ||
+                    this.navBarStyle == NavBarStyle.style16
+                ? this.margin.bottom > 0
+                    ? SafeArea(
+                        top: false,
+                        right: false,
+                        left: false,
+                        bottom: this.navBarEssentials.navBarHeight == 0.0 ||
+                                (this.hideNavigationBar ?? false)
+                            ? false
+                            : confineToSafeArea ?? true,
+                        child: Container(
+                          decoration: getNavBarDecoration(
+                            decoration: this.navBarDecoration,
+                            color: this.navBarEssentials.backgroundColor,
+                            opacity: this
+                                .navBarEssentials
+                                .items[this.navBarEssentials.selectedIndex]
+                                .opacity,
+                          ),
+                          child: getNavBarStyle(),
+                        ),
+                      )
+                    : Container(
+                        decoration: getNavBarDecoration(
+                          decoration: this.navBarDecoration,
+                          color: this.navBarEssentials.backgroundColor,
+                          opacity: this
+                              .navBarEssentials
+                              .items[this.navBarEssentials.selectedIndex]
+                              .opacity,
+                        ),
+                        child: SafeArea(
+                          top: false,
+                          right: false,
+                          left: false,
+                          bottom: this.navBarEssentials.navBarHeight == 0.0 ||
+                                  (this.hideNavigationBar ?? false)
+                              ? false
+                              : confineToSafeArea ?? true,
+                          child: getNavBarStyle(),
+                        ),
+                      )
+                : Container(
                     decoration: getNavBarDecoration(
-                      decoration: this.decoration,
+                      decoration: this.navBarDecoration,
                       showBorder: false,
-                      color: this.backgroundColor,
-                      opacity: items[selectedIndex].opacity,
+                      color: this.navBarEssentials.backgroundColor,
+                      opacity: this
+                          .navBarEssentials
+                          .items[this.navBarEssentials.selectedIndex]
+                          .opacity,
                     ),
                     child: ClipRRect(
-                      borderRadius:
-                          this.decoration.borderRadius ?? BorderRadius.zero,
+                      borderRadius: this.navBarDecoration.borderRadius ??
+                          BorderRadius.zero,
                       child: BackdropFilter(
-                        filter: this.items[this.selectedIndex].filter ??
+                        filter: this
+                                .navBarEssentials
+                                .items[this.navBarEssentials.selectedIndex]
+                                .filter ??
                             ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0),
                         child: Container(
                           decoration: getNavBarDecoration(
                             showOpacity: false,
-                            decoration: this.decoration,
-                            color: this.backgroundColor,
-                            opacity: items[selectedIndex].opacity,
+                            decoration: navBarDecoration,
+                            color: this.navBarEssentials.backgroundColor,
+                            opacity: this
+                                .navBarEssentials
+                                .items[this.navBarEssentials.selectedIndex]
+                                .opacity,
                           ),
                           child: SafeArea(
                             top: false,
                             right: false,
                             left: false,
-                            bottom: this.navBarHeight == 0.0 ||
+                            bottom: this.navBarEssentials.navBarHeight == 0.0 ||
                                     (this.hideNavigationBar ?? false)
                                 ? false
                                 : confineToSafeArea ?? true,
@@ -112,7 +145,7 @@ class PersistentBottomNavBar extends StatelessWidget {
         ? _navBarWidget()
         : OffsetAnimation(
             hideNavigationBar: this.hideNavigationBar,
-            navBarHeight: this.navBarHeight,
+            navBarHeight: this.navBarEssentials.navBarHeight,
             onAnimationComplete: (isAnimating, isComplete) {
               this.onAnimationComplete(isAnimating, isComplete);
             },
@@ -136,334 +169,120 @@ class PersistentBottomNavBar extends StatelessWidget {
       Widget customNavBarWidget,
       Function(int) popAllScreensForTheSelectedTab,
       bool popScreensOnTapOfSelectedTab,
-      NavBarDecoration decoration,
+      NavBarDecoration navBarDecoration,
+      NavBarEssentials navBarEssentials,
       bool confineToSafeArea,
       ItemAnimationProperties itemAnimationProperties,
       Function onAnimationComplete,
       bool hideNavigationBar,
+      bool isCustomWidget,
       EdgeInsets padding}) {
     return PersistentBottomNavBar(
-        selectedIndex: selectedIndex ?? this.selectedIndex,
-        previousIndex: previousIndex ?? this.previousIndex,
-        iconSize: iconSize ?? this.iconSize,
         confineToSafeArea: confineToSafeArea ?? this.confineToSafeArea,
-        backgroundColor: backgroundColor ?? this.backgroundColor,
-        items: items ?? this.items,
-        itemAnimationProperties:
-            itemAnimationProperties ?? this.itemAnimationProperties,
-        popAllScreensForTheSelectedTab: popAllScreensForTheSelectedTab ??
-            this.popAllScreensForTheSelectedTab,
-        onItemSelected: onItemSelected ?? this.onItemSelected,
-        navBarHeight: navBarHeight ?? this.navBarHeight,
         margin: margin ?? this.margin,
         neumorphicProperties: neumorphicProperties ?? this.neumorphicProperties,
         navBarStyle: navBarStyle ?? this.navBarStyle,
-        padding: padding ?? this.padding,
         hideNavigationBar: hideNavigationBar ?? this.hideNavigationBar,
         customNavBarWidget: customNavBarWidget ?? this.customNavBarWidget,
         onAnimationComplete: onAnimationComplete ?? this.onAnimationComplete,
-        popScreensOnTapOfSelectedTab:
-            popScreensOnTapOfSelectedTab ?? this.popScreensOnTapOfSelectedTab,
-        decoration: decoration ?? this.decoration);
+        navBarEssentials: navBarEssentials ?? this.navBarEssentials,
+        isCustomWidget: isCustomWidget ?? this.isCustomWidget,
+        navBarDecoration: navBarDecoration ?? this.navBarDecoration);
   }
 
   bool opaque(int index) {
-    return items == null ? true : !(items[index].opacity < 1.0);
+    return this.navBarEssentials.items == null
+        ? true
+        : !(this.navBarEssentials.items[index].opacity < 1.0);
   }
 
   Widget getNavBarStyle() {
-    switch (navBarStyle) {
-      case NavBarStyle.custom:
-        return customNavBarWidget;
-      case NavBarStyle.style1:
-        return BottomNavStyle1(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style2:
-        return BottomNavStyle2(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style3:
-        return BottomNavStyle3(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style4:
-        return BottomNavStyle4(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style5:
-        return BottomNavStyle5(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style6:
-        return BottomNavStyle6(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style7:
-        return BottomNavStyle7(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style8:
-        return BottomNavStyle8(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style9:
-        return BottomNavStyle9(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style10:
-        return BottomNavStyle10(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
-      case NavBarStyle.style11:
-        return BottomNavStyle11(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          decoration: this.decoration,
-          padding: this.padding,
-        );
-      case NavBarStyle.style12:
-        return BottomNavStyle12(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style13:
-        return BottomNavStyle13(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style14:
-        return BottomNavStyle14(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style15:
-        return BottomNavStyle15(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style16:
-        return BottomNavStyle16(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style17:
-        return BottomNavStyle17(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.style18:
-        return BottomNavStyle18(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          decoration: this.decoration,
-        );
-      case NavBarStyle.neumorphic:
-        return NeumorphicBottomNavBar(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-          neumorphicProperties: this.neumorphicProperties,
-        );
-      default:
-        return BottomNavSimple(
-          items: this.items,
-          backgroundColor: this.backgroundColor,
-          iconSize: this.iconSize,
-          navBarHeight: this.navBarHeight,
-          onItemSelected: this.onItemSelected,
-          selectedIndex: this.selectedIndex,
-          itemAnimationProperties: itemAnimationProperties,
-          previousIndex: this.previousIndex,
-          popAllScreensForTheSelectedTab: this.popAllScreensForTheSelectedTab,
-          popScreensOnTapOfSelectedTab: this.popScreensOnTapOfSelectedTab,
-          padding: this.padding,
-        );
+    if (isCustomWidget) {
+      return customNavBarWidget;
+    } else {
+      switch (navBarStyle) {
+        case NavBarStyle.style1:
+          return BottomNavStyle1();
+        case NavBarStyle.style2:
+          return BottomNavStyle2(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style3:
+          return BottomNavStyle3(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style4:
+          return BottomNavStyle4(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style5:
+          return BottomNavStyle5(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style6:
+          return BottomNavStyle6(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style7:
+          return BottomNavStyle7(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style8:
+          return BottomNavStyle8(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style9:
+          return BottomNavStyle9(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style10:
+          return BottomNavStyle10(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style11:
+          return BottomNavStyle11();
+        case NavBarStyle.style12:
+          return BottomNavStyle12(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style13:
+          return BottomNavStyle13(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style14:
+          return BottomNavStyle14(
+            navBarEssentials: this.navBarEssentials,
+          );
+        case NavBarStyle.style15:
+          return BottomNavStyle15(
+            navBarEssentials: this.navBarEssentials,
+            navBarDecoration: this.navBarDecoration,
+          );
+        case NavBarStyle.style16:
+          return BottomNavStyle16(
+            navBarEssentials: this.navBarEssentials,
+            navBarDecoration: this.navBarDecoration,
+          );
+        case NavBarStyle.style17:
+          return BottomNavStyle17(
+            navBarEssentials: this.navBarEssentials,
+            navBarDecoration: this.navBarDecoration,
+          );
+        case NavBarStyle.style18:
+          return BottomNavStyle18(
+            navBarEssentials: this.navBarEssentials,
+            navBarDecoration: this.navBarDecoration,
+          );
+        case NavBarStyle.neumorphic:
+          return NeumorphicBottomNavBar(
+            navBarEssentials: this.navBarEssentials,
+            neumorphicProperties: this.neumorphicProperties,
+          );
+        default:
+          return BottomNavSimple(
+            navBarEssentials: this.navBarEssentials,
+          );
+      }
     }
   }
 }

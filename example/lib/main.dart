@@ -5,7 +5,6 @@ import 'custom-widget-tabs.widget.dart';
 import 'screens.dart';
 
 void main() => runApp(MyApp());
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -156,7 +155,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         title: ("Add"),
         activeColor: Colors.blueAccent,
         inactiveColor: Colors.grey,
-        activeContentColor: Colors.white,
+        activeColorAlternate: Colors.white,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
@@ -188,6 +187,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
       ),
       body: PersistentTabView(
+        context,
         controller: _controller,
         screens: _buildScreens(),
         items: _navBarsItems(),
@@ -196,29 +196,32 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         handleAndroidBackButtonPress: true,
         resizeToAvoidBottomInset: true,
         stateManagement: true,
+        navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
+            ? 0.0
+            : kBottomNavigationBarHeight,
         hideNavigationBarWhenKeyboardShows: true,
-        hideNavigationBar: _hideNavBar,
         margin: EdgeInsets.all(10.0),
         popActionScreens: PopActionScreensType.once,
         bottomScreenMargin: 0.0,
-        // onWillPop: () async {
-        //   await showDialog(
-        //     context: context,
-        //     useSafeArea: true,
-        //     builder: (context) => Container(
-        //       height: 50.0,
-        //       width: 50.0,
-        //       color: Colors.white,
-        //       child: RaisedButton(
-        //         child: Text("Close"),
-        //         onPressed: () {
-        //           Navigator.pop(context);
-        //         },
-        //       ),
-        //     ),
-        //   );
-        //   return false;
-        // },
+        onWillPop: () async {
+          await showDialog(
+            context: context,
+            useSafeArea: true,
+            builder: (context) => Container(
+              height: 50.0,
+              width: 50.0,
+              color: Colors.white,
+              child: RaisedButton(
+                child: Text("Close"),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+          );
+          return false;
+        },
+        hideNavigationBar: _hideNavBar,
         decoration: NavBarDecoration(
             colorBehindNavBar: Colors.indigo,
             borderRadius: BorderRadius.circular(20.0)),
@@ -267,9 +270,9 @@ class CustomNavBarWidget extends StatelessWidget {
               data: IconThemeData(
                   size: 26.0,
                   color: isSelected
-                      ? (item.activeContentColor == null
+                      ? (item.activeColorAlternate == null
                           ? item.activeColor
-                          : item.activeContentColor)
+                          : item.activeColorAlternate)
                       : item.inactiveColor == null
                           ? item.activeColor
                           : item.inactiveColor),
@@ -285,12 +288,12 @@ class CustomNavBarWidget extends StatelessWidget {
                 item.title,
                 style: TextStyle(
                     color: isSelected
-                        ? (item.activeContentColor == null
+                        ? (item.activeColorAlternate == null
                             ? item.activeColor
-                            : item.activeContentColor)
+                            : item.activeColorAlternate)
                         : item.inactiveColor,
                     fontWeight: FontWeight.w400,
-                    fontSize: item.titleFontSize),
+                    fontSize: 12.0),
               )),
             ),
           )
@@ -309,7 +312,7 @@ class CustomNavBarWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: items.map((item) {
-            var index = items.indexOf(item);
+            int index = items.indexOf(item);
             return Flexible(
               child: GestureDetector(
                 onTap: () {

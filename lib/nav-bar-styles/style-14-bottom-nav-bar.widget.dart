@@ -1,37 +1,11 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle14 extends StatefulWidget {
-  final int selectedIndex;
-  final int previousIndex;
-  final double iconSize;
-  final Color backgroundColor;
-  final bool showElevation;
-  final Duration animationDuration;
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
-  final double navBarHeight;
-  final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
-  final bool popScreensOnTapOfSelectedTab;
-  final ItemAnimationProperties itemAnimationProperties;
-  final NavBarDecoration decoration;
+  final NavBarEssentials navBarEssentials;
 
   BottomNavStyle14({
     Key key,
-    this.selectedIndex,
-    this.previousIndex,
-    this.showElevation = false,
-    this.iconSize,
-    this.backgroundColor,
-    this.decoration,
-    this.itemAnimationProperties,
-    this.popScreensOnTapOfSelectedTab,
-    this.animationDuration = const Duration(milliseconds: 1000),
-    this.navBarHeight = 0.0,
-    @required this.items,
-    this.onItemSelected,
-    this.padding,
-    this.popAllScreensForTheSelectedTab,
+    this.navBarEssentials = const NavBarEssentials(items: null),
   });
 
   @override
@@ -54,15 +28,17 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
     _animationControllerList = List<AnimationController>();
     _animationList = List<Animation<Offset>>();
 
-    for (int i = 0; i < widget.items.length; ++i) {
+    for (int i = 0; i < widget.navBarEssentials.items.length; ++i) {
       _animationControllerList.add(AnimationController(
-          duration: widget.itemAnimationProperties?.duration ??
+          duration: widget.navBarEssentials.itemAnimationProperties?.duration ??
               Duration(milliseconds: 400),
           vsync: this));
       _animationList.add(Tween(
-              begin: Offset(0, widget.navBarHeight / 1.5), end: Offset(0, 0.0))
+              begin: Offset(0, widget.navBarEssentials.navBarHeight / 1.5),
+              end: Offset(0, 0.0))
           .chain(CurveTween(
-              curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
+              curve: widget.navBarEssentials.itemAnimationProperties?.curve ??
+                  Curves.ease))
           .animate(_animationControllerList[i]));
     }
 
@@ -74,12 +50,12 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
   Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected,
       double height, int itemIndex) {
     double itemWidth = ((MediaQuery.of(context).size.width -
-            ((widget.padding?.left ??
+            ((widget.navBarEssentials.padding?.left ??
                     MediaQuery.of(context).size.width * 0.05) +
-                (widget.padding?.right ??
+                (widget.navBarEssentials.padding?.right ??
                     MediaQuery.of(context).size.width * 0.05))) /
-        widget.items.length);
-    return widget.navBarHeight == 0
+        widget.navBarEssentials.items.length);
+    return widget.navBarEssentials.navBarHeight == 0
         ? SizedBox.shrink()
         : AnimatedBuilder(
             animation: _animationList[itemIndex],
@@ -96,11 +72,11 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
                     Expanded(
                       child: IconTheme(
                         data: IconThemeData(
-                            size: widget.iconSize,
+                            size: item.iconSize,
                             color: isSelected
-                                ? (item.activeContentColor == null
+                                ? (item.activeColorAlternate == null
                                     ? item.activeColor
-                                    : item.activeContentColor)
+                                    : item.activeColorAlternate)
                                 : item.inactiveColor == null
                                     ? item.activeColor
                                     : item.inactiveColor),
@@ -117,21 +93,23 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
                               child: FittedBox(
                                 child: Text(
                                   item.title,
-                                  style: item.titleStyle != null
-                                      ? (item.titleStyle.apply(
+                                  style: item.textStyle != null
+                                      ? (item.textStyle.apply(
                                           color: isSelected
-                                              ? (item.activeContentColor == null
+                                              ? (item.activeColorAlternate ==
+                                                      null
                                                   ? item.activeColor
-                                                  : item.activeContentColor)
+                                                  : item.activeColorAlternate)
                                               : item.inactiveColor))
                                       : TextStyle(
                                           color: isSelected
-                                              ? (item.activeContentColor == null
+                                              ? (item.activeColorAlternate ==
+                                                      null
                                                   ? item.activeColor
-                                                  : item.activeContentColor)
+                                                  : item.activeColorAlternate)
                                               : item.inactiveColor,
                                           fontWeight: FontWeight.w400,
-                                          fontSize: item.titleFontSize),
+                                          fontSize: 12.0),
                                 ),
                               ),
                             ),
@@ -139,16 +117,17 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
                     Transform.translate(
                       offset: _animationList[itemIndex].value,
                       child: AnimatedContainer(
-                        duration: widget.itemAnimationProperties?.duration ??
+                        duration: widget.navBarEssentials
+                                .itemAnimationProperties?.duration ??
                             Duration(milliseconds: 400),
                         height: 5.0,
                         width: itemWidth * 0.8,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(100.0),
                             color: isSelected
-                                ? (item.activeContentColor == null
+                                ? (item.activeColorAlternate == null
                                     ? item.activeColor
-                                    : item.activeContentColor)
+                                    : item.activeColorAlternate)
                                 : Colors.transparent),
                       ),
                     ),
@@ -161,7 +140,7 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
 
   @override
   void dispose() {
-    for (int i = 0; i < widget.items.length; ++i) {
+    for (int i = 0; i < widget.navBarEssentials.items.length; ++i) {
       _animationControllerList[i].dispose();
     }
     super.dispose();
@@ -169,66 +148,76 @@ class _BottomNavStyle14State extends State<BottomNavStyle14>
 
   @override
   Widget build(BuildContext context) {
-    if (widget.items.length != _animationControllerList.length) {
+    if (widget.navBarEssentials.items.length !=
+        _animationControllerList.length) {
       _animationControllerList = List<AnimationController>();
       _animationList = List<Animation<Offset>>();
 
-      for (int i = 0; i < widget.items.length; ++i) {
+      for (int i = 0; i < widget.navBarEssentials.items.length; ++i) {
         _animationControllerList.add(AnimationController(
-            duration: widget.itemAnimationProperties?.duration ??
-                Duration(milliseconds: 400),
+            duration:
+                widget.navBarEssentials.itemAnimationProperties?.duration ??
+                    Duration(milliseconds: 400),
             vsync: this));
         _animationList.add(Tween(
-                begin: Offset(0, widget.navBarHeight / 2.0),
+                begin: Offset(0, widget.navBarEssentials.navBarHeight / 2.0),
                 end: Offset(0, 0.0))
             .chain(CurveTween(
-                curve: widget.itemAnimationProperties?.curve ?? Curves.ease))
+                curve: widget.navBarEssentials.itemAnimationProperties?.curve ??
+                    Curves.ease))
             .animate(_animationControllerList[i]));
       }
     }
-    if (widget.selectedIndex != _selectedIndex) {
+    if (widget.navBarEssentials.selectedIndex != _selectedIndex) {
       _lastSelectedIndex = _selectedIndex;
-      _selectedIndex = widget.selectedIndex;
+      _selectedIndex = widget.navBarEssentials.selectedIndex;
       _animationControllerList[_selectedIndex].forward();
       _animationControllerList[_lastSelectedIndex].reverse();
     }
     return Container(
       width: double.infinity,
-      height: widget.navBarHeight,
+      height: widget.navBarEssentials.navBarHeight,
       padding: EdgeInsets.only(
-          left:
-              widget.padding?.left ?? MediaQuery.of(context).size.width * 0.04,
-          right:
-              widget.padding?.right ?? MediaQuery.of(context).size.width * 0.04,
-          top: widget.padding?.top ?? widget.navBarHeight * 0.12,
-          bottom: widget.padding?.bottom ?? widget.navBarHeight * 0.03),
+          left: widget.navBarEssentials.padding?.left ??
+              MediaQuery.of(context).size.width * 0.04,
+          right: widget.navBarEssentials.padding?.right ??
+              MediaQuery.of(context).size.width * 0.04,
+          top: widget.navBarEssentials.padding?.top ??
+              widget.navBarEssentials.navBarHeight * 0.12,
+          bottom: widget.navBarEssentials.padding?.bottom ??
+              widget.navBarEssentials.navBarHeight * 0.03),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: widget.items.map((item) {
-          var index = widget.items.indexOf(item);
+        children: widget.navBarEssentials.items.map((item) {
+          int index = widget.navBarEssentials.items.indexOf(item);
           return Expanded(
             child: GestureDetector(
               onTap: () {
-                if (widget.items[index].onPressed != null) {
-                  widget.items[index].onPressed();
+                if (widget.navBarEssentials.items[index].onPressed != null) {
+                  widget.navBarEssentials.items[index].onPressed();
                 } else {
                   if (index != _selectedIndex) {
                     _lastSelectedIndex = _selectedIndex;
                     _selectedIndex = index;
                     _animationControllerList[_selectedIndex].forward();
                     _animationControllerList[_lastSelectedIndex].reverse();
-                  } else if (widget.popScreensOnTapOfSelectedTab &&
-                      widget.previousIndex == index) {
-                    widget.popAllScreensForTheSelectedTab(index);
+                  } else if (widget
+                          .navBarEssentials.popScreensOnTapOfSelectedTab &&
+                      widget.navBarEssentials.previousIndex == index) {
+                    widget.navBarEssentials
+                        .popAllScreensForTheSelectedTab(index);
                   }
-                  widget.onItemSelected(index);
+                  widget.navBarEssentials.onItemSelected(index);
                 }
               },
               child: Container(
                 color: Colors.transparent,
-                child: _buildItem(item, widget.selectedIndex == index,
-                    widget.navBarHeight, index),
+                child: _buildItem(
+                    item,
+                    widget.navBarEssentials.selectedIndex == index,
+                    widget.navBarEssentials.navBarHeight,
+                    index),
               ),
             ),
           );

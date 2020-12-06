@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2020-12-06
+
+- Added new arguments `navigatorObservers` and `navigatorKeys` for the main navigation bar widget.
+- No need to call `setState` when updating active tab using the PersistentTabController.
+- Function argument `selectedTabScreenContext` exposes `context` of the selected tab.
+- Bug fixes and code refactoring.
+- **Breaking Changes**
+    - `context` is now required in the constructor.
+    - For custom widget, use this constructor `PersistentTabView.custom()`.
+    - `NavBarStyle.custom` has been removed. Please use `PersistentTabView.custom()`.
+    - Argument `iconSize` has been shifted to PersistentBottomNavBarItem.
+    - PersistentBottomNavBarItem argument `activeContentColor`'s name has been changed to `activeColorAlternate`. Functionality remains the same.
+    - PersistentBottomNavBarItem argument `titleStyle`'s name has been changed to `textStyle`. Functionality remains the same.
+
 ## [2.1.0] - 2020-10-02
 
 - Added `TextStyle` property for title in the PersistentBottomNavBarItem.

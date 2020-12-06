@@ -1,48 +1,28 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle15 extends StatelessWidget {
-  final int selectedIndex;
-  final int previousIndex;
-  final double iconSize;
-  final Color backgroundColor;
-  final bool showElevation;
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
-  final double navBarHeight;
-  final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
-  final bool popScreensOnTapOfSelectedTab;
-  final NavBarDecoration decoration;
-  final ItemAnimationProperties itemAnimationProperties;
+  final NavBarEssentials navBarEssentials;
+  final NavBarDecoration navBarDecoration;
 
   BottomNavStyle15({
     Key key,
-    this.selectedIndex,
-    this.previousIndex,
-    this.showElevation = false,
-    this.iconSize,
-    this.itemAnimationProperties,
-    this.backgroundColor,
-    this.navBarHeight = 60.0,
-    this.popAllScreensForTheSelectedTab,
-    this.popScreensOnTapOfSelectedTab,
-    @required this.items,
-    this.onItemSelected,
-    this.padding,
-    this.decoration,
+    this.navBarEssentials = const NavBarEssentials(items: null),
+    this.navBarDecoration = const NavBarDecoration(),
   });
 
   Widget _buildItem(BuildContext context, PersistentBottomNavBarItem item,
       bool isSelected, double height) {
-    return this.navBarHeight == 0
+    return this.navBarEssentials.navBarHeight == 0
         ? SizedBox.shrink()
         : Container(
             width: 150.0,
             height: height,
             color: Colors.transparent,
             padding: EdgeInsets.only(
-                top: this.padding?.top ?? this.navBarHeight * 0.15,
-                bottom: this.padding?.bottom ?? this.navBarHeight * 0.12),
+                top: this.navBarEssentials.padding?.top ??
+                    this.navBarEssentials.navBarHeight * 0.15,
+                bottom: this.navBarEssentials.padding?.bottom ??
+                    this.navBarEssentials.navBarHeight * 0.12),
             child: Container(
               alignment: Alignment.center,
               height: height,
@@ -58,11 +38,11 @@ class BottomNavStyle15 extends StatelessWidget {
                       Expanded(
                         child: IconTheme(
                           data: IconThemeData(
-                              size: iconSize,
+                              size: item.iconSize,
                               color: isSelected
-                                  ? (item.activeContentColor == null
+                                  ? (item.activeColorAlternate == null
                                       ? item.activeColor
-                                      : item.activeContentColor)
+                                      : item.activeColorAlternate)
                                   : item.inactiveColor == null
                                       ? item.activeColor
                                       : item.inactiveColor),
@@ -78,21 +58,23 @@ class BottomNavStyle15 extends StatelessWidget {
                                 child: FittedBox(
                                     child: Text(
                                   item.title,
-                                  style: item.titleStyle != null
-                                      ? (item.titleStyle.apply(
+                                  style: item.textStyle != null
+                                      ? (item.textStyle.apply(
                                           color: isSelected
-                                              ? (item.activeContentColor == null
+                                              ? (item.activeColorAlternate ==
+                                                      null
                                                   ? item.activeColor
-                                                  : item.activeContentColor)
+                                                  : item.activeColorAlternate)
                                               : item.inactiveColor))
                                       : TextStyle(
                                           color: isSelected
-                                              ? (item.activeContentColor == null
+                                              ? (item.activeColorAlternate ==
+                                                      null
                                                   ? item.activeColor
-                                                  : item.activeContentColor)
+                                                  : item.activeColorAlternate)
                                               : item.inactiveColor,
                                           fontWeight: FontWeight.w400,
-                                          fontSize: item.titleFontSize),
+                                          fontSize: 12.0),
                                 )),
                               ),
                             )
@@ -106,12 +88,12 @@ class BottomNavStyle15 extends StatelessWidget {
 
   Widget _buildMiddleItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return this.navBarHeight == 0
+    return this.navBarEssentials.navBarHeight == 0
         ? SizedBox.shrink()
         : Padding(
             padding: EdgeInsets.only(
-                top: this.padding?.top ?? 0.0,
-                bottom: this.padding?.bottom ?? 0.0),
+                top: this.navBarEssentials.padding?.top ?? 0.0,
+                bottom: this.navBarEssentials.padding?.bottom ?? 0.0),
             child: Stack(
               children: <Widget>[
                 Transform.translate(
@@ -126,7 +108,7 @@ class BottomNavStyle15 extends StatelessWidget {
                         color: item.activeColor ?? Colors.white,
                         border:
                             Border.all(color: Colors.transparent, width: 5.0),
-                        boxShadow: this.decoration.boxShadow,
+                        boxShadow: this.navBarDecoration.boxShadow,
                       ),
                       child: Container(
                         alignment: Alignment.center,
@@ -143,10 +125,10 @@ class BottomNavStyle15 extends StatelessWidget {
                                 Expanded(
                                   child: IconTheme(
                                     data: IconThemeData(
-                                        size: iconSize,
-                                        color: item.activeContentColor == null
+                                        size: item.iconSize,
+                                        color: item.activeColorAlternate == null
                                             ? item.activeColor
-                                            : item.activeContentColor),
+                                            : item.activeColorAlternate),
                                     child: item.icon,
                                   ),
                                 ),
@@ -169,19 +151,19 @@ class BottomNavStyle15 extends StatelessWidget {
                             child: FittedBox(
                                 child: Text(
                               item.title,
-                              style: item.titleStyle != null
-                                  ? (item.titleStyle.apply(
+                              style: item.textStyle != null
+                                  ? (item.textStyle.apply(
                                       color: isSelected
-                                          ? (item.activeContentColor == null
+                                          ? (item.activeColorAlternate == null
                                               ? item.activeColor
-                                              : item.activeContentColor)
+                                              : item.activeColorAlternate)
                                           : item.inactiveColor))
                                   : TextStyle(
                                       color: isSelected
                                           ? (item.activeColor)
                                           : item.inactiveColor,
                                       fontWeight: FontWeight.w400,
-                                      fontSize: item.titleFontSize),
+                                      fontSize: 12.0),
                             )),
                           ),
                         ),
@@ -193,62 +175,81 @@ class BottomNavStyle15 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final midIndex = (this.items.length / 2).floor();
+    final midIndex = (this.navBarEssentials.items.length / 2).floor();
     return Container(
       width: double.infinity,
-      height: this.navBarHeight,
+      height: this.navBarEssentials.navBarHeight,
       child: Stack(
         children: <Widget>[
           ClipRRect(
-            borderRadius: this.decoration.borderRadius ?? BorderRadius.zero,
+            borderRadius:
+                this.navBarDecoration.borderRadius ?? BorderRadius.zero,
             child: BackdropFilter(
-              filter: this.items[this.selectedIndex].filter ??
+              filter: this
+                      .navBarEssentials
+                      .items[this.navBarEssentials.selectedIndex]
+                      .filter ??
                   ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: items.map((item) {
-                  var index = items.indexOf(item);
+                children: this.navBarEssentials.items.map((item) {
+                  int index = this.navBarEssentials.items.indexOf(item);
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        if (this.items[index].onPressed != null) {
-                          this.items[index].onPressed();
+                        if (this.navBarEssentials.items[index].onPressed !=
+                            null) {
+                          this.navBarEssentials.items[index].onPressed();
                         } else {
-                          if (this.popScreensOnTapOfSelectedTab &&
-                              this.previousIndex == index) {
-                            this.popAllScreensForTheSelectedTab(index);
+                          if (this
+                                  .navBarEssentials
+                                  .popScreensOnTapOfSelectedTab &&
+                              this.navBarEssentials.previousIndex == index) {
+                            this
+                                .navBarEssentials
+                                .popAllScreensForTheSelectedTab(index);
                           }
-                          this.onItemSelected(index);
+                          this.navBarEssentials.onItemSelected(index);
                         }
                       },
                       child: index == midIndex
                           ? Container(width: 150, color: Colors.transparent)
-                          : _buildItem(context, item, selectedIndex == index,
-                              this.navBarHeight),
+                          : _buildItem(
+                              context,
+                              item,
+                              this.navBarEssentials.selectedIndex == index,
+                              this.navBarEssentials.navBarHeight),
                     ),
                   );
                 }).toList(),
               ),
             ),
           ),
-          this.navBarHeight == 0
+          this.navBarEssentials.navBarHeight == 0
               ? SizedBox.shrink()
               : Center(
                   child: GestureDetector(
                       onTap: () {
-                        if (this.items[midIndex].onPressed != null) {
-                          this.items[midIndex].onPressed();
+                        if (this.navBarEssentials.items[midIndex].onPressed !=
+                            null) {
+                          this.navBarEssentials.items[midIndex].onPressed();
                         } else {
-                          if (this.popScreensOnTapOfSelectedTab &&
-                              this.previousIndex == midIndex) {
-                            this.popAllScreensForTheSelectedTab(midIndex);
+                          if (this
+                                  .navBarEssentials
+                                  .popScreensOnTapOfSelectedTab &&
+                              this.navBarEssentials.previousIndex == midIndex) {
+                            this
+                                .navBarEssentials
+                                .popAllScreensForTheSelectedTab(midIndex);
                           }
-                          this.onItemSelected(midIndex);
+                          this.navBarEssentials.onItemSelected(midIndex);
                         }
                       },
-                      child: _buildMiddleItem(items[midIndex],
-                          selectedIndex == midIndex, this.navBarHeight)),
+                      child: _buildMiddleItem(
+                          this.navBarEssentials.items[midIndex],
+                          this.navBarEssentials.selectedIndex == midIndex,
+                          this.navBarEssentials.navBarHeight)),
                 )
         ],
       ),

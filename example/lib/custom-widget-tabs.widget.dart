@@ -122,25 +122,16 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           ),
         ),
       ),
-      body: PersistentTabView(
+      body: PersistentTabView.custom(
+        context,
         controller: _controller,
         screens: _buildScreens(),
         confineInSafeArea: true,
         itemCount: 5,
-        backgroundColor: Colors.white,
         handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: true,
+        resizeToAvoidBottomInset: false,
         stateManagement: true,
-        hideNavigationBarWhenKeyboardShows: true,
         hideNavigationBar: _hideNavBar,
-        decoration: NavBarDecoration(
-            colorBehindNavBar: Colors.indigo,
-            borderRadius: BorderRadius.circular(20.0)),
-        popAllScreensOnTapOfSelectedTab: true,
-        itemAnimationProperties: ItemAnimationProperties(
-          duration: Duration(milliseconds: 400),
-          curve: Curves.ease,
-        ),
         screenTransitionAnimation: ScreenTransitionAnimation(
           animateTabTransition: true,
           curve: Curves.ease,
@@ -155,8 +146,6 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           },
           selectedIndex: _controller.index,
         ),
-        navBarStyle:
-            NavBarStyle.custom, // Choose the nav bar style with this property
       ),
     );
   }

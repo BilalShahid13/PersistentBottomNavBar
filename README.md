@@ -83,31 +83,32 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return PersistentTabView(
-      controller: _controller,
-      screens: _buildScreens(),
-      items: _navBarsItems(),
-      confineInSafeArea: true,
-      backgroundColor: Colors.white,
-      handleAndroidBackButtonPress: true,
-      resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears.
-      stateManagement: true,
-      hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument.
-      decoration: NavBarDecoration(
+        context,
+        controller: _controller,
+        screens: _buildScreens(),
+        items: _navBarsItems(),
+        confineInSafeArea: true,
+        backgroundColor: Colors.white,
+        handleAndroidBackButtonPress: true,
+        resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears.
+        stateManagement: true,
+        hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument.
+        decoration: NavBarDecoration(
         borderRadius: BorderRadius.circular(10.0),
         colorBehindNavBar: Colors.white,
-      ),
-      popAllScreensOnTapOfSelectedTab: true,
-      popActionScreens: PopActionScreensType.all;
-      itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
+        ),
+        popAllScreensOnTapOfSelectedTab: true,
+        popActionScreens: PopActionScreensType.all;
+        itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
         duration: Duration(milliseconds: 200),
         curve: Curves.ease,
-      ),
-      screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
+        ),
+        screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
         animateTabTransition: true,
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
-      ),
-      navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property.
+        ),
+        navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property.
     );
   }
 }
@@ -250,9 +251,9 @@ If you want to have your own style for the navigation bar, follow these steps:
                         data: IconThemeData(
                             size: 26.0,
                             color: isSelected
-                                ? (item.activeContentColor == null
+                                ? (item.activeColorAlternate == null
                                     ? item.activeColor
-                                    : item.activeContentColor)
+                                    : item.activeColorAlternate)
                                 : item.inactiveColor == null
                                     ? item.activeColor
                                     : item.inactiveColor),
@@ -268,12 +269,12 @@ If you want to have your own style for the navigation bar, follow these steps:
                             item.title,
                             style: TextStyle(
                                 color: isSelected
-                                    ? (item.activeContentColor == null
+                                    ? (item.activeColorAlternate == null
                                         ? item.activeColor
-                                        : item.activeContentColor)
+                                        : item.activeColorAlternate)
                                     : item.inactiveColor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: item.titleFontSize),
+                                fontSize: 12.0),
                         )),
                         ),
                     )
@@ -292,7 +293,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                     child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: items.map((item) {
-                        var index = items.indexOf(item);
+                        int index = items.indexOf(item);
                         return Flexible(
                         child: GestureDetector(
                             onTap: () {
@@ -320,25 +321,25 @@ If you want to have your own style for the navigation bar, follow these steps:
 
         @override
         Widget build(BuildContext context) {
-            return PersistentTabView(
-            controller: _controller,
-            itemCount: items.length, // This is required in case of custom style! Pass the number of items for the nav bar.
-            screens: _buildScreens(),
-            confineInSafeArea: true,
-            handleAndroidBackButtonPress: true,
-            onItemSelected: (int) {
-                setState(() {}); // This is required to update the nav bar if Android back button is pressed
-            },
-            customWidget: CustomNavBarWidget( // Your custom widget goes here
-                items: _navBarsItems(),
-                selectedIndex: _controller.index,
-                onItemSelected: onItemSelected: (index) {
-                    setState(() {
-                        _controller.index = index; // NOTE: THIS IS CRITICAL!! Don't miss it!
-                    });
+            return PersistentTabView.custom(
+                context,
+                controller: _controller,
+                itemCount: items.length, // This is required in case of custom style! Pass the number of items for the nav bar.
+                screens: _buildScreens(),
+                confineInSafeArea: true,
+                handleAndroidBackButtonPress: true,
+                onItemSelected: (int) {
+                    setState(() {}); // This is required to update the nav bar if Android back button is pressed
                 },
-            ),
-            navBarStyle: NavBarStyle.custom, // Choose the nav bar style with this property
+                customWidget: CustomNavBarWidget( // Your custom widget goes here
+                    items: _navBarsItems(),
+                    selectedIndex: _controller.index,
+                    onItemSelected: onItemSelected: (index) {
+                        setState(() {
+                            _controller.index = index; // NOTE: THIS IS CRITICAL!! Don't miss it!
+                        });
+                    },
+                ),
             );
         }
     }

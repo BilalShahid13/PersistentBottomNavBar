@@ -8,24 +8,19 @@ class PersistentBottomNavBarItem {
   ///Title for the bar item. Might not appear is some `styles`.
   final String title;
 
-  ///Color for the current selected item in the navigation bar. If `activeContentColor` property is empty, this will act in its place (recommended). `cupertino activeBlue` by default.
+  ///Color for the current selected item in the navigation bar. If `activeColorAlternate` property is empty, this will act in its place (recommended). `cupertino activeBlue` by default.
   final Color activeColor;
 
   ///Color for the unselected item(s) in the navigation bar.
   final Color inactiveColor;
 
   ///Color for the item's `icon` and `title`. In most styles, declaring the the `activeColor` will be enough. But in some styles like `style7`, this might come help in differentiating the colors.
-  final Color activeContentColor;
+  final Color activeColorAlternate;
 
   ///Padding of the navigation bar item. Applies on all sides. `5.0` by default.
   ///
   ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
   final double contentPadding;
-
-  ///`title` property's font size. `12.0` by default.
-  ///
-  ///`USE WITH CAUTION, MAY BREAK THE NAV BAR`.
-  final double titleFontSize;
 
   ///Enables and controls the transparency effect of the entire NavBar when this tab is selected.
   ///
@@ -47,19 +42,21 @@ class PersistentBottomNavBarItem {
   ///By default -> `ImageFilter.blur(sigmaX: 3.0, sigmaY: 3.0)`.
   final ImageFilter filter;
 
-  final TextStyle titleStyle;
+  final TextStyle textStyle;
+
+  final double iconSize;
 
   PersistentBottomNavBarItem(
       {@required this.icon,
       this.title,
-      this.titleFontSize = 12.0,
       this.contentPadding = 5.0,
       this.activeColor = CupertinoColors.activeBlue,
-      this.activeContentColor,
+      this.activeColorAlternate,
       this.opacity = 1.0,
       this.inactiveColor,
       this.filter,
-      this.titleStyle,
+      this.textStyle,
+      this.iconSize = 26.0,
       this.onSelectedTabPressWhenNoScreensPushed,
       this.onPressed}) {
     assert(icon != null);

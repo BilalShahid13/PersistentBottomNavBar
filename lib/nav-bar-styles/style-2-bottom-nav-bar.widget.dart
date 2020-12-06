@@ -1,38 +1,16 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle2 extends StatelessWidget {
-  final int selectedIndex;
-  final int previousIndex;
-  final double iconSize;
-  final Color backgroundColor;
-  final bool showElevation;
-  final List<PersistentBottomNavBarItem> items;
-  final ValueChanged<int> onItemSelected;
-  final double navBarHeight;
-  final NavBarPadding padding;
-  final Function(int) popAllScreensForTheSelectedTab;
-  final bool popScreensOnTapOfSelectedTab;
-  final ItemAnimationProperties itemAnimationProperties;
+  final NavBarEssentials navBarEssentials;
 
   BottomNavStyle2({
     Key key,
-    this.selectedIndex,
-    this.previousIndex,
-    this.showElevation = false,
-    this.iconSize,
-    this.backgroundColor,
-    this.itemAnimationProperties,
-    this.navBarHeight = 0.0,
-    this.popScreensOnTapOfSelectedTab,
-    this.popAllScreensForTheSelectedTab,
-    @required this.items,
-    this.onItemSelected,
-    this.padding,
+    this.navBarEssentials = const NavBarEssentials(items: null),
   });
 
   Widget _buildItem(
       PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return this.navBarHeight == 0
+    return this.navBarEssentials.navBarHeight == 0
         ? SizedBox.shrink()
         : Container(
             width: 150.0,
@@ -47,11 +25,11 @@ class BottomNavStyle2 extends StatelessWidget {
                   Expanded(
                     child: IconTheme(
                       data: IconThemeData(
-                          size: iconSize,
+                          size: item.iconSize,
                           color: isSelected
-                              ? (item.activeContentColor == null
+                              ? (item.activeColorAlternate == null
                                   ? item.activeColor
-                                  : item.activeContentColor)
+                                  : item.activeColorAlternate)
                               : item.inactiveColor == null
                                   ? item.activeColor
                                   : item.inactiveColor),
@@ -67,19 +45,19 @@ class BottomNavStyle2 extends StatelessWidget {
                             child: FittedBox(
                                 child: Text(
                               isSelected ? item.title : " ",
-                              style: item.titleStyle != null
-                                  ? (item.titleStyle.apply(
+                              style: item.textStyle != null
+                                  ? (item.textStyle.apply(
                                       color: isSelected
-                                          ? (item.activeContentColor == null
+                                          ? (item.activeColorAlternate == null
                                               ? item.activeColor
-                                              : item.activeContentColor)
+                                              : item.activeColorAlternate)
                                           : item.inactiveColor))
                                   : TextStyle(
-                                      color: (item.activeContentColor == null
+                                      color: (item.activeColorAlternate == null
                                           ? item.activeColor
-                                          : item.activeContentColor),
+                                          : item.activeColorAlternate),
                                       fontWeight: FontWeight.w400,
-                                      fontSize: item.titleFontSize),
+                                      fontSize: 12.0),
                             )),
                           ),
                         )
@@ -93,35 +71,40 @@ class BottomNavStyle2 extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: this.navBarHeight,
+      height: this.navBarEssentials.navBarHeight,
       padding: EdgeInsets.only(
-          left: this.padding?.left ?? MediaQuery.of(context).size.width * 0.05,
-          right:
-              this.padding?.right ?? MediaQuery.of(context).size.width * 0.05,
-          top: this.padding?.top ?? this.navBarHeight * 0.15,
-          bottom: this.padding?.bottom ?? this.navBarHeight * 0.12),
+          left: this.navBarEssentials.padding?.left ??
+              MediaQuery.of(context).size.width * 0.05,
+          right: this.navBarEssentials.padding?.right ??
+              MediaQuery.of(context).size.width * 0.05,
+          top: this.navBarEssentials.padding?.top ??
+              this.navBarEssentials.navBarHeight * 0.15,
+          bottom: this.navBarEssentials.padding?.bottom ??
+              this.navBarEssentials.navBarHeight * 0.12),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         crossAxisAlignment: CrossAxisAlignment.center,
-        children: items.map((item) {
-          var index = items.indexOf(item);
+        children: this.navBarEssentials.items.map((item) {
+          int index = this.navBarEssentials.items.indexOf(item);
           return Flexible(
             child: GestureDetector(
               onTap: () {
-                if (this.items[index].onPressed != null) {
-                  this.items[index].onPressed();
+                if (this.navBarEssentials.items[index].onPressed != null) {
+                  this.navBarEssentials.items[index].onPressed();
                 } else {
-                  if (this.popScreensOnTapOfSelectedTab &&
-                      this.previousIndex == index) {
-                    this.popAllScreensForTheSelectedTab(index);
+                  if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
+                      this.navBarEssentials.previousIndex == index) {
+                    this.navBarEssentials.popAllScreensForTheSelectedTab(index);
                   }
-                  this.onItemSelected(index);
+                  this.navBarEssentials.onItemSelected(index);
                 }
               },
               child: Container(
                 color: Colors.transparent,
-                child:
-                    _buildItem(item, selectedIndex == index, this.navBarHeight),
+                child: _buildItem(
+                    item,
+                    this.navBarEssentials.selectedIndex == index,
+                    this.navBarEssentials.navBarHeight),
               ),
             ),
           );
