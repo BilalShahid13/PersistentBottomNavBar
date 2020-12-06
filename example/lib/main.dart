@@ -6,6 +6,8 @@ import 'screens.dart';
 
 void main() => runApp(MyApp());
 
+BuildContext testContext;
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -16,6 +18,12 @@ class MyApp extends StatelessWidget {
       ),
       home: MainMenu(),
       initialRoute: '/',
+      routes: {
+        // When navigating to the "/" route, build the FirstScreen widget.
+        '/first': (context) => MainScreen2(),
+        // When navigating to the "/second" route, build the SecondScreen widget.
+        '/second': (context) => MainScreen3(),
+      },
     );
   }
 }
@@ -204,6 +212,13 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         margin: EdgeInsets.all(10.0),
         popActionScreens: PopActionScreensType.once,
         bottomScreenMargin: 0.0,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => MainScreen2(),
+            '/second': (context) => MainScreen3(),
+          },
+        ),
         onWillPop: () async {
           await showDialog(
             context: context,
@@ -221,6 +236,9 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             ),
           );
           return false;
+        },
+        selectedTabScreenContext: (context) {
+          testContext = context;
         },
         hideNavigationBar: _hideNavBar,
         decoration: NavBarDecoration(

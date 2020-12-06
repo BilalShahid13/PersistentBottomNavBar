@@ -63,9 +63,7 @@ class PersistentTabView extends PersistentTabViewBase {
 
   final BuildContext context;
 
-  final List<NavigatorObserver> navigatorObservers;
-
-  final List<GlobalKey<NavigatorState>> navigatorKeys;
+  final RouteAndNavigatorSettings routeAndNavigatorSettings;
 
   PersistentTabView(this.context,
       {Key key,
@@ -85,7 +83,7 @@ class PersistentTabView extends PersistentTabViewBase {
       this.selectedTabScreenContext,
       this.hideNavigationBarWhenKeyboardShows = true,
       bool popAllScreensOnTapOfSelectedTab = true,
-      String initialRoute,
+      this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
       PopActionScreensType popActionScreens = PopActionScreensType.all,
       this.confineInSafeArea = true,
       this.onWillPop,
@@ -94,8 +92,6 @@ class PersistentTabView extends PersistentTabViewBase {
       ItemAnimationProperties itemAnimationProperties,
       this.hideNavigationBar,
       this.screenTransitionAnimation = const ScreenTransitionAnimation(),
-      this.navigatorKeys,
-      this.navigatorObservers,
       NavBarStyle navBarStyle = NavBarStyle.style1})
       : super(
           key: key,
@@ -108,7 +104,7 @@ class PersistentTabView extends PersistentTabViewBase {
           decoration: decoration,
           hideNavigationBarWhenKeyboardShows:
               hideNavigationBarWhenKeyboardShows,
-          initialRoute: initialRoute,
+          routeAndNavigatorSettings: routeAndNavigatorSettings,
           itemAnimationProperties: itemAnimationProperties,
           navBarStyle: navBarStyle,
           popActionScreens: popActionScreens,
@@ -126,8 +122,6 @@ class PersistentTabView extends PersistentTabViewBase {
           stateManagement: stateManagement,
           handleAndroidBackButtonPress: handleAndroidBackButtonPress,
           hideNavigationBar: hideNavigationBar,
-          navigatorObservers: navigatorObservers,
-          navigatorKeys: navigatorKeys,
           screenTransitionAnimation: screenTransitionAnimation,
         ) {
     assert(items != null,
@@ -140,8 +134,9 @@ class PersistentTabView extends PersistentTabViewBase {
     assert(items.length >= 2 && items.length <= 6,
         "NavBar should have at least 2 or maximum 6 items (Except for styles 15-18)");
     assert(
-        navigatorKeys == null ||
-            navigatorKeys != null && navigatorKeys.length != items.length,
+        routeAndNavigatorSettings.navigatorKeys == null ||
+            routeAndNavigatorSettings.navigatorKeys != null &&
+                routeAndNavigatorSettings.navigatorKeys.length != items.length,
         "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
   }
 
@@ -159,20 +154,20 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardShows = true,
     this.backgroundColor = CupertinoColors.white,
+    this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
     this.confineInSafeArea = true,
     this.onWillPop,
     this.stateManagement = true,
     this.handleAndroidBackButtonPress = true,
     this.hideNavigationBar,
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
-    this.navigatorKeys,
-    this.navigatorObservers,
   }) : super(
           key: key,
           context: context,
           screens: screens,
           controller: controller,
           margin: margin,
+          routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
           floatingActionButton: floatingActionButton,
           customWidget: customWidget,
@@ -187,8 +182,6 @@ class PersistentTabView extends PersistentTabViewBase {
           screenTransitionAnimation: screenTransitionAnimation,
           isCustomWidget: true,
           decoration: NavBarDecoration(),
-          navigatorObservers: navigatorObservers,
-          navigatorKeys: navigatorKeys,
         ) {
     assert(itemCount != null,
         "In case of custom navigation bar style, the property itemCount is required!");
@@ -198,8 +191,9 @@ class PersistentTabView extends PersistentTabViewBase {
     assert(customWidget != null,
         "customWidget shoudl not be null when navBarStyle == NavBarStyle.custom");
     assert(
-        navigatorKeys == null ||
-            navigatorKeys != null && navigatorKeys.length != items.length,
+        routeAndNavigatorSettings.navigatorKeys == null ||
+            routeAndNavigatorSettings.navigatorKeys != null &&
+                routeAndNavigatorSettings.navigatorKeys.length != items.length,
         "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
   }
 }
@@ -292,14 +286,10 @@ class PersistentTabViewBase extends StatefulWidget {
   ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool hideNavigationBar;
 
-  ///Define navigation bar route name here.
+  ///Define navigation bar route name and settings here.
   ///
   ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final String initialRoute;
-
-  final List<NavigatorObserver> navigatorObservers;
-
-  final List<GlobalKey<NavigatorState>> navigatorKeys;
+  final RouteAndNavigatorSettings routeAndNavigatorSettings;
 
   final bool isCustomWidget;
 
@@ -336,11 +326,9 @@ class PersistentTabViewBase extends StatefulWidget {
     this.onWillPop,
     this.hideNavigationBarWhenKeyboardShows,
     this.itemAnimationProperties,
-    this.initialRoute,
-    this.navigatorKeys,
-    this.navigatorObservers,
     this.isCustomWidget,
     this.selectedTabScreenContext,
+    this.routeAndNavigatorSettings,
   }) : super(key: key);
 
   @override
@@ -398,11 +386,18 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           children: <Widget>[
             SizedBox.expand(
               child: CustomTabView(
-                routeName: widget.initialRoute,
-                navigatorKey: widget.navigatorKeys == null
-                    ? null
-                    : widget.navigatorKeys[index],
-                navigatorObservers: widget.navigatorObservers ?? [],
+                routeName: widget.routeAndNavigatorSettings.initialRoute,
+                navigatorKey:
+                    widget.routeAndNavigatorSettings.navigatorKeys == null
+                        ? null
+                        : widget.routeAndNavigatorSettings.navigatorKeys[index],
+                navigatorObservers:
+                    widget.routeAndNavigatorSettings.navigatorObservers ?? [],
+                defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
+                onGenerateRoute:
+                    widget.routeAndNavigatorSettings.onGenerateRoute,
+                onUnknownRoute: widget.routeAndNavigatorSettings.onUnknownRoute,
+                routes: widget.routeAndNavigatorSettings.routes,
                 builder: (BuildContext screenContext) {
                   _contextList[index] = screenContext;
                   return Material(elevation: 0, child: widget.screens[index]);
@@ -424,11 +419,21 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               children: <Widget>[
                 SizedBox.expand(
                   child: CustomTabView(
-                    navigatorKey: widget.navigatorKeys == null
-                        ? null
-                        : widget.navigatorKeys[index],
-                    navigatorObservers: widget.navigatorObservers ?? [],
-                    routeName: widget.initialRoute,
+                    navigatorKey:
+                        widget.routeAndNavigatorSettings.navigatorKeys == null
+                            ? null
+                            : widget
+                                .routeAndNavigatorSettings.navigatorKeys[index],
+                    navigatorObservers:
+                        widget.routeAndNavigatorSettings.navigatorObservers ??
+                            [],
+                    routeName: widget.routeAndNavigatorSettings.initialRoute,
+                    defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
+                    onGenerateRoute:
+                        widget.routeAndNavigatorSettings.onGenerateRoute,
+                    onUnknownRoute:
+                        widget.routeAndNavigatorSettings.onUnknownRoute,
+                    routes: widget.routeAndNavigatorSettings.routes,
                     builder: (BuildContext screenContext) {
                       _contextList[index] = screenContext;
                       return Material(
@@ -496,11 +501,24 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   children: <Widget>[
                     SizedBox.expand(
                       child: CustomTabView(
-                        routeName: widget.initialRoute,
-                        navigatorKey: widget.navigatorKeys == null
-                            ? null
-                            : widget.navigatorKeys[index],
-                        navigatorObservers: widget.navigatorObservers ?? [],
+                        routeName:
+                            widget.routeAndNavigatorSettings.initialRoute,
+                        navigatorKey:
+                            widget.routeAndNavigatorSettings.navigatorKeys ==
+                                    null
+                                ? null
+                                : widget.routeAndNavigatorSettings
+                                    .navigatorKeys[index],
+                        navigatorObservers: widget
+                                .routeAndNavigatorSettings.navigatorObservers ??
+                            [],
+                        defaultTitle:
+                            widget.routeAndNavigatorSettings.defaultTitle,
+                        onGenerateRoute:
+                            widget.routeAndNavigatorSettings.onGenerateRoute,
+                        onUnknownRoute:
+                            widget.routeAndNavigatorSettings.onUnknownRoute,
+                        routes: widget.routeAndNavigatorSettings.routes,
                         builder: (BuildContext screenContext) {
                           _contextList[index] = screenContext;
                           return Material(
@@ -566,11 +584,20 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   ],
                 )
               : CustomTabView(
-                  routeName: widget.initialRoute,
-                  navigatorKey: widget.navigatorKeys == null
-                      ? null
-                      : widget.navigatorKeys[index],
-                  navigatorObservers: widget.navigatorObservers ?? [],
+                  routeName: widget.routeAndNavigatorSettings.initialRoute,
+                  navigatorKey:
+                      widget.routeAndNavigatorSettings.navigatorKeys == null
+                          ? null
+                          : widget
+                              .routeAndNavigatorSettings.navigatorKeys[index],
+                  navigatorObservers:
+                      widget.routeAndNavigatorSettings.navigatorObservers ?? [],
+                  defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
+                  onGenerateRoute:
+                      widget.routeAndNavigatorSettings.onGenerateRoute,
+                  onUnknownRoute:
+                      widget.routeAndNavigatorSettings.onUnknownRoute,
+                  routes: widget.routeAndNavigatorSettings.routes,
                   builder: (BuildContext screenContext) {
                     _contextList[index] = screenContext;
                     return Material(elevation: 0, child: widget.screens[index]);
@@ -625,8 +652,9 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   } else {
                     Navigator.popUntil(
                         _contextList[_controller.index],
-                        ModalRoute.withName(widget.initialRoute ??
-                            '/9f580fc5-c252-45d0-af25-9429992db112'));
+                        ModalRoute.withName(
+                            widget.routeAndNavigatorSettings.initialRoute ??
+                                '/9f580fc5-c252-45d0-af25-9429992db112'));
                   }
                 }
               },

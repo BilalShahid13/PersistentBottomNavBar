@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.1.0] - 2020-12-06
+- Argument `routeAndNavigatorSettings` added to handle `Navigator.pushNamed(context, 'routeName')`. Please define your routes and other navigator settings like navigator observers here as well.
+- **Breaking Changes**
+    - Argument `initalRoute` removed and shifted to `routeAndNavigatorSettings`.
+
 ## [3.0.0] - 2020-12-06
 
 - Added new arguments `navigatorObservers` and `navigatorKeys` for the main navigation bar widget.

@@ -20,6 +20,8 @@ part 'models/tab-view.widget.dart';
 part 'models/nav-bar-padding.model.dart';
 part 'models/nav-bar-animation.model.dart';
 part 'models/page-route-transitions.model.dart';
+part 'models/nav-bar-essentials.model.dart';
+part 'models/route-settings.model.dart';
 
 //Utils
 part 'utils/functions.utils.dart';
@@ -52,4 +54,3 @@ part 'nav-bar-styles/style-17-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/style-18-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/simple-bottom-nav-bar.widget.dart';
 part 'nav-bar-styles/neumorphic-bottom-nav-bar.widget.dart';
-part 'models/nav-bar-essentials.model.dart';
