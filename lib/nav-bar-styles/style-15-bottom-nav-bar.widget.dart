@@ -105,7 +105,7 @@ class BottomNavStyle15 extends StatelessWidget {
                       margin: EdgeInsets.only(top: 2.0),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: item.activeColor ?? Colors.white,
+                        color: item.activeContentColor ?? Colors.white,
                         border:
                             Border.all(color: Colors.transparent, width: 5.0),
                         boxShadow: this.navBarDecoration.boxShadow,
