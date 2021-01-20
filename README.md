@@ -98,17 +98,17 @@ class MyApp extends StatelessWidget {
         colorBehindNavBar: Colors.white,
         ),
         popAllScreensOnTapOfSelectedTab: true,
-        popActionScreens: PopActionScreensType.all;
+        popActionScreens: PopActionScreensType.all,
         itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
-        duration: Duration(milliseconds: 200),
-        curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
+          curve: Curves.ease,
         ),
         screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
-        animateTabTransition: true,
-        curve: Curves.ease,
-        duration: Duration(milliseconds: 200),
+          animateTabTransition: true,
+          curve: Curves.ease,
+          duration: Duration(milliseconds: 200),
         ),
-        navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property.
+        navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property. // Choose the nav bar style with this property.
     );
   }
 }
