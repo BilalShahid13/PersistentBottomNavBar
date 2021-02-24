@@ -334,7 +334,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                 customWidget: CustomNavBarWidget( // Your custom widget goes here
                     items: _navBarsItems(),
                     selectedIndex: _controller.index,
-                    onItemSelected: onItemSelected: (index) {
+                    onItemSelected: (index) {
                         setState(() {
                             _controller.index = index; // NOTE: THIS IS CRITICAL!! Don't miss it!
                         });
