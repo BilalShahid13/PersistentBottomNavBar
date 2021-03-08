@@ -29,6 +29,8 @@
 .pub-cache/
 .pub/
 /build/
+pubspec.lock
+example/pubspec.lock
 
 # Web related
 lib/generated_plugin_registrant.dart
