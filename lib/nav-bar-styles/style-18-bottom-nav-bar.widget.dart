@@ -99,7 +99,7 @@ class BottomNavStyle18 extends StatelessWidget {
                 left: 10.0,
                 right: 10.0),
             decoration: BoxDecoration(
-              color: item.activeColor ?? Colors.white,
+              color: item.activeColor,
               borderRadius: BorderRadius.circular(10.0),
               border: Border.all(color: Colors.transparent, width: 5.0),
               boxShadow: [

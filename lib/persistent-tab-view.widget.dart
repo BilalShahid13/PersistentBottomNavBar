@@ -438,8 +438,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                               height: 21.0 +
                                   min(
                                       widget.navBarHeight!,
-                                      max(widget.decoration!.borderRadius!.topRight.y ?? 0.0,
-                                              widget.decoration!.borderRadius!.topLeft.y ?? 0.0) +
+                                      max(widget.decoration?.borderRadius?.topRight.y ?? 0.0,
+                                              widget.decoration?.borderRadius?.topLeft.y ?? 0.0) +
                                           (widget.decoration?.border != null
                                               ? widget.decoration!.border!.dimensions.vertical
                                               : 0.0)),
@@ -498,8 +498,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                                   height: 21 +
                                       min(
                                           widget.navBarHeight!,
-                                          max(widget.decoration!.borderRadius!.topRight.y ?? 0.0,
-                                                  widget.decoration!.borderRadius!.topLeft.y ?? 0.0) +
+                                          max(widget.decoration?.borderRadius?.topRight.y ?? 0.0,
+                                                  widget.decoration?.borderRadius?.topLeft.y ?? 0.0) +
                                               (widget.decoration?.border != null
                                                   ? widget.decoration!.border!.dimensions.vertical
                                                   : 0.0)),
@@ -620,7 +620,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   ? false
                   : widget.margin.bottom > 0
                       ? false
-                      : widget.confineInSafeArea ?? false,
+                      : widget.confineInSafeArea,
               child: _buildScreen(index),
             );
           },
@@ -630,11 +630,11 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   @override
   Widget build(BuildContext context) {
     _navBarHeight = (widget.resizeToAvoidBottomInset &&
-            MediaQuery.of(widget.context ?? context).viewInsets.bottom > 0 &&
+            MediaQuery.of(widget.context).viewInsets.bottom > 0 &&
             widget.hideNavigationBarWhenKeyboardShows)
         ? 0.0
         : widget.navBarHeight ?? kBottomNavigationBarHeight;
-    if (_contextList.length != widget.itemCount ?? widget.items!.length as bool) {
+    if (_contextList.length != widget.itemCount) {
       _contextList = List<BuildContext?>.filled(
           widget.items == null ? widget.itemCount ?? 0 : widget.items!.length, null,
           growable: false);

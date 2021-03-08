@@ -25,7 +25,7 @@ BoxDecoration getNavBarDecoration({
   }
 }
 
-bool isColorOpaque(BuildContext context, Color color) {
+bool isColorOpaque(BuildContext context, Color? color) {
   final Color backgroundColor =
       color ?? CupertinoTheme.of(context).barBackgroundColor;
   return CupertinoDynamicColor.resolve(backgroundColor, context).alpha == 0xFF;

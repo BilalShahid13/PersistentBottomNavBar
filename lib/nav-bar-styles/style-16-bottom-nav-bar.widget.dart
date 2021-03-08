@@ -10,18 +10,15 @@ class BottomNavStyle16 extends StatelessWidget {
     this.navBarDecoration = const NavBarDecoration(),
   });
 
-  Widget _buildItem(
-      PersistentBottomNavBarItem item, bool isSelected, double? height) {
+  Widget _buildItem(PersistentBottomNavBarItem item, bool isSelected, double? height) {
     return this.navBarEssentials!.navBarHeight == 0
         ? SizedBox.shrink()
         : Container(
             width: 150.0,
             height: height,
             padding: EdgeInsets.only(
-                top: this.navBarEssentials!.padding?.top ??
-                    this.navBarEssentials!.navBarHeight! * 0.15,
-                bottom: this.navBarEssentials!.padding?.bottom ??
-                    this.navBarEssentials!.navBarHeight! * 0.12),
+                top: this.navBarEssentials!.padding?.top ?? this.navBarEssentials!.navBarHeight! * 0.15,
+                bottom: this.navBarEssentials!.padding?.bottom ?? this.navBarEssentials!.navBarHeight! * 0.12),
             child: Container(
               alignment: Alignment.center,
               height: height,
@@ -39,9 +36,7 @@ class BottomNavStyle16 extends StatelessWidget {
                           data: IconThemeData(
                               size: item.iconSize,
                               color: isSelected
-                                  ? (item.activeColorAlternate == null
-                                      ? item.activeColor
-                                      : item.activeColorAlternate)
+                                  ? (item.activeColorAlternate == null ? item.activeColor : item.activeColorAlternate)
                                   : item.inactiveColor == null
                                       ? item.activeColor
                                       : item.inactiveColor),
@@ -60,15 +55,13 @@ class BottomNavStyle16 extends StatelessWidget {
                                   style: item.textStyle != null
                                       ? (item.textStyle!.apply(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
-                                                      null
+                                              ? (item.activeColorAlternate == null
                                                   ? item.activeColor
                                                   : item.activeColorAlternate)
                                               : item.inactiveColor))
                                       : TextStyle(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
-                                                      null
+                                              ? (item.activeColorAlternate == null
                                                   ? item.activeColor
                                                   : item.activeColorAlternate)
                                               : item.inactiveColor,
@@ -85,14 +78,12 @@ class BottomNavStyle16 extends StatelessWidget {
           );
   }
 
-  Widget _buildMiddleItem(BuildContext context, PersistentBottomNavBarItem item,
-      bool isSelected, double? height) {
+  Widget _buildMiddleItem(BuildContext context, PersistentBottomNavBarItem item, bool isSelected, double? height) {
     return this.navBarEssentials!.navBarHeight == 0
         ? SizedBox.shrink()
         : Padding(
             padding: EdgeInsets.only(
-                top: this.navBarEssentials!.padding?.top ?? 0.0,
-                bottom: this.navBarEssentials!.padding?.bottom ?? 0.0),
+                top: this.navBarEssentials!.padding?.top ?? 0.0, bottom: this.navBarEssentials!.padding?.bottom ?? 0.0),
             child: Stack(
               children: <Widget>[
                 Transform.translate(
@@ -103,9 +94,8 @@ class BottomNavStyle16 extends StatelessWidget {
                       height: height - 5.0,
                       margin: EdgeInsets.only(top: 2.0, left: 6.0, right: 6.0),
                       decoration: BoxDecoration(
-                        color: item.activeColor ?? Colors.white,
-                        border:
-                            Border.all(color: Colors.transparent, width: 5.0),
+                        color: item.activeColor,
+                        border: Border.all(color: Colors.transparent, width: 5.0),
                         borderRadius: BorderRadius.circular(10.0),
                         boxShadow: this.navBarDecoration!.boxShadow,
                       ),
@@ -159,11 +149,7 @@ class BottomNavStyle16 extends StatelessWidget {
                                               : item.activeColorAlternate)
                                           : item.inactiveColor))
                                   : TextStyle(
-                                      color: isSelected
-                                          ? (item.activeColor == null
-                                              ? item.inactiveColor
-                                              : item.activeColor)
-                                          : item.inactiveColor,
+                                      color: isSelected ? item.activeColor : item.inactiveColor,
                                       fontWeight: FontWeight.w400,
                                       fontSize: 12.0),
                             )),
@@ -184,13 +170,9 @@ class BottomNavStyle16 extends StatelessWidget {
       child: Stack(
         children: <Widget>[
           ClipRRect(
-            borderRadius:
-                this.navBarDecoration!.borderRadius ?? BorderRadius.zero,
+            borderRadius: this.navBarDecoration!.borderRadius ?? BorderRadius.zero,
             child: BackdropFilter(
-              filter: this
-                      .navBarEssentials!
-                      .items![this.navBarEssentials!.selectedIndex!]
-                      .filter ??
+              filter: this.navBarEssentials!.items![this.navBarEssentials!.selectedIndex!].filter ??
                   ImageFilter.blur(sigmaX: 0.5, sigmaY: 0.5),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -200,17 +182,12 @@ class BottomNavStyle16 extends StatelessWidget {
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        if (this.navBarEssentials!.items![index].onPressed !=
-                            null) {
+                        if (this.navBarEssentials!.items![index].onPressed != null) {
                           this.navBarEssentials!.items![index].onPressed!();
                         } else {
-                          if (this
-                                  .navBarEssentials!
-                                  .popScreensOnTapOfSelectedTab! &&
+                          if (this.navBarEssentials!.popScreensOnTapOfSelectedTab! &&
                               this.navBarEssentials!.previousIndex == index) {
-                            this
-                                .navBarEssentials!
-                                .popAllScreensForTheSelectedTab!(index);
+                            this.navBarEssentials!.popAllScreensForTheSelectedTab!(index);
                           }
                           this.navBarEssentials!.onItemSelected!(index);
                         }
@@ -218,9 +195,7 @@ class BottomNavStyle16 extends StatelessWidget {
                       child: index == midIndex
                           ? Container(width: 150, color: Colors.transparent)
                           : _buildItem(
-                              item,
-                              this.navBarEssentials!.selectedIndex == index,
-                              this.navBarEssentials!.navBarHeight),
+                              item, this.navBarEssentials!.selectedIndex == index, this.navBarEssentials!.navBarHeight),
                     ),
                   );
                 }).toList(),
@@ -232,26 +207,18 @@ class BottomNavStyle16 extends StatelessWidget {
               : Center(
                   child: GestureDetector(
                       onTap: () {
-                        if (this.navBarEssentials!.items![midIndex].onPressed !=
-                            null) {
+                        if (this.navBarEssentials!.items![midIndex].onPressed != null) {
                           this.navBarEssentials!.items![midIndex].onPressed!();
                         } else {
-                          if (this
-                                  .navBarEssentials!
-                                  .popScreensOnTapOfSelectedTab! &&
+                          if (this.navBarEssentials!.popScreensOnTapOfSelectedTab! &&
                               this.navBarEssentials!.previousIndex == midIndex) {
-                            this
-                                .navBarEssentials!
-                                .popAllScreensForTheSelectedTab!(midIndex);
+                            this.navBarEssentials!.popAllScreensForTheSelectedTab!(midIndex);
                           }
                           this.navBarEssentials!.onItemSelected!(midIndex);
                         }
                       },
-                      child: _buildMiddleItem(
-                          context,
-                          this.navBarEssentials!.items![midIndex],
-                          this.navBarEssentials!.selectedIndex == midIndex,
-                          this.navBarEssentials!.navBarHeight)),
+                      child: _buildMiddleItem(context, this.navBarEssentials!.items![midIndex],
+                          this.navBarEssentials!.selectedIndex == midIndex, this.navBarEssentials!.navBarHeight)),
                 )
         ],
       ),

@@ -164,8 +164,8 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
               (widget.tabBar.navBarDecoration!.borderRadius != null
                   ? min(
                       widget.tabBar.navBarEssentials!.navBarHeight!,
-                      max(widget.tabBar.navBarDecoration!.borderRadius!.topRight.y ?? 0.0,
-                              widget.tabBar.navBarDecoration!.borderRadius!.topLeft.y ?? 0.0) +
+                      max(widget.tabBar.navBarDecoration?.borderRadius?.topRight.y ?? 0.0,
+                              widget.tabBar.navBarDecoration?.borderRadius?.topLeft.y ?? 0.0) +
                           (widget.tabBar.navBarDecoration?.border != null
                               ? widget.tabBar.navBarDecoration!.border!.dimensions.vertical
                               : 0.0))
