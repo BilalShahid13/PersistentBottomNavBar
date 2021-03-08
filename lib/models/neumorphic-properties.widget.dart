@@ -3,7 +3,7 @@ part of persistent_bottom_nav_bar;
 class NeumorphicProperties {
   final double bevel;
   final double borderRadius;
-  final BoxBorder border;
+  final BoxBorder? border;
   final BoxShape shape;
   final CurveType curveType;
   final bool showSubtitleText;

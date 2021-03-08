@@ -2,7 +2,7 @@ part of persistent_bottom_nav_bar;
 
 class CustomTabView extends StatefulWidget {
   const CustomTabView({
-    Key key,
+    Key? key,
     this.builder,
     this.navigatorKey,
     this.defaultTitle,
@@ -11,22 +11,21 @@ class CustomTabView extends StatefulWidget {
     this.onUnknownRoute,
     this.routeName,
     this.navigatorObservers = const <NavigatorObserver>[],
-  })  : assert(navigatorObservers != null),
-        super(key: key);
-  final WidgetBuilder builder;
-  final GlobalKey<NavigatorState> navigatorKey;
+  }) : super(key: key);
+  final WidgetBuilder? builder;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
-  final String defaultTitle;
+  final String? defaultTitle;
 
-  final Map<String, WidgetBuilder> routes;
+  final Map<String, WidgetBuilder>? routes;
 
-  final RouteFactory onGenerateRoute;
+  final RouteFactory? onGenerateRoute;
 
-  final RouteFactory onUnknownRoute;
+  final RouteFactory? onUnknownRoute;
 
   final List<NavigatorObserver> navigatorObservers;
 
-  final String routeName;
+  final String? routeName;
 
   @override
   _CustomTabViewState createState() {
@@ -35,8 +34,8 @@ class CustomTabView extends StatefulWidget {
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  HeroController _heroController;
-  List<NavigatorObserver> _navigatorObservers;
+  late HeroController _heroController;
+  late List<NavigatorObserver?> _navigatorObservers;
 
   @override
   void initState() {
@@ -48,16 +47,13 @@ class _CustomTabViewState extends State<CustomTabView> {
   @override
   void didUpdateWidget(CustomTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.navigatorKey != oldWidget.navigatorKey ||
-        widget.navigatorObservers != oldWidget.navigatorObservers) {
+    if (widget.navigatorKey != oldWidget.navigatorKey || widget.navigatorObservers != oldWidget.navigatorObservers) {
       _updateObservers();
     }
   }
 
   void _updateObservers() {
-    _navigatorObservers =
-        List<NavigatorObserver>.from(widget.navigatorObservers)
-          ..add(_heroController);
+    _navigatorObservers = List<NavigatorObserver?>.from(widget.navigatorObservers)..add(_heroController);
   }
 
   @override
@@ -66,40 +62,37 @@ class _CustomTabViewState extends State<CustomTabView> {
       key: widget.navigatorKey,
       onGenerateRoute: _onGenerateRoute,
       onUnknownRoute: _onUnknownRoute,
-      observers: _navigatorObservers,
+      observers: _navigatorObservers as List<NavigatorObserver>,
     );
   }
 
-  Route<dynamic> _onGenerateRoute(RouteSettings settings) {
-    final String name = settings.name;
-    WidgetBuilder routeBuilder;
+  Route<dynamic>? _onGenerateRoute(RouteSettings settings) {
+    final String? name = settings.name;
+    WidgetBuilder? routeBuilder;
     //String title;
     if (name == Navigator.defaultRouteName && widget.builder != null) {
       routeBuilder = widget.builder;
       //title = widget.defaultTitle;
     } else if (widget.routes != null) {
-      routeBuilder = widget.routes[name];
+      routeBuilder = widget.routes![name!];
     }
     if (routeBuilder != null) {
       return PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>
-            routeBuilder(context),
+        pageBuilder: (context, animation, secondaryAnimation) => routeBuilder!(context),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           return child;
         },
-        settings: RouteSettings(
-            name: widget.routeName ?? '/9f580fc5-c252-45d0-af25-9429992db112'),
+        settings: RouteSettings(name: widget.routeName ?? '/9f580fc5-c252-45d0-af25-9429992db112'),
       );
     }
-    if (widget.onGenerateRoute != null) return widget.onGenerateRoute(settings);
+    if (widget.onGenerateRoute != null) return widget.onGenerateRoute!(settings);
     return null;
   }
 
-  Route<dynamic> _onUnknownRoute(RouteSettings settings) {
+  Route<dynamic>? _onUnknownRoute(RouteSettings settings) {
     assert(() {
       if (widget.onUnknownRoute == null) {
-        throw FlutterError(
-            'Could not find a generator for route $settings in the $runtimeType.\n'
+        throw FlutterError('Could not find a generator for route $settings in the $runtimeType.\n'
             'Generators for routes are searched for in the following order:\n'
             ' 1. For the "/" route, the "builder" property, if non-null, is used.\n'
             ' 2. Otherwise, the "routes" table is used, if it has an entry for '
@@ -111,7 +104,7 @@ class _CustomTabViewState extends State<CustomTabView> {
       }
       return true;
     }());
-    final Route<dynamic> result = widget.onUnknownRoute(settings);
+    final Route<dynamic>? result = widget.onUnknownRoute!(settings);
     assert(() {
       if (result == null) {
         throw FlutterError('The onUnknownRoute callback returned null.\n'

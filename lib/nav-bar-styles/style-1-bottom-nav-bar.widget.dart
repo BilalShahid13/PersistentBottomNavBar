@@ -4,17 +4,17 @@ class BottomNavStyle1 extends StatelessWidget {
   final NavBarEssentials navBarEssentials;
 
   BottomNavStyle1({
-    Key key,
+    Key? key,
     this.navBarEssentials = const NavBarEssentials(items: null),
   });
 
   Widget _buildItem(
-      PersistentBottomNavBarItem item, bool isSelected, double height) {
+      PersistentBottomNavBarItem item, bool isSelected, double? height) {
     return this.navBarEssentials.navBarHeight == 0
         ? SizedBox.shrink()
         : AnimatedContainer(
             width: isSelected ? 120 : 50,
-            height: height / 1.6,
+            height: height! / 1.6,
             duration: navBarEssentials.itemAnimationProperties?.duration ??
                 Duration(milliseconds: 400),
             curve:
@@ -23,7 +23,7 @@ class BottomNavStyle1 extends StatelessWidget {
             decoration: BoxDecoration(
               color: isSelected
                   ? item.activeColor.withOpacity(0.2)
-                  : navBarEssentials.backgroundColor.withOpacity(0.0),
+                  : navBarEssentials.backgroundColor!.withOpacity(0.0),
               borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
             child: Container(
@@ -59,9 +59,9 @@ class BottomNavStyle1 extends StatelessWidget {
                                 type: MaterialType.transparency,
                                 child: FittedBox(
                                     child: Text(
-                                  item.title,
+                                  item.title!,
                                   style: item.textStyle != null
-                                      ? (item.textStyle.apply(
+                                      ? (item.textStyle!.apply(
                                           color: isSelected
                                               ? (item.activeColorAlternate ==
                                                       null
@@ -93,36 +93,36 @@ class BottomNavStyle1 extends StatelessWidget {
         padding: this.navBarEssentials.padding == null
             ? EdgeInsets.symmetric(
                 horizontal: MediaQuery.of(context).size.width * 0.07,
-                vertical: this.navBarEssentials.navBarHeight * 0.15,
+                vertical: this.navBarEssentials.navBarHeight! * 0.15,
               )
             : EdgeInsets.only(
                 top: this.navBarEssentials.padding?.top ??
-                    this.navBarEssentials.navBarHeight * 0.15,
+                    this.navBarEssentials.navBarHeight! * 0.15,
                 left: this.navBarEssentials.padding?.left ??
                     MediaQuery.of(context).size.width * 0.07,
                 right: this.navBarEssentials.padding?.right ??
                     MediaQuery.of(context).size.width * 0.07,
                 bottom: this.navBarEssentials.padding?.bottom ??
-                    this.navBarEssentials.navBarHeight * 0.15),
+                    this.navBarEssentials.navBarHeight! * 0.15),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: this.navBarEssentials.items.map((item) {
-            int index = this.navBarEssentials.items.indexOf(item);
+          children: this.navBarEssentials.items!.map((item) {
+            int index = this.navBarEssentials.items!.indexOf(item);
             return Flexible(
               flex: this.navBarEssentials.selectedIndex == index ? 2 : 1,
               child: GestureDetector(
                 onTap: () {
-                  if (this.navBarEssentials.items[index].onPressed != null) {
-                    this.navBarEssentials.items[index].onPressed();
+                  if (this.navBarEssentials.items![index].onPressed != null) {
+                    this.navBarEssentials.items![index].onPressed!();
                   } else {
-                    if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
+                    if (this.navBarEssentials.popScreensOnTapOfSelectedTab! &&
                         this.navBarEssentials.previousIndex == index) {
                       this
                           .navBarEssentials
-                          .popAllScreensForTheSelectedTab(index);
+                          .popAllScreensForTheSelectedTab!(index);
                     }
-                    this.navBarEssentials.onItemSelected(index);
+                    this.navBarEssentials.onItemSelected!(index);
                   }
                 },
                 child: _buildItem(

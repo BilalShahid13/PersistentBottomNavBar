@@ -7,11 +7,8 @@ class MainScreen extends StatelessWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
-  const MainScreen(
-      {Key key,
-      this.menuScreenContext,
-      this.onScreenHideButtonPressed,
-      this.hideStatus = false})
+
+  const MainScreen({Key key, this.menuScreenContext, this.onScreenHideButtonPressed, this.hideStatus = false})
       : super(key: key);
 
   @override
@@ -27,8 +24,7 @@ class MainScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 30.0, vertical: 20.0),
+                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
                 child: TextField(
                   decoration: InputDecoration(hintText: "Test Text Field"),
                 ),
@@ -41,8 +37,7 @@ class MainScreen extends StatelessWidget {
                       context,
                       settings: RouteSettings(name: '/home'),
                       screen: MainScreen2(),
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.scaleRotate,
+                      pageTransitionAnimation: PageTransitionAnimation.scaleRotate,
                     );
                   },
                   child: Text(
@@ -88,11 +83,11 @@ class MainScreen extends StatelessWidget {
                       backgroundColor: Colors.white,
                       useRootNavigator: false,
                       builder: (context) => Center(
-                        child: RaisedButton(
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(primary: Colors.blue),
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          color: Colors.blue,
                           child: Text(
                             "Exit",
                             style: TextStyle(color: Colors.white),
@@ -111,8 +106,7 @@ class MainScreen extends StatelessWidget {
                 child: RaisedButton(
                   color: Colors.lime,
                   onPressed: () {
-                    pushDynamicScreen(context,
-                        screen: SampleModalScreen(), withNavBar: true);
+                    pushDynamicScreen(context, screen: SampleModalScreen(), withNavBar: true);
                   },
                   child: Text(
                     "Push Dynamic/Modal Screen",
@@ -127,9 +121,7 @@ class MainScreen extends StatelessWidget {
                     this.onScreenHideButtonPressed();
                   },
                   child: Text(
-                    this.hideStatus
-                        ? "Unhide Navigation Bar"
-                        : "Hide Navigation Bar",
+                    this.hideStatus ? "Unhide Navigation Bar" : "Hide Navigation Bar",
                     style: TextStyle(color: Colors.white),
                   ),
                 ),

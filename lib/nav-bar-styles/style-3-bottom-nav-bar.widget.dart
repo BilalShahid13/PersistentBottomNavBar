@@ -1,30 +1,30 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle3 extends StatelessWidget {
-  final NavBarEssentials navBarEssentials;
+  final NavBarEssentials? navBarEssentials;
 
   BottomNavStyle3({
-    Key key,
+    Key? key,
     this.navBarEssentials = const NavBarEssentials(items: null),
   });
 
   Widget _buildItem(
-      PersistentBottomNavBarItem item, bool isSelected, double height) {
-    return this.navBarEssentials.navBarHeight == 0
+      PersistentBottomNavBarItem item, bool isSelected, double? height) {
+    return this.navBarEssentials!.navBarHeight == 0
         ? SizedBox.shrink()
         : AnimatedContainer(
             width: 100.0,
-            height: height / 1.0,
-            duration: this.navBarEssentials.itemAnimationProperties?.duration ??
+            height: height! / 1.0,
+            duration: this.navBarEssentials!.itemAnimationProperties?.duration ??
                 Duration(milliseconds: 1000),
-            curve: this.navBarEssentials.itemAnimationProperties?.curve ??
+            curve: this.navBarEssentials!.itemAnimationProperties?.curve ??
                 Curves.ease,
             alignment: Alignment.center,
             child: AnimatedContainer(
               duration:
-                  this.navBarEssentials.itemAnimationProperties?.duration ??
+                  this.navBarEssentials!.itemAnimationProperties?.duration ??
                       Duration(milliseconds: 1000),
-              curve: this.navBarEssentials.itemAnimationProperties?.curve ??
+              curve: this.navBarEssentials!.itemAnimationProperties?.curve ??
                   Curves.ease,
               alignment: Alignment.center,
               height: height / 1.0,
@@ -55,13 +55,13 @@ class BottomNavStyle3 extends StatelessWidget {
                             child: DefaultTextStyle.merge(
                               style: TextStyle(
                                   color: item.textStyle != null
-                                      ? (item.textStyle.apply(
+                                      ? item.textStyle!.apply(
                                           color: isSelected
                                               ? (item.activeColorAlternate ==
                                                       null
                                                   ? item.activeColor
                                                   : item.activeColorAlternate)
-                                              : item.inactiveColor))
+                                              : item.inactiveColor) as Color?
                                       : isSelected
                                           ? (item.activeColorAlternate == null
                                               ? item.activeColor
@@ -69,7 +69,7 @@ class BottomNavStyle3 extends StatelessWidget {
                                           : item.inactiveColor,
                                   fontWeight: FontWeight.w400,
                                   fontSize: 12.0),
-                              child: FittedBox(child: Text(item.title)),
+                              child: FittedBox(child: Text(item.title!)),
                             ),
                           ),
                         ),
@@ -82,48 +82,48 @@ class BottomNavStyle3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color selectedItemActiveColor = this
-        .navBarEssentials
-        .items[this.navBarEssentials.selectedIndex]
+        .navBarEssentials!
+        .items![this.navBarEssentials!.selectedIndex!]
         .activeColor;
     double itemWidth = ((MediaQuery.of(context).size.width -
-            ((this.navBarEssentials.padding?.left ??
+            ((this.navBarEssentials!.padding?.left ??
                     MediaQuery.of(context).size.width * 0.05) +
-                (this.navBarEssentials.padding?.right ??
+                (this.navBarEssentials!.padding?.right ??
                     MediaQuery.of(context).size.width * 0.05))) /
-        this.navBarEssentials.items.length);
+        this.navBarEssentials!.items!.length);
     return Container(
       width: double.infinity,
-      height: this.navBarEssentials.navBarHeight,
+      height: this.navBarEssentials!.navBarHeight,
       padding: EdgeInsets.only(
-          top: this.navBarEssentials.padding?.top ?? 0.0,
-          left: this.navBarEssentials.padding?.left ??
+          top: this.navBarEssentials!.padding?.top ?? 0.0,
+          left: this.navBarEssentials!.padding?.left ??
               MediaQuery.of(context).size.width * 0.05,
-          right: this.navBarEssentials.padding?.right ??
+          right: this.navBarEssentials!.padding?.right ??
               MediaQuery.of(context).size.width * 0.05,
-          bottom: this.navBarEssentials.padding?.bottom ??
-              this.navBarEssentials.navBarHeight * 0.1),
+          bottom: this.navBarEssentials!.padding?.bottom ??
+              this.navBarEssentials!.navBarHeight! * 0.1),
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
               AnimatedContainer(
                 duration:
-                    this.navBarEssentials.itemAnimationProperties?.duration ??
+                    this.navBarEssentials!.itemAnimationProperties?.duration ??
                         Duration(milliseconds: 300),
-                curve: this.navBarEssentials.itemAnimationProperties?.curve ??
+                curve: this.navBarEssentials!.itemAnimationProperties?.curve ??
                     Curves.ease,
                 color: Colors.transparent,
-                width: this.navBarEssentials.selectedIndex == 0
+                width: this.navBarEssentials!.selectedIndex == 0
                     ? MediaQuery.of(context).size.width * 0.0
-                    : itemWidth * this.navBarEssentials.selectedIndex,
+                    : itemWidth * this.navBarEssentials!.selectedIndex!,
                 height: 4.0,
               ),
               Flexible(
                 child: AnimatedContainer(
                   duration:
-                      this.navBarEssentials.itemAnimationProperties?.duration ??
+                      this.navBarEssentials!.itemAnimationProperties?.duration ??
                           Duration(milliseconds: 300),
-                  curve: this.navBarEssentials.itemAnimationProperties?.curve ??
+                  curve: this.navBarEssentials!.itemAnimationProperties?.curve ??
                       Curves.ease,
                   width: itemWidth,
                   height: 4.0,
@@ -142,32 +142,32 @@ class BottomNavStyle3 extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 crossAxisAlignment: CrossAxisAlignment.center,
-                children: this.navBarEssentials.items.map((item) {
-                  int index = this.navBarEssentials.items.indexOf(item);
+                children: this.navBarEssentials!.items!.map((item) {
+                  int index = this.navBarEssentials!.items!.indexOf(item);
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        if (this.navBarEssentials.items[index].onPressed !=
+                        if (this.navBarEssentials!.items![index].onPressed !=
                             null) {
-                          this.navBarEssentials.items[index].onPressed();
+                          this.navBarEssentials!.items![index].onPressed!();
                         } else {
                           if (this
-                                  .navBarEssentials
-                                  .popScreensOnTapOfSelectedTab &&
-                              this.navBarEssentials.previousIndex == index) {
+                                  .navBarEssentials!
+                                  .popScreensOnTapOfSelectedTab! &&
+                              this.navBarEssentials!.previousIndex == index) {
                             this
-                                .navBarEssentials
-                                .popAllScreensForTheSelectedTab(index);
+                                .navBarEssentials!
+                                .popAllScreensForTheSelectedTab!(index);
                           }
-                          this.navBarEssentials.onItemSelected(index);
+                          this.navBarEssentials!.onItemSelected!(index);
                         }
                       },
                       child: Container(
                         color: Colors.transparent,
                         child: _buildItem(
                             item,
-                            this.navBarEssentials.selectedIndex == index,
-                            this.navBarEssentials.navBarHeight),
+                            this.navBarEssentials!.selectedIndex == index,
+                            this.navBarEssentials!.navBarHeight),
                       ),
                     ),
                   );
