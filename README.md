@@ -119,8 +119,8 @@ class MyApp extends StatelessWidget {
 
     List<Widget> _buildScreens() {
         return [
-        MainScreen(),
-        SettingsScreen()
+          MainScreen(),
+          SettingsScreen()
         ];
     }
 
@@ -206,13 +206,13 @@ If you are pushing a new `modal` screen, use the following function:
 
     ```dart
         Navigator.of(context).pushAndRemoveUntil(
-        CupertinoPageRoute(
-        builder: (BuildContext context) {
-            return FirstScreen();
-        },
-        ),
-        (_) => false,
-    );
+          CupertinoPageRoute(
+            builder: (BuildContext context) {
+              return FirstScreen();
+            },
+          ),
+          (_) => false,
+        );
     ```
 
 - To push bottom sheet on top of the Navigation Bar, use showModalBottomScreen and set it's property `useRootNavigator` to true. See example project for an illustration.
