@@ -609,7 +609,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         floatingActionButton: widget.floatingActionButton,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         backgroundColor: Colors.transparent,
-        child: PersistentTabScaffold(
+        body: PersistentTabScaffold(
           controller: _controller,
           itemCount: widget.items == null
               ? widget.itemCount ?? 0
