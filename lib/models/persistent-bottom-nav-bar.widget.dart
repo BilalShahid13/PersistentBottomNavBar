@@ -242,7 +242,9 @@ class PersistentBottomNavBar extends StatelessWidget {
             navBarEssentials: this.navBarEssentials,
           );
         case NavBarStyle.style11:
-          return BottomNavStyle11();
+          return BottomNavStyle11(
+            navBarEssentials: this.navBarEssentials,
+          );
         case NavBarStyle.style12:
           return BottomNavStyle12(
             navBarEssentials: this.navBarEssentials,
