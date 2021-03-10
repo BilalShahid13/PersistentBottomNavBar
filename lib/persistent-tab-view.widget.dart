@@ -18,8 +18,13 @@ class PersistentTabView extends PersistentTabViewBase {
   final Color backgroundColor;
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
+  ///
+  ///Only want the floatingActionButton on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `floatingActionButton` there. Note that that FAB will be displayed near/under this persistent FAB if this is specified: use a Padding widget to move it up so it is visible.
   final Widget persistentFloatingActionButton;
   
+  ///A widget (usually AppBar) which is displayed like the app bar at all times.
+  ///
+  ///Only want the app bar on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `appBar` there. Note that that AppBar will be displayed under this persistent app bar if this is specified.
   final PreferredSizeWidget persistentAppBar;
 
   ///Specifies the navBarHeight
@@ -237,9 +242,14 @@ class PersistentTabViewBase extends StatefulWidget {
   final NeumorphicProperties neumorphicProperties;
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
+  ///
+  ///Only want the floatingActionButton on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `floatingActionButton` there. Note that that FAB will be displayed near/under this persistent FAB if this is specified: use a Padding widget to move it up so it is visible.
   final Widget persistentFloatingActionButton;
   
-  final Widget persistentAppBar;
+  ///A widget (usually AppBar) which is displayed like the app bar at all times.
+  ///
+  ///Only want the app bar on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `appBar` there. Note that that AppBar will be displayed under this persistent app bar if this is specified.
+  final PreferredSizeWidget persistentAppBar;
 
   ///Specifies the navBarHeight
   ///
@@ -415,15 +425,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                 },
               ),
             ),
-            /*
-            OLD METHOD OF ADDING FLOATING ACTION BUTTON
-            Positioned(
-              bottom: widget.decoration.borderRadius != BorderRadius.zero
-                  ? 25.0
-                  : 10.0,
-              right: 10.0,
-              child: widget.persistentFloatingActionButton,
-            ),*/
           ],
         )
       : widget.navBarStyle == NavBarStyle.style15
@@ -618,7 +619,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
 
   Widget navigationBarWidget() => Scaffold(
         floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: widget.navBarHeight + 5),
+          padding: EdgeInsets.only(bottom: widget.navBarHeight + 2),
           child: widget.persistentFloatingActionButton,
         ),
         appBar: widget.persistentAppBar,
