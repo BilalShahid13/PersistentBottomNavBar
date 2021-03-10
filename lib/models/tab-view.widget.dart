@@ -23,7 +23,7 @@ class CustomTabView extends StatefulWidget {
 
   final RouteFactory? onUnknownRoute;
 
-  final List<NavigatorObserver> navigatorObservers;
+  final List<NavigatorObserver?> navigatorObservers;
 
   final String? routeName;
 
