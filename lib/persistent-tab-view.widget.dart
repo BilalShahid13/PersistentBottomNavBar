@@ -18,7 +18,9 @@ class PersistentTabView extends PersistentTabViewBase {
   final Color backgroundColor;
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
-  final Widget floatingActionButton;
+  final Widget persistentFloatingActionButton;
+  
+  final PreferredSizeWidget persistentAppBar;
 
   ///Specifies the navBarHeight
   ///
@@ -75,7 +77,8 @@ class PersistentTabView extends PersistentTabViewBase {
       this.backgroundColor = CupertinoColors.white,
       ValueChanged<int> onItemSelected,
       NeumorphicProperties neumorphicProperties,
-      this.floatingActionButton,
+      this.persistentFloatingActionButton,
+      this.persistentAppBar,
       NavBarPadding padding = const NavBarPadding.all(null),
       NavBarDecoration decoration = const NavBarDecoration(),
       this.resizeToAvoidBottomInset = false,
@@ -113,7 +116,8 @@ class PersistentTabView extends PersistentTabViewBase {
           backgroundColor: backgroundColor,
           onItemSelected: onItemSelected,
           neumorphicProperties: neumorphicProperties,
-          floatingActionButton: floatingActionButton,
+          persistentFloatingActionButton: persistentFloatingActionButton,
+          persistentAppBar: persistentAppBar,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           bottomScreenMargin: bottomScreenMargin,
           onWillPop: onWillPop,
@@ -146,7 +150,7 @@ class PersistentTabView extends PersistentTabViewBase {
     @required this.screens,
     this.controller,
     this.margin = EdgeInsets.zero,
-    this.floatingActionButton,
+    this.persistentFloatingActionButton,
     Widget customWidget,
     int itemCount,
     this.resizeToAvoidBottomInset = false,
@@ -169,7 +173,7 @@ class PersistentTabView extends PersistentTabViewBase {
           margin: margin,
           routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
-          floatingActionButton: floatingActionButton,
+          persistentFloatingActionButton: persistentFloatingActionButton,
           customWidget: customWidget,
           itemCount: itemCount,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
@@ -231,7 +235,7 @@ class PersistentTabViewBase extends StatefulWidget {
   final NeumorphicProperties neumorphicProperties;
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
-  final Widget floatingActionButton;
+  final Widget persistentFloatingActionButton;
 
   ///Specifies the navBarHeight
   ///
@@ -301,7 +305,7 @@ class PersistentTabViewBase extends StatefulWidget {
     Key key,
     this.screens,
     this.controller,
-    this.floatingActionButton,
+    this.persistentFloatingActionButton,
     this.margin,
     this.confineInSafeArea,
     this.handleAndroidBackButtonPress,
@@ -382,7 +386,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     }
   }
 
-  Widget _buildScreen(int index) => widget.floatingActionButton != null
+  Widget _buildScreen(int index) => widget.persistentFloatingActionButton != null
       ? Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -406,13 +410,15 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                 },
               ),
             ),
+            /*
+            OLD METHOD OF ADDING FLOATING ACTION BUTTON
             Positioned(
               bottom: widget.decoration.borderRadius != BorderRadius.zero
                   ? 25.0
                   : 10.0,
               right: 10.0,
-              child: widget.floatingActionButton,
-            ),
+              child: widget.persistentFloatingActionButton,
+            ),*/
           ],
         )
       : widget.navBarStyle == NavBarStyle.style15
@@ -606,7 +612,11 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   });
 
   Widget navigationBarWidget() => Scaffold(
-        floatingActionButton: widget.floatingActionButton,
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: widget.navBarHeight + 5),
+          child: widget.persistentFloatingActionButton,
+        ),
+        appBar: widget.persistentAppBar,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         backgroundColor: Colors.transparent,
         body: PersistentTabScaffold(
