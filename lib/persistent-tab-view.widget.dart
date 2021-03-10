@@ -151,6 +151,7 @@ class PersistentTabView extends PersistentTabViewBase {
     this.controller,
     this.margin = EdgeInsets.zero,
     this.persistentFloatingActionButton,
+    this.persistentAppBar,
     Widget customWidget,
     int itemCount,
     this.resizeToAvoidBottomInset = false,
@@ -174,6 +175,7 @@ class PersistentTabView extends PersistentTabViewBase {
           routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
           persistentFloatingActionButton: persistentFloatingActionButton,
+          persistentAppBar: persistentAppBar,
           customWidget: customWidget,
           itemCount: itemCount,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
@@ -236,6 +238,8 @@ class PersistentTabViewBase extends StatefulWidget {
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
   final Widget persistentFloatingActionButton;
+  
+  final Widget persistentAppBar;
 
   ///Specifies the navBarHeight
   ///
@@ -306,6 +310,7 @@ class PersistentTabViewBase extends StatefulWidget {
     this.screens,
     this.controller,
     this.persistentFloatingActionButton,
+    this.persistentAppBar,
     this.margin,
     this.confineInSafeArea,
     this.handleAndroidBackButtonPress,
