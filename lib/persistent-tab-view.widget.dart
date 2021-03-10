@@ -368,9 +368,11 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         if (widget.selectedTabScreenContext != null) {
           widget.selectedTabScreenContext(_contextList[_controller.index]);
         }
-        setState(
-          () => _currentIndex = _controller.index,
-        );
+        if (mounted) {
+          setState(
+            () => _currentIndex = _controller.index,
+          );
+        }
       }
     });
     if (widget.selectedTabScreenContext != null) {
