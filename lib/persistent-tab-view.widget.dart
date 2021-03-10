@@ -605,7 +605,8 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                     return Material(elevation: 0, child: widget.screens[index]);
                   });
 
-  Widget navigationBarWidget() => CupertinoPageScaffold(
+  Widget navigationBarWidget() => Scaffold(
+        floatingActionButton: widget.floatingActionButton,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         backgroundColor: Colors.transparent,
         child: PersistentTabScaffold(
