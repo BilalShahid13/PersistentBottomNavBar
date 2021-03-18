@@ -217,6 +217,47 @@ If you are pushing a new `modal` screen, use the following function:
 
 - To push bottom sheet on top of the Navigation Bar, use showModalBottomScreen and set it's property `useRootNavigator` to true. See example project for an illustration.
 
+## Floating Action Buttons & App Bars
+### Floating Action Buttons
+You can configure a floating action button that will sit above the navigation bar on the side of the screen by using `persistentFloatingActionButton`. This will stay floating when animating between screens, and replaces the now removed ~`floatingActionButton`~ property. Pass in a widget to this property (usually a `FloatingActionButton`), and it'll work out of the box.
+
+If you need a particular FAB on one screen, wrap that screen's widget in another `Scaffold` and use the `floatingActionButton` property there. You'll need to add some bottom padding (wrap the `FloatingActionButton` in `Padding`) to move it out of the way of the `persistentFloatingActionButton` if one has been specified; you can use `66` logical pixels if using the default bar height.
+
+One advanced setup would be to have the FAB expanded on the first screen, and standard size on all the others. This can be done using the code below:
+```dart
+FloatingActionButton.extended(
+  onPressed: () {},
+  isExtended: pageController.index == 0,
+  label: AnimatedSwitcher(
+    duration: Duration(milliseconds: 300),
+    transitionBuilder: (Widget child, Animation<double> animation) =>
+      FadeTransition(
+        opacity: animation,
+        child: SizeTransition(
+          child: child,
+          sizeFactor: animation,
+          axis: Axis.horizontal,
+        ),
+      ),
+    child: pageController.index != 0
+      ? Icon(Icons.ac_unit)
+      : Row(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(right: 6.0),
+            child: Icon(Icons.ac_unit)
+          ),
+          Text('AC UNIT')
+        ],
+     ),
+  ),
+),
+```
+### App Bar
+You can configure an app bar that will strech at the top of the screen using `persistentAppBar`. This will stay floating when animating between screens. Pass in a `PrefferedSizeWidget` widget to this property (usually an `AppBar`), and it'll work out of the box.
+
+If you need a particular app bar on one screen, wrap that screen's widget in another `Scaffold` and use the `appBar` property there. Because the `persistentAppBar` takes up space if it has been setup, any app bar in each screen will automatically position itself below the `persistentAppBar`.
+
 ## Custom Navigation Bar Styling
 
 If you want to have your own style for the navigation bar, follow these steps:
