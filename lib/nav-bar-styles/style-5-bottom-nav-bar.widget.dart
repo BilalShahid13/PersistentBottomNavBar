@@ -27,13 +27,15 @@ class BottomNavStyle5 extends StatelessWidget {
                       data: IconThemeData(
                           size: item.iconSize,
                           color: isSelected
-                              ? (item.activeColorAlternate == null
-                                  ? item.activeColor
-                                  : item.activeColorAlternate)
-                              : item.inactiveColor == null
-                                  ? item.activeColor
-                                  : item.inactiveColor),
-                      child: item.icon,
+                              ? (item.activeColorSecondary == null
+                                  ? item.activeColorPrimary
+                                  : item.activeColorSecondary)
+                              : item.inactiveColorPrimary == null
+                                  ? item.activeColorPrimary
+                                  : item.inactiveColorPrimary),
+                      child: isSelected
+                          ? item.icon
+                          : item.inactiveIcon ?? item.icon,
                     ),
                   ),
                   Container(
@@ -42,9 +44,9 @@ class BottomNavStyle5 extends StatelessWidget {
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(100.0),
                         color: isSelected
-                            ? (item.activeColorAlternate == null
-                                ? item.activeColor
-                                : item.activeColorAlternate)
+                            ? (item.activeColorSecondary == null
+                                ? item.activeColorPrimary
+                                : item.activeColorSecondary)
                             : Colors.transparent),
                   ),
                 ],
@@ -76,12 +78,9 @@ class BottomNavStyle5 extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (this.navBarEssentials.items[index].onPressed != null) {
-                  this.navBarEssentials.items[index].onPressed();
+                  this.navBarEssentials.items[index].onPressed(
+                      this.navBarEssentials.selectedScreenBuildContext);
                 } else {
-                  if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
-                      this.navBarEssentials.previousIndex == index) {
-                    this.navBarEssentials.popAllScreensForTheSelectedTab(index);
-                  }
                   this.navBarEssentials.onItemSelected(index);
                 }
               },

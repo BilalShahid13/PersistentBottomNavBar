@@ -133,14 +133,14 @@ class MyApp extends StatelessWidget {
             PersistentBottomNavBarItem(
                 icon: Icon(CupertinoIcons.home),
                 title: ("Home"),
-                activeColor: CupertinoColors.activeBlue,
-                inactiveColor: CupertinoColors.systemGrey,
+                activeColorPrimary: CupertinoColors.activeBlue,
+                inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
             PersistentBottomNavBarItem(
                 icon: Icon(CupertinoIcons.settings),
                 title: ("Settings"),
-                activeColor: CupertinoColors.activeBlue,
-                inactiveColor: CupertinoColors.systemGrey,
+                activeColorPrimary: CupertinoColors.activeBlue,
+                inactiveColorPrimary: CupertinoColors.systemGrey,
             ),
         ];
     }
@@ -148,6 +148,8 @@ class MyApp extends StatelessWidget {
 ```
 
 ## Navigator Functions
+
+**Note: You still can use regular Navigator functions like 'pushNamed' but be sure to check the argument `routeAndNavigatorSettings` for route settings and some other navigator related properties**
 
 To push a new screen, use the following functions to control the `visibility` of bottom navigation bar on a particular screen. You can use your own logic to implement `platform-specific` behavior. One of the solutions could be to use the property `withNavBar` and toggle it according to the Platform.
 
@@ -251,13 +253,13 @@ If you want to have your own style for the navigation bar, follow these steps:
                         data: IconThemeData(
                             size: 26.0,
                             color: isSelected
-                                ? (item.activeColorAlternate == null
-                                    ? item.activeColor
-                                    : item.activeColorAlternate)
-                                : item.inactiveColor == null
-                                    ? item.activeColor
-                                    : item.inactiveColor),
-                        child: item.icon,
+                                ? (item.activeColorSecondary == null
+                                    ? item.activeColorPrimary
+                                    : item.activeColorSecondary)
+                                : item.inactiveColorPrimary == null
+                                    ? item.activeColorPrimary
+                                    : item.inactiveColorPrimary),
+                        child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
                         ),
                     ),
                     Padding(
@@ -269,10 +271,10 @@ If you want to have your own style for the navigation bar, follow these steps:
                             item.title,
                             style: TextStyle(
                                 color: isSelected
-                                    ? (item.activeColorAlternate == null
-                                        ? item.activeColor
-                                        : item.activeColorAlternate)
-                                    : item.inactiveColor,
+                                    ? (item.activeColorSecondary == null
+                                        ? item.activeColorPrimary
+                                        : item.activeColorSecondary)
+                                    : item.inactiveColorPrimary,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 12.0),
                         )),

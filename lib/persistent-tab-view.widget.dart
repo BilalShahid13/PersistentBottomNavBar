@@ -48,7 +48,7 @@ class PersistentTabView extends PersistentTabViewBase {
   final bool stateManagement;
 
   ///If you want to perform a custom action on Android when exiting the app, you can write your logic here.
-  final Future<bool> Function() onWillPop;
+  final Future<bool> Function(BuildContext) onWillPop;
 
   ///Returns the context of the selected tab.
   final Function(BuildContext) selectedTabScreenContext;
@@ -62,8 +62,6 @@ class PersistentTabView extends PersistentTabViewBase {
   final bool hideNavigationBar;
 
   final BuildContext context;
-
-  final RouteAndNavigatorSettings routeAndNavigatorSettings;
 
   PersistentTabView(this.context,
       {Key key,
@@ -83,7 +81,6 @@ class PersistentTabView extends PersistentTabViewBase {
       this.selectedTabScreenContext,
       this.hideNavigationBarWhenKeyboardShows = true,
       bool popAllScreensOnTapOfSelectedTab = true,
-      this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
       PopActionScreensType popActionScreens = PopActionScreensType.all,
       this.confineInSafeArea = true,
       this.onWillPop,
@@ -104,7 +101,6 @@ class PersistentTabView extends PersistentTabViewBase {
           decoration: decoration,
           hideNavigationBarWhenKeyboardShows:
               hideNavigationBarWhenKeyboardShows,
-          routeAndNavigatorSettings: routeAndNavigatorSettings,
           itemAnimationProperties: itemAnimationProperties,
           navBarStyle: navBarStyle,
           popActionScreens: popActionScreens,
@@ -133,11 +129,6 @@ class PersistentTabView extends PersistentTabViewBase {
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
     assert(items.length >= 2 && items.length <= 6,
         "NavBar should have at least 2 or maximum 6 items (Except for styles 15-18)");
-    assert(
-        routeAndNavigatorSettings.navigatorKeys == null ||
-            routeAndNavigatorSettings.navigatorKeys != null &&
-                routeAndNavigatorSettings.navigatorKeys.length != items.length,
-        "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
   }
 
   PersistentTabView.custom(
@@ -154,7 +145,8 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardShows = true,
     this.backgroundColor = CupertinoColors.white,
-    this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+    CutsomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
+        const CutsomWidgetRouteAndNavigatorSettings(),
     this.confineInSafeArea = true,
     this.onWillPop,
     this.stateManagement = true,
@@ -189,7 +181,7 @@ class PersistentTabView extends PersistentTabViewBase {
     assert(itemCount == screens.length,
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
     assert(customWidget != null,
-        "customWidget shoudl not be null when navBarStyle == NavBarStyle.custom");
+        "customWidget should not be null when navBarStyle == NavBarStyle.custom");
     assert(
         routeAndNavigatorSettings.navigatorKeys == null ||
             routeAndNavigatorSettings.navigatorKeys != null &&
@@ -273,7 +265,7 @@ class PersistentTabViewBase extends StatefulWidget {
   final bool stateManagement;
 
   ///If you want to perform a custom action on Android when exiting the app, you can write your logic here.
-  final Future<bool> Function() onWillPop;
+  final Future<bool> Function(BuildContext) onWillPop;
 
   ///Screen transition animation properties when switching tabs.
   final ScreenTransitionAnimation screenTransitionAnimation;
@@ -289,7 +281,7 @@ class PersistentTabViewBase extends StatefulWidget {
   ///Define navigation bar route name and settings here.
   ///
   ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final RouteAndNavigatorSettings routeAndNavigatorSettings;
+  final CutsomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings;
 
   final bool isCustomWidget;
 
@@ -343,6 +335,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
   int _currentIndex;
   bool _isCompleted;
   bool _isAnimating;
+  bool _sendScreenContext;
 
   @override
   void initState() {
@@ -362,15 +355,17 @@ class _PersistentTabViewState extends State<PersistentTabView> {
 
     _isCompleted = false;
     _isAnimating = false;
+    _sendScreenContext = false;
 
     _controller.addListener(() {
       if (_controller.index != _currentIndex) {
         if (widget.selectedTabScreenContext != null) {
-          widget.selectedTabScreenContext(_contextList[_controller.index]);
+          _sendScreenContext = true;
         }
-        setState(
-          () => _currentIndex = _controller.index,
-        );
+        if (mounted)
+          setState(
+            () => _currentIndex = _controller.index,
+          );
       }
     });
     if (widget.selectedTabScreenContext != null) {
@@ -380,228 +375,198 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     }
   }
 
-  Widget _buildScreen(int index) => widget.floatingActionButton != null
-      ? Stack(
-          fit: StackFit.expand,
-          children: <Widget>[
-            SizedBox.expand(
-              child: CustomTabView(
-                routeName: widget.routeAndNavigatorSettings.initialRoute,
-                navigatorKey:
-                    widget.routeAndNavigatorSettings.navigatorKeys == null
-                        ? null
-                        : widget.routeAndNavigatorSettings.navigatorKeys[index],
-                navigatorObservers:
-                    widget.routeAndNavigatorSettings.navigatorObservers ?? [],
-                defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
-                onGenerateRoute:
-                    widget.routeAndNavigatorSettings.onGenerateRoute,
-                onUnknownRoute: widget.routeAndNavigatorSettings.onUnknownRoute,
-                routes: widget.routeAndNavigatorSettings.routes,
-                builder: (BuildContext screenContext) {
-                  _contextList[index] = screenContext;
-                  return Material(elevation: 0, child: widget.screens[index]);
-                },
-              ),
+  Widget _buildScreen(int index) {
+    RouteAndNavigatorSettings _routeAndNavigatorSettings = widget.isCustomWidget
+        ? RouteAndNavigatorSettings(
+            defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
+            initialRoute: widget.routeAndNavigatorSettings.initialRoute,
+            navigatorKey: widget.routeAndNavigatorSettings.navigatorKeys == null
+                ? null
+                : widget
+                    .routeAndNavigatorSettings.navigatorKeys[_controller.index],
+            navigatorObservers:
+                widget.routeAndNavigatorSettings.navigatorObservers,
+            onGenerateRoute: widget.routeAndNavigatorSettings.onGenerateRoute,
+            onUnknownRoute: widget.routeAndNavigatorSettings.onUnknownRoute,
+            routes: widget.routeAndNavigatorSettings.routes,
+          )
+        : widget.items[index].routeAndNavigatorSettings;
+
+    if (widget.floatingActionButton != null) {
+      return Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          SizedBox.expand(
+            child: CustomTabView(
+              routeAndNavigatorSettings: _routeAndNavigatorSettings,
+              builder: (BuildContext screenContext) {
+                _contextList[index] = screenContext;
+                if (_sendScreenContext) {
+                  _sendScreenContext = false;
+                  widget.selectedTabScreenContext(_contextList[index]);
+                }
+                return Material(elevation: 0, child: widget.screens[index]);
+              },
             ),
-            Positioned(
-              bottom: widget.decoration.borderRadius != BorderRadius.zero
-                  ? 25.0
-                  : 10.0,
-              right: 10.0,
-              child: widget.floatingActionButton,
+          ),
+          Positioned(
+            bottom: widget.decoration.borderRadius != BorderRadius.zero
+                ? 25.0
+                : 10.0,
+            right: 10.0,
+            child: widget.floatingActionButton,
+          ),
+        ],
+      );
+    } else if (widget.navBarStyle == NavBarStyle.style15) {
+      return Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          SizedBox.expand(
+            child: CustomTabView(
+              routeAndNavigatorSettings: _routeAndNavigatorSettings,
+              builder: (BuildContext screenContext) {
+                _contextList[index] = screenContext;
+                if (_sendScreenContext) {
+                  _sendScreenContext = false;
+                  widget.selectedTabScreenContext(_contextList[index]);
+                }
+                return Material(elevation: 0, child: widget.screens[index]);
+              },
             ),
-          ],
-        )
-      : widget.navBarStyle == NavBarStyle.style15
-          ? Stack(
-              fit: StackFit.expand,
-              children: <Widget>[
-                SizedBox.expand(
-                  child: CustomTabView(
-                    navigatorKey:
-                        widget.routeAndNavigatorSettings.navigatorKeys == null
-                            ? null
-                            : widget
-                                .routeAndNavigatorSettings.navigatorKeys[index],
-                    navigatorObservers:
-                        widget.routeAndNavigatorSettings.navigatorObservers ??
-                            [],
-                    routeName: widget.routeAndNavigatorSettings.initialRoute,
-                    defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
-                    onGenerateRoute:
-                        widget.routeAndNavigatorSettings.onGenerateRoute,
-                    onUnknownRoute:
-                        widget.routeAndNavigatorSettings.onUnknownRoute,
-                    routes: widget.routeAndNavigatorSettings.routes,
-                    builder: (BuildContext screenContext) {
-                      _contextList[index] = screenContext;
-                      return Material(
-                          elevation: 0, child: widget.screens[index]);
+          ),
+          _navBarHeight == 0
+              ? SizedBox.shrink()
+              : Positioned(
+                  bottom: (_navBarHeight -
+                          (widget.bottomScreenMargin ??
+                              _navBarHeight + widget.margin.top))
+                      .abs(),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (widget.items[(widget.items.length / 2).floor()]
+                              .onPressed !=
+                          null) {
+                        widget.items[(widget.items.length / 2).floor()]
+                            .onPressed(_contextList[_controller.index]);
+                      } else {
+                        _controller.index = (widget.items.length / 2).floor();
+                      }
                     },
-                  ),
-                ),
-                _navBarHeight == 0
-                    ? SizedBox.shrink()
-                    : Positioned(
-                        bottom: (_navBarHeight -
-                                (widget.bottomScreenMargin ??
-                                    _navBarHeight + widget.margin.top))
-                            .abs(),
-                        child: GestureDetector(
-                          onTap: () {
-                            if (widget.items[(widget.items.length / 2).floor()]
-                                    .onPressed !=
-                                null) {
-                              widget.items[(widget.items.length / 2).floor()]
-                                  .onPressed();
-                            } else {
-                              _controller.index =
-                                  (widget.items.length / 2).floor();
-                            }
-                          },
-                          child: Center(
-                            child: Container(
-                              height: 21.0 +
-                                  min(
-                                      widget.navBarHeight,
-                                      max(
-                                              widget.decoration.borderRadius
-                                                      .topRight.y ??
-                                                  0.0,
-                                              widget.decoration.borderRadius
-                                                      .topLeft.y ??
-                                                  0.0) +
-                                          (widget.decoration?.border != null
-                                              ? widget.decoration.border
-                                                  .dimensions.vertical
-                                              : 0.0)),
-                              margin: EdgeInsets.only(
-                                  left: MediaQuery.of(context).size.width / 2 -
-                                      (MediaQuery.of(context).size.width / 5.0 -
-                                              30.0) /
-                                          2),
-                              width: MediaQuery.of(context).size.width / 5.0 -
-                                  30.0,
-                              decoration: BoxDecoration(
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(100.0),
-                                    topRight: Radius.circular(100.0),
-                                  )),
-                            ),
-                          ),
-                        ),
-                      ),
-              ],
-            )
-          : widget.navBarStyle == NavBarStyle.style16
-              ? Stack(
-                  fit: StackFit.expand,
-                  children: <Widget>[
-                    SizedBox.expand(
-                      child: CustomTabView(
-                        routeName:
-                            widget.routeAndNavigatorSettings.initialRoute,
-                        navigatorKey:
-                            widget.routeAndNavigatorSettings.navigatorKeys ==
-                                    null
-                                ? null
-                                : widget.routeAndNavigatorSettings
-                                    .navigatorKeys[index],
-                        navigatorObservers: widget
-                                .routeAndNavigatorSettings.navigatorObservers ??
-                            [],
-                        defaultTitle:
-                            widget.routeAndNavigatorSettings.defaultTitle,
-                        onGenerateRoute:
-                            widget.routeAndNavigatorSettings.onGenerateRoute,
-                        onUnknownRoute:
-                            widget.routeAndNavigatorSettings.onUnknownRoute,
-                        routes: widget.routeAndNavigatorSettings.routes,
-                        builder: (BuildContext screenContext) {
-                          _contextList[index] = screenContext;
-                          return Material(
-                              elevation: 0, child: widget.screens[index]);
-                        },
+                    child: Center(
+                      child: Container(
+                        height: 21.0 +
+                            min(
+                                widget.navBarHeight,
+                                max(
+                                        widget.decoration.borderRadius.topRight
+                                                .y ??
+                                            0.0,
+                                        widget.decoration.borderRadius.topLeft
+                                                .y ??
+                                            0.0) +
+                                    (widget.decoration?.border != null
+                                        ? widget.decoration.border.dimensions
+                                            .vertical
+                                        : 0.0)),
+                        margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width / 2 -
+                                (MediaQuery.of(context).size.width / 5.0 -
+                                        30.0) /
+                                    2),
+                        width: MediaQuery.of(context).size.width / 5.0 - 30.0,
+                        decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(100.0),
+                              topRight: Radius.circular(100.0),
+                            )),
                       ),
                     ),
-                    _navBarHeight == 0
-                        ? SizedBox.shrink()
-                        : Positioned(
-                            bottom: (_navBarHeight -
-                                    (widget.bottomScreenMargin ??
-                                        _navBarHeight + widget.margin.top))
-                                .abs(),
-                            child: GestureDetector(
-                              onTap: () {
-                                if (widget
-                                        .items[
-                                            (widget.items.length / 2).floor()]
-                                        .onPressed !=
-                                    null) {
-                                  widget
-                                      .items[(widget.items.length / 2).floor()]
-                                      .onPressed();
-                                } else {
-                                  _controller.index =
-                                      (widget.items.length / 2).floor();
-                                }
-                              },
-                              child: Center(
-                                child: Container(
-                                  height: 21 +
-                                      min(
-                                          widget.navBarHeight,
-                                          max(
-                                                  widget.decoration.borderRadius
-                                                          .topRight.y ??
-                                                      0.0,
-                                                  widget.decoration.borderRadius
-                                                          .topLeft.y ??
-                                                      0.0) +
-                                              (widget.decoration?.border != null
-                                                  ? widget.decoration.border
-                                                      .dimensions.vertical
-                                                  : 0.0)),
-                                  margin: EdgeInsets.only(
-                                      left: MediaQuery.of(context).size.width /
-                                              2 -
-                                          (MediaQuery.of(context).size.width /
-                                                      5.0 -
-                                                  30.0) /
-                                              2),
-                                  width:
-                                      MediaQuery.of(context).size.width / 5.0 -
-                                          30.0,
-                                  decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                  ],
-                )
-              : CustomTabView(
-                  routeName: widget.routeAndNavigatorSettings.initialRoute,
-                  navigatorKey:
-                      widget.routeAndNavigatorSettings.navigatorKeys == null
-                          ? null
-                          : widget
-                              .routeAndNavigatorSettings.navigatorKeys[index],
-                  navigatorObservers:
-                      widget.routeAndNavigatorSettings.navigatorObservers ?? [],
-                  defaultTitle: widget.routeAndNavigatorSettings.defaultTitle,
-                  onGenerateRoute:
-                      widget.routeAndNavigatorSettings.onGenerateRoute,
-                  onUnknownRoute:
-                      widget.routeAndNavigatorSettings.onUnknownRoute,
-                  routes: widget.routeAndNavigatorSettings.routes,
-                  builder: (BuildContext screenContext) {
-                    _contextList[index] = screenContext;
-                    return Material(elevation: 0, child: widget.screens[index]);
-                  });
+                  ),
+                ),
+        ],
+      );
+    } else if (widget.navBarStyle == NavBarStyle.style16) {
+      return Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          SizedBox.expand(
+            child: CustomTabView(
+              routeAndNavigatorSettings: _routeAndNavigatorSettings,
+              builder: (BuildContext screenContext) {
+                _contextList[index] = screenContext;
+                if (_sendScreenContext) {
+                  _sendScreenContext = false;
+                  widget.selectedTabScreenContext(_contextList[index]);
+                }
+                return Material(elevation: 0, child: widget.screens[index]);
+              },
+            ),
+          ),
+          _navBarHeight == 0
+              ? SizedBox.shrink()
+              : Positioned(
+                  bottom: (_navBarHeight -
+                          (widget.bottomScreenMargin ??
+                              _navBarHeight + widget.margin.top))
+                      .abs(),
+                  child: GestureDetector(
+                    onTap: () {
+                      if (widget.items[(widget.items.length / 2).floor()]
+                              .onPressed !=
+                          null) {
+                        widget.items[(widget.items.length / 2).floor()]
+                            .onPressed(_contextList[_controller.index]);
+                      } else {
+                        _controller.index = (widget.items.length / 2).floor();
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        height: 21 +
+                            min(
+                                widget.navBarHeight,
+                                max(
+                                        widget.decoration.borderRadius.topRight
+                                                .y ??
+                                            0.0,
+                                        widget.decoration.borderRadius.topLeft
+                                                .y ??
+                                            0.0) +
+                                    (widget.decoration?.border != null
+                                        ? widget.decoration.border.dimensions
+                                            .vertical
+                                        : 0.0)),
+                        margin: EdgeInsets.only(
+                            left: MediaQuery.of(context).size.width / 2 -
+                                (MediaQuery.of(context).size.width / 5.0 -
+                                        30.0) /
+                                    2),
+                        width: MediaQuery.of(context).size.width / 5.0 - 30.0,
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+        ],
+      );
+    } else {
+      return CustomTabView(
+          routeAndNavigatorSettings:
+              _routeAndNavigatorSettings,
+          builder: (BuildContext screenContext) {
+            _contextList[index] = screenContext;
+            if (_sendScreenContext) {
+              _sendScreenContext = false;
+              widget.selectedTabScreenContext(_contextList[index]);
+            }
+            return Material(elevation: 0, child: widget.screens[index]);
+          });
+    }
+  }
 
   Widget navigationBarWidget() => CupertinoPageScaffold(
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
@@ -626,38 +591,13 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               selectedIndex: _controller.index,
               previousIndex: _previousIndex,
               padding: widget.padding,
+              selectedScreenBuildContext: _contextList[_controller.index],
               itemAnimationProperties: widget.itemAnimationProperties,
               items: widget.items,
               backgroundColor: widget.backgroundColor,
               navBarHeight: _navBarHeight,
               popScreensOnTapOfSelectedTab:
                   widget.popAllScreensOnTapOfSelectedTab ?? true,
-              popAllScreensForTheSelectedTab: (index) {
-                if (widget.popAllScreensOnTapOfSelectedTab) {
-                  if (widget.items[_controller.index]
-                              .onSelectedTabPressWhenNoScreensPushed !=
-                          null &&
-                      !Navigator.of(_contextList[_controller.index]).canPop()) {
-                    widget.items[_controller.index]
-                        .onSelectedTabPressWhenNoScreensPushed();
-                  }
-
-                  if (widget.popActionScreens == PopActionScreensType.once) {
-                    if (Navigator.of(_contextList[_controller.index])
-                        .canPop()) {
-                      Navigator.of(_contextList[_controller.index])
-                          .pop(context);
-                      return;
-                    }
-                  } else {
-                    Navigator.popUntil(
-                        _contextList[_controller.index],
-                        ModalRoute.withName(
-                            widget.routeAndNavigatorSettings.initialRoute ??
-                                '/9f580fc5-c252-45d0-af25-9429992db112'));
-                  }
-                }
-              },
               onItemSelected: widget.onItemSelected != null
                   ? (int index) {
                       if (_controller.index != _previousIndex) {
@@ -669,6 +609,10 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   : (int index) {
                       if (_controller.index != _previousIndex) {
                         _previousIndex = _controller.index;
+                      }
+                      if ((widget.popAllScreensOnTapOfSelectedTab ?? true) &&
+                          _previousIndex == index) {
+                        popAllScreens();
                       }
                       _controller.index = index;
                     },
@@ -728,12 +672,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       return WillPopScope(
         onWillPop: !widget.handleAndroidBackButtonPress &&
                 widget.onWillPop != null
-            ? widget.onWillPop
+            ? widget.onWillPop(_contextList[_controller.index])
             : widget.handleAndroidBackButtonPress && widget.onWillPop != null
                 ? () async {
                     if (_controller.index == 0 &&
                         !Navigator.canPop(_contextList.first)) {
-                      return widget.onWillPop();
+                      return widget.onWillPop(_contextList.first);
                     } else {
                       if (Navigator.canPop(_contextList[_controller.index])) {
                         Navigator.pop(_contextList[_controller.index]);
@@ -766,6 +710,29 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       );
     } else {
       return navigationBarWidget();
+    }
+  }
+
+  void popAllScreens() {
+    if (widget.popAllScreensOnTapOfSelectedTab) {
+      if (widget.items[_controller.index]
+                  .onSelectedTabPressWhenNoScreensPushed !=
+              null &&
+          !Navigator.of(_contextList[_controller.index]).canPop()) {
+        widget.items[_controller.index].onSelectedTabPressWhenNoScreensPushed();
+      }
+
+      if (widget.popActionScreens == PopActionScreensType.once) {
+        if (Navigator.of(_contextList[_controller.index]).canPop()) {
+          Navigator.of(_contextList[_controller.index]).pop(context);
+          return;
+        }
+      } else {
+        Navigator.popUntil(
+            _contextList[_controller.index],
+            ModalRoute.withName(widget.routeAndNavigatorSettings.initialRoute ??
+                '/9f580fc5-c252-45d0-af25-9429992db112'));
+      }
     }
   }
 }

@@ -22,7 +22,7 @@ class BottomNavStyle1 extends StatelessWidget {
             padding: EdgeInsets.all(item.contentPadding),
             decoration: BoxDecoration(
               color: isSelected
-                  ? item.activeColor.withOpacity(0.2)
+                  ? item.activeColorPrimary.withOpacity(0.2)
                   : navBarEssentials.backgroundColor.withOpacity(0.0),
               borderRadius: BorderRadius.all(Radius.circular(50)),
             ),
@@ -41,13 +41,17 @@ class BottomNavStyle1 extends StatelessWidget {
                         data: IconThemeData(
                             size: item.iconSize,
                             color: isSelected
-                                ? (item.activeColorAlternate == null
-                                    ? item.activeColor
-                                    : item.activeColorAlternate)
-                                : item.inactiveColor == null
-                                    ? item.activeColor
-                                    : item.inactiveColor),
-                        child: item.icon,
+                                ? (item.activeColorSecondary == null
+                                    ? item.activeColorPrimary
+                                    : item.activeColorSecondary)
+                                : item.inactiveColorSecondary != null
+                                    ? item.inactiveColorSecondary
+                                    : item.inactiveColorPrimary == null
+                                        ? item.activeColorPrimary
+                                        : item.inactiveColorPrimary),
+                        child: isSelected
+                            ? item.icon
+                            : item.inactiveIcon ?? item.icon,
                       ),
                     ),
                   ),
@@ -63,16 +67,16 @@ class BottomNavStyle1 extends StatelessWidget {
                                   style: item.textStyle != null
                                       ? (item.textStyle.apply(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
+                                              ? (item.activeColorSecondary ==
                                                       null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate)
-                                              : item.inactiveColor))
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary)
+                                              : item.inactiveColorPrimary))
                                       : TextStyle(
                                           color:
-                                              (item.activeColorAlternate == null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate),
+                                              (item.activeColorSecondary == null
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary),
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0),
                                 )),
@@ -114,14 +118,9 @@ class BottomNavStyle1 extends StatelessWidget {
               child: GestureDetector(
                 onTap: () {
                   if (this.navBarEssentials.items[index].onPressed != null) {
-                    this.navBarEssentials.items[index].onPressed();
+                    this.navBarEssentials.items[index].onPressed(
+                        this.navBarEssentials.selectedScreenBuildContext);
                   } else {
-                    if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
-                        this.navBarEssentials.previousIndex == index) {
-                      this
-                          .navBarEssentials
-                          .popAllScreensForTheSelectedTab(index);
-                    }
                     this.navBarEssentials.onItemSelected(index);
                   }
                 },

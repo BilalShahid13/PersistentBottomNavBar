@@ -39,13 +39,15 @@ class BottomNavStyle18 extends StatelessWidget {
                           data: IconThemeData(
                               size: item.iconSize,
                               color: isSelected
-                                  ? (item.activeColorAlternate == null
-                                      ? item.activeColor
-                                      : item.activeColorAlternate)
-                                  : item.inactiveColor == null
-                                      ? item.activeColor
-                                      : item.inactiveColor),
-                          child: item.icon,
+                                  ? (item.activeColorSecondary == null
+                                      ? item.activeColorPrimary
+                                      : item.activeColorSecondary)
+                                  : item.inactiveColorPrimary == null
+                                      ? item.activeColorPrimary
+                                      : item.inactiveColorPrimary),
+                          child: isSelected
+                              ? item.icon
+                              : item.inactiveIcon ?? item.icon,
                         ),
                       ),
                       item.title == null
@@ -60,18 +62,18 @@ class BottomNavStyle18 extends StatelessWidget {
                                   style: item.textStyle != null
                                       ? (item.textStyle.apply(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
+                                              ? (item.activeColorSecondary ==
                                                       null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate)
-                                              : item.inactiveColor))
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary)
+                                              : item.inactiveColorPrimary))
                                       : TextStyle(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
+                                              ? (item.activeColorSecondary ==
                                                       null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate)
-                                              : item.inactiveColor,
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary)
+                                              : item.inactiveColorPrimary,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0),
                                 )),
@@ -99,7 +101,7 @@ class BottomNavStyle18 extends StatelessWidget {
                 left: 10.0,
                 right: 10.0),
             decoration: BoxDecoration(
-              color: item.activeColor ?? Colors.white,
+              color: item.activeColorPrimary ?? Colors.white,
               borderRadius: BorderRadius.circular(10.0),
               border: Border.all(color: Colors.transparent, width: 5.0),
               boxShadow: [
@@ -127,13 +129,15 @@ class BottomNavStyle18 extends StatelessWidget {
                           data: IconThemeData(
                               size: item.iconSize,
                               color: isSelected
-                                  ? (item.activeColorAlternate == null
-                                      ? item.activeColor
-                                      : item.activeColorAlternate)
-                                  : item.inactiveColor == null
-                                      ? item.activeColor
-                                      : item.inactiveColor),
-                          child: item.icon,
+                                  ? (item.activeColorSecondary == null
+                                      ? item.activeColorPrimary
+                                      : item.activeColorSecondary)
+                                  : item.inactiveColorPrimary == null
+                                      ? item.activeColorPrimary
+                                      : item.inactiveColorPrimary),
+                          child: isSelected
+                              ? item.icon
+                              : item.inactiveIcon ?? item.icon,
                         ),
                       ),
                     ],
@@ -171,20 +175,11 @@ class BottomNavStyle18 extends StatelessWidget {
                                         .items[index]
                                         .onPressed !=
                                     null) {
-                                  this
-                                      .navBarEssentials
-                                      .items[index]
-                                      .onPressed();
-                                } else {
-                                  if (this
+                                  this.navBarEssentials.items[index].onPressed(
+                                      this
                                           .navBarEssentials
-                                          .popScreensOnTapOfSelectedTab &&
-                                      this.navBarEssentials.previousIndex ==
-                                          index) {
-                                    this
-                                        .navBarEssentials
-                                        .popAllScreensForTheSelectedTab(index);
-                                  }
+                                          .selectedScreenBuildContext);
+                                } else {
                                   this.navBarEssentials.onItemSelected(index);
                                 }
                               },
@@ -211,17 +206,11 @@ class BottomNavStyle18 extends StatelessWidget {
                                       .items[index]
                                       .onPressed !=
                                   null) {
-                                this.navBarEssentials.items[index].onPressed();
-                              } else {
-                                if (this
+                                this.navBarEssentials.items[index].onPressed(
+                                    this
                                         .navBarEssentials
-                                        .popScreensOnTapOfSelectedTab &&
-                                    this.navBarEssentials.previousIndex ==
-                                        index) {
-                                  this
-                                      .navBarEssentials
-                                      .popAllScreensForTheSelectedTab(index);
-                                }
+                                        .selectedScreenBuildContext);
+                              } else {
                                 this.navBarEssentials.onItemSelected(index);
                               }
                             },
@@ -247,16 +236,9 @@ class BottomNavStyle18 extends StatelessWidget {
                       onTap: () {
                         if (this.navBarEssentials.items[midIndex].onPressed !=
                             null) {
-                          this.navBarEssentials.items[midIndex].onPressed();
+                          this.navBarEssentials.items[midIndex].onPressed(
+                              this.navBarEssentials.selectedScreenBuildContext);
                         } else {
-                          if (this
-                                  .navBarEssentials
-                                  .popScreensOnTapOfSelectedTab &&
-                              this.navBarEssentials.previousIndex == midIndex) {
-                            this
-                                .navBarEssentials
-                                .popAllScreensForTheSelectedTab(midIndex);
-                          }
                           this.navBarEssentials.onItemSelected(midIndex);
                         }
                       },

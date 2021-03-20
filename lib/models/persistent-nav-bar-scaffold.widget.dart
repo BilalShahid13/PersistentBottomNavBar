@@ -330,8 +330,9 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
 
   _initAniamtionControllers() {
     if (widget.screenTransitionAnimation.animateTabTransition) {
-      _animationControllers = List<AnimationController>(widget.tabCount);
-      _animations = List<Animation<double>>(widget.tabCount);
+      _animationControllers =
+          List<AnimationController>.filled(widget.tabCount, null);
+      _animations = List<Animation<double>>.filled(widget.tabCount, null);
       _animationCurve = widget.screenTransitionAnimation.curve;
       for (int i = 0; i < widget.tabCount; ++i) {
         _animationControllers[i] = AnimationController(

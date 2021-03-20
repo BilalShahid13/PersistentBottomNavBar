@@ -34,13 +34,17 @@ class BottomNavSimple extends StatelessWidget {
                           data: IconThemeData(
                               size: item.iconSize,
                               color: isSelected
-                                  ? (item.activeColorAlternate == null
-                                      ? item.activeColor
-                                      : item.activeColorAlternate)
-                                  : item.inactiveColor == null
-                                      ? item.activeColor
-                                      : item.inactiveColor),
-                          child: item.icon,
+                                  ? (item.activeColorSecondary == null
+                                      ? item.activeColorPrimary
+                                      : item.activeColorSecondary)
+                                  : item.inactiveColorSecondary != null
+                                      ? item.inactiveColorSecondary
+                                      : item.inactiveColorPrimary == null
+                                          ? item.activeColorPrimary
+                                          : item.inactiveColorPrimary),
+                          child: isSelected
+                              ? item.icon
+                              : item.inactiveIcon ?? item.icon,
                         ),
                       ),
                       item.title == null
@@ -55,18 +59,18 @@ class BottomNavSimple extends StatelessWidget {
                                   style: item.textStyle != null
                                       ? (item.textStyle.apply(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
+                                              ? (item.activeColorSecondary ==
                                                       null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate)
-                                              : item.inactiveColor))
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary)
+                                              : item.inactiveColorPrimary))
                                       : TextStyle(
                                           color: isSelected
-                                              ? (item.activeColorAlternate ==
+                                              ? (item.activeColorSecondary ==
                                                       null
-                                                  ? item.activeColor
-                                                  : item.activeColorAlternate)
-                                              : item.inactiveColor,
+                                                  ? item.activeColorPrimary
+                                                  : item.activeColorSecondary)
+                                              : item.inactiveColorPrimary,
                                           fontWeight: FontWeight.w400,
                                           fontSize: 12.0),
                                 )),
@@ -103,12 +107,9 @@ class BottomNavSimple extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (this.navBarEssentials.items[index].onPressed != null) {
-                  this.navBarEssentials.items[index].onPressed();
+                  this.navBarEssentials.items[index].onPressed(
+                      this.navBarEssentials.selectedScreenBuildContext);
                 } else {
-                  if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
-                      this.navBarEssentials.previousIndex == index) {
-                    this.navBarEssentials.popAllScreensForTheSelectedTab(index);
-                  }
                   this.navBarEssentials.onItemSelected(index);
                 }
               },

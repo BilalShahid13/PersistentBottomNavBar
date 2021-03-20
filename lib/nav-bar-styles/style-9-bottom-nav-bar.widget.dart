@@ -22,7 +22,7 @@ class BottomNavStyle9 extends StatelessWidget {
             padding: EdgeInsets.all(item.contentPadding),
             decoration: BoxDecoration(
               color: isSelected
-                  ? item.activeColor.withOpacity(0.15)
+                  ? item.activeColorPrimary.withOpacity(0.15)
                   : this.navBarEssentials.backgroundColor.withOpacity(0.0),
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
@@ -39,13 +39,15 @@ class BottomNavStyle9 extends StatelessWidget {
                       data: IconThemeData(
                           size: item.iconSize,
                           color: isSelected
-                              ? (item.activeColorAlternate == null
-                                  ? item.activeColor
-                                  : item.activeColorAlternate)
-                              : item.inactiveColor == null
-                                  ? item.activeColor
-                                  : item.inactiveColor),
-                      child: item.icon,
+                              ? (item.activeColorSecondary == null
+                                  ? item.activeColorPrimary
+                                  : item.activeColorSecondary)
+                              : item.inactiveColorPrimary == null
+                                  ? item.activeColorPrimary
+                                  : item.inactiveColorPrimary),
+                      child: isSelected
+                          ? item.icon
+                          : item.inactiveIcon ?? item.icon,
                     ),
                   ),
                   item.title == null
@@ -60,16 +62,16 @@ class BottomNavStyle9 extends StatelessWidget {
                                     style: item.textStyle != null
                                         ? (item.textStyle.apply(
                                             color: isSelected
-                                                ? (item.activeColorAlternate ==
+                                                ? (item.activeColorSecondary ==
                                                         null
-                                                    ? item.activeColor
-                                                    : item.activeColorAlternate)
-                                                : item.inactiveColor))
+                                                    ? item.activeColorPrimary
+                                                    : item.activeColorSecondary)
+                                                : item.inactiveColorPrimary))
                                         : TextStyle(
-                                            color: (item.activeColorAlternate ==
+                                            color: (item.activeColorSecondary ==
                                                     null
-                                                ? item.activeColor
-                                                : item.activeColorAlternate),
+                                                ? item.activeColorPrimary
+                                                : item.activeColorSecondary),
                                             fontWeight: FontWeight.w400,
                                             fontSize: 12.0),
                                   ),
@@ -107,13 +109,10 @@ class BottomNavStyle9 extends StatelessWidget {
             child: GestureDetector(
               onTap: () {
                 if (this.navBarEssentials.items[index].onPressed != null) {
-                  this.navBarEssentials.items[index].onPressed();
+                  this.navBarEssentials.items[index].onPressed(
+                      this.navBarEssentials.selectedScreenBuildContext);
                 } else {
                   this.navBarEssentials.onItemSelected(index);
-                  if (this.navBarEssentials.popScreensOnTapOfSelectedTab &&
-                      this.navBarEssentials.previousIndex == index) {
-                    this.navBarEssentials.popAllScreensForTheSelectedTab(index);
-                  }
                 }
               },
               child: Container(

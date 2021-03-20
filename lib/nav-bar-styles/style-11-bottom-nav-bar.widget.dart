@@ -68,13 +68,15 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
                         data: IconThemeData(
                             size: item.iconSize,
                             color: isSelected
-                                ? (item.activeColorAlternate == null
-                                    ? item.activeColor
-                                    : item.activeColorAlternate)
-                                : item.inactiveColor == null
-                                    ? item.activeColor
-                                    : item.inactiveColor),
-                        child: item.icon,
+                                ? (item.activeColorSecondary == null
+                                    ? item.activeColorPrimary
+                                    : item.activeColorSecondary)
+                                : item.inactiveColorPrimary == null
+                                    ? item.activeColorPrimary
+                                    : item.inactiveColorPrimary),
+                        child: isSelected
+                            ? item.icon
+                            : item.inactiveIcon ?? item.icon,
                       ),
                     ),
                     item.title == null
@@ -91,18 +93,18 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
                                     style: item.textStyle != null
                                         ? (item.textStyle.apply(
                                             color: isSelected
-                                                ? (item.activeColorAlternate ==
+                                                ? (item.activeColorSecondary ==
                                                         null
-                                                    ? item.activeColor
-                                                    : item.activeColorAlternate)
-                                                : item.inactiveColor))
+                                                    ? item.activeColorPrimary
+                                                    : item.activeColorSecondary)
+                                                : item.inactiveColorPrimary))
                                         : TextStyle(
                                             color: isSelected
-                                                ? (item.activeColorAlternate ==
+                                                ? (item.activeColorSecondary ==
                                                         null
-                                                    ? item.activeColor
-                                                    : item.activeColorAlternate)
-                                                : item.inactiveColor,
+                                                    ? item.activeColorPrimary
+                                                    : item.activeColorSecondary)
+                                                : item.inactiveColorPrimary,
                                             fontWeight: FontWeight.w400,
                                             fontSize: 12.0),
                                   ),
@@ -174,19 +176,15 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
             child: GestureDetector(
               onTap: () {
                 if (widget.navBarEssentials.items[index].onPressed != null) {
-                  widget.navBarEssentials.items[index].onPressed();
+                  widget.navBarEssentials.items[index].onPressed(
+                      widget.navBarEssentials.selectedScreenBuildContext);
                 } else {
                   if (index != _selectedIndex) {
                     _lastSelectedIndex = _selectedIndex;
                     _selectedIndex = index;
                     _animationControllerList[_selectedIndex].forward();
                     _animationControllerList[_lastSelectedIndex].reverse();
-                  } else if (widget
-                          .navBarEssentials.popScreensOnTapOfSelectedTab &&
-                      widget.navBarEssentials.previousIndex == index) {
-                    widget.navBarEssentials
-                        .popAllScreensForTheSelectedTab(index);
-                  }
+                  } 
                   widget.navBarEssentials.onItemSelected(index);
                 }
               },

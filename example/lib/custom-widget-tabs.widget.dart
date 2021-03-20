@@ -78,32 +78,32 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: "Home",
-        activeColor: Colors.blue,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.blue,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),
         title: ("Search"),
-        activeColor: Colors.teal,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.teal,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.add),
         title: ("Add"),
-        activeColor: Colors.deepOrange,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.deepOrange,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.settings),
         title: ("Settings"),
-        activeColor: Colors.indigo,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.settings),
         title: ("Settings"),
-        activeColor: Colors.indigo,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
       ),
     ];
   }
@@ -129,7 +129,6 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         confineInSafeArea: true,
         itemCount: 5,
         handleAndroidBackButtonPress: true,
-        resizeToAvoidBottomInset: false,
         stateManagement: true,
         hideNavigationBar: _hideNavBar,
         screenTransitionAnimation: ScreenTransitionAnimation(
