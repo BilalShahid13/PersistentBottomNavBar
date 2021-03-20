@@ -14,9 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     **PersistentBottomNavBarItem**
     - `routeAndNavigatorSettings` has been removed for **non-custom** navigation bar. Instead, you must now declare `routeAndNavigatorSettings` in `PersistentBottomNavBarItem`.
     - `activeColor` is now `activeColorPrimary`.
+    - `inactiveColor` is now `inactiveColorPrimary`.
     - `activeColorAlternate` is now `activeColorSecondary`.
     - `onPressed` now returns context of the selected screen.
-    
+
 ## [3.1.0] - 2020-12-06
 - Argument `routeAndNavigatorSettings` added to handle `Navigator.pushNamed(context, 'routeName')`. Please define your routes and other navigator settings like navigator observers here as well.
 - **Breaking Changes**
