@@ -174,7 +174,6 @@ class BottomNavStyle17 extends StatelessWidget {
                                 .navBarEssentials
                                 .selectedScreenBuildContext);
                           } else {
-                            
                             this.navBarEssentials.onItemSelected(index);
                           }
                         },

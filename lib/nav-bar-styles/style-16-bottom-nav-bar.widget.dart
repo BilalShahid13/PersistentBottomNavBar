@@ -209,7 +209,6 @@ class BottomNavStyle16 extends StatelessWidget {
                           this.navBarEssentials.items[index].onPressed(
                               this.navBarEssentials.selectedScreenBuildContext);
                         } else {
-                         
                           this.navBarEssentials.onItemSelected(index);
                         }
                       },

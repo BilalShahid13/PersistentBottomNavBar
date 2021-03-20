@@ -184,7 +184,7 @@ class _BottomNavStyle11State extends State<BottomNavStyle11>
                     _selectedIndex = index;
                     _animationControllerList[_selectedIndex].forward();
                     _animationControllerList[_lastSelectedIndex].reverse();
-                  } 
+                  }
                   widget.navBarEssentials.onItemSelected(index);
                 }
               },

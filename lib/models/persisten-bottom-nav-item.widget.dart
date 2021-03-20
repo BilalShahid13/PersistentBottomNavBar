@@ -53,7 +53,6 @@ class PersistentBottomNavBarItem {
 
   final double iconSize;
 
-  
   final RouteAndNavigatorSettings routeAndNavigatorSettings;
 
   PersistentBottomNavBarItem(
