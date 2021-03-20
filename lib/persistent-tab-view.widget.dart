@@ -555,8 +555,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       );
     } else {
       return CustomTabView(
-          routeAndNavigatorSettings:
-              _routeAndNavigatorSettings,
+          routeAndNavigatorSettings: _routeAndNavigatorSettings,
           builder: (BuildContext screenContext) {
             _contextList[index] = screenContext;
             if (_sendScreenContext) {
@@ -602,6 +601,10 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   ? (int index) {
                       if (_controller.index != _previousIndex) {
                         _previousIndex = _controller.index;
+                      }
+                      if ((widget.popAllScreensOnTapOfSelectedTab ?? true) &&
+                          _previousIndex == index) {
+                        popAllScreens();
                       }
                       _controller.index = index;
                       widget.onItemSelected(index);
@@ -730,8 +733,12 @@ class _PersistentTabViewState extends State<PersistentTabView> {
       } else {
         Navigator.popUntil(
             _contextList[_controller.index],
-            ModalRoute.withName(widget.routeAndNavigatorSettings.initialRoute ??
-                '/9f580fc5-c252-45d0-af25-9429992db112'));
+            ModalRoute.withName(widget.isCustomWidget
+                ? (widget.routeAndNavigatorSettings?.initialRoute ??
+                    '/9f580fc5-c252-45d0-af25-9429992db112')
+                : widget.items[_controller.index]?.routeAndNavigatorSettings
+                        ?.initialRoute ??
+                    '/9f580fc5-c252-45d0-af25-9429992db112'));
       }
     }
   }

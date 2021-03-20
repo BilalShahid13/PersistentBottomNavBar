@@ -37,7 +37,13 @@ class MainScreen extends StatelessWidget {
                 child: RaisedButton(
                   color: Colors.blue,
                   onPressed: () {
-                    Navigator.pushNamed(context, '/first');
+                    pushNewScreenWithRouteSettings(
+                      context,
+                      settings: RouteSettings(name: '/home'),
+                      screen: MainScreen2(),
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.scaleRotate,
+                    );
                   },
                   child: Text(
                     "Go to Second Screen ->",
