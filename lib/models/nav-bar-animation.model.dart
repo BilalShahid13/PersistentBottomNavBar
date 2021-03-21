@@ -13,8 +13,8 @@ class ScreenTransitionAnimation {
 }
 
 class ItemAnimationProperties {
-  final Duration duration;
-  final Curve curve;
+  final Duration? duration;
+  final Curve? curve;
 
   const ItemAnimationProperties({this.duration, this.curve});
 }

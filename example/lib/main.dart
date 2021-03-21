@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'custom-widget-tabs.widget.dart';
+import 'modal-screen.dart';
 import 'screens.dart';
 
 void main() => runApp(MyApp());
@@ -46,7 +47,7 @@ class _MainMenuState extends State<MainMenu> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Custom widget example"),
               onPressed: () => pushNewScreen(
                 context,
@@ -58,7 +59,7 @@ class _MainMenuState extends State<MainMenu> {
           ),
           SizedBox(height: 20.0),
           Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Built-in styles example"),
               onPressed: () => pushNewScreen(
                 context,
@@ -151,9 +152,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         icon: Icon(Icons.home),
         title: "Home",
         activeColorPrimary: Colors.blue,
-        inactiveColorPrimary: Colors.red,
-        inactiveIcon: Icon(Icons.search),
-        inactiveColorSecondary: Colors.red,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
         routeAndNavigatorSettings: RouteAndNavigatorSettings(
           initialRoute: '/',
           routes: {
@@ -176,19 +176,22 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.add),
-        title: ("Add"),
-        activeColorPrimary: Colors.blueAccent,
-        inactiveColorPrimary: Colors.grey,
-        activeColorSecondary: Colors.white,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => MainScreen2(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
-      ),
+          icon: Icon(Icons.add),
+          title: ("Add"),
+          activeColorPrimary: Colors.blueAccent,
+          activeColorSecondary: Colors.white,
+          inactiveColorPrimary: Colors.white,
+          routeAndNavigatorSettings: RouteAndNavigatorSettings(
+            initialRoute: '/',
+            routes: {
+              '/first': (context) => MainScreen2(),
+              '/second': (context) => MainScreen3(),
+            },
+          ),
+          onPressed: (context) {
+            pushDynamicScreen(context,
+                screen: SampleModalScreen(), withNavBar: true);
+          }),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
         title: ("Messages"),
@@ -257,7 +260,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               height: 50.0,
               width: 50.0,
               color: Colors.white,
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text("Close"),
                 onPressed: () {
                   Navigator.pop(context);
@@ -285,7 +288,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           duration: Duration(milliseconds: 200),
         ),
         navBarStyle:
-            NavBarStyle.style1, // Choose the nav bar style with this property
+            NavBarStyle.style17, // Choose the nav bar style with this property
       ),
     );
   }

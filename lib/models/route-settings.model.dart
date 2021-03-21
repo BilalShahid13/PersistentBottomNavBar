@@ -1,19 +1,19 @@
 part of persistent_bottom_nav_bar;
 
 class RouteAndNavigatorSettings {
-  final String defaultTitle;
+  final String? defaultTitle;
 
-  final Map<String, WidgetBuilder> routes;
+  final Map<String, WidgetBuilder>? routes;
 
-  final RouteFactory onGenerateRoute;
+  final RouteFactory? onGenerateRoute;
 
-  final RouteFactory onUnknownRoute;
+  final RouteFactory? onUnknownRoute;
 
-  final String initialRoute;
+  final String? initialRoute;
 
   final List<NavigatorObserver> navigatorObservers;
 
-  final GlobalKey<NavigatorState> navigatorKey;
+  final GlobalKey<NavigatorState>? navigatorKey;
 
   const RouteAndNavigatorSettings({
     this.defaultTitle,
@@ -23,16 +23,16 @@ class RouteAndNavigatorSettings {
     this.initialRoute,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.navigatorKey,
-  }) : assert(navigatorObservers != null);
+  });
 
   RouteAndNavigatorSettings copyWith({
-    String defaultTitle,
-    Map<String, WidgetBuilder> routes,
-    RouteFactory onGenerateRoute,
-    RouteFactory onUnknownRoute,
-    String initialRoute,
-    List<NavigatorObserver> navigatorObservers,
-    GlobalKey<NavigatorState> navigatorKeys,
+    String? defaultTitle,
+    Map<String, WidgetBuilder>? routes,
+    RouteFactory? onGenerateRoute,
+    RouteFactory? onUnknownRoute,
+    String? initialRoute,
+    List<NavigatorObserver>? navigatorObservers,
+    GlobalKey<NavigatorState>? navigatorKeys,
   }) {
     return RouteAndNavigatorSettings(
       defaultTitle: defaultTitle ?? this.defaultTitle,
@@ -47,19 +47,19 @@ class RouteAndNavigatorSettings {
 }
 
 class CutsomWidgetRouteAndNavigatorSettings {
-  final String defaultTitle;
+  final String? defaultTitle;
 
-  final Map<String, WidgetBuilder> routes;
+  final Map<String, WidgetBuilder>? routes;
 
-  final RouteFactory onGenerateRoute;
+  final RouteFactory? onGenerateRoute;
 
-  final RouteFactory onUnknownRoute;
+  final RouteFactory? onUnknownRoute;
 
-  final String initialRoute;
+  final String? initialRoute;
 
   final List<NavigatorObserver> navigatorObservers;
 
-  final List<GlobalKey<NavigatorState>> navigatorKeys;
+  final List<GlobalKey<NavigatorState>>? navigatorKeys;
 
   const CutsomWidgetRouteAndNavigatorSettings({
     this.defaultTitle,
@@ -69,16 +69,16 @@ class CutsomWidgetRouteAndNavigatorSettings {
     this.initialRoute,
     this.navigatorObservers = const <NavigatorObserver>[],
     this.navigatorKeys,
-  }) : assert(navigatorObservers != null);
+  });
 
   CutsomWidgetRouteAndNavigatorSettings copyWith({
-    String defaultTitle,
-    Map<String, WidgetBuilder> routes,
-    RouteFactory onGenerateRoute,
-    RouteFactory onUnknownRoute,
-    String initialRoute,
-    List<NavigatorObserver> navigatorObservers,
-    List<GlobalKey<NavigatorState>> navigatorKeys,
+    String? defaultTitle,
+    Map<String, WidgetBuilder>? routes,
+    RouteFactory? onGenerateRoute,
+    RouteFactory? onUnknownRoute,
+    String? initialRoute,
+    List<NavigatorObserver>? navigatorObservers,
+    List<GlobalKey<NavigatorState>>? navigatorKeys,
   }) {
     return CutsomWidgetRouteAndNavigatorSettings(
       defaultTitle: defaultTitle ?? this.defaultTitle,

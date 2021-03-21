@@ -57,8 +57,7 @@ class SampleModalScreen extends ModalRoute<void> {
             ),
           ),
           Center(
-            child: RaisedButton(
-              color: Colors.blue,
+            child: ElevatedButton(
               onPressed: () {
                 Navigator.pop(context);
               },
