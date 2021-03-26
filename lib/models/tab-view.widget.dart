@@ -17,7 +17,7 @@ class CustomTabView extends StatefulWidget {
 
 class _CustomTabViewState extends State<CustomTabView> {
   HeroController? _heroController;
-  late List<NavigatorObserver?> _navigatorObservers;
+  late List<NavigatorObserver> _navigatorObservers;
 
   @override
   void initState() {
@@ -38,9 +38,9 @@ class _CustomTabViewState extends State<CustomTabView> {
   }
 
   void _updateObservers() {
-    _navigatorObservers = List<NavigatorObserver?>.from(
+    _navigatorObservers = List<NavigatorObserver>.from(
         widget.routeAndNavigatorSettings!.navigatorObservers)
-      ..add(_heroController);
+      ..add(_heroController!);
   }
 
   @override
@@ -49,7 +49,7 @@ class _CustomTabViewState extends State<CustomTabView> {
       key: widget.routeAndNavigatorSettings!.navigatorKey,
       onGenerateRoute: _onGenerateRoute,
       onUnknownRoute: _onUnknownRoute,
-      observers: _navigatorObservers as List<NavigatorObserver>,
+      observers: _navigatorObservers,
     );
   }
 
