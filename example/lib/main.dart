@@ -154,13 +154,6 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
         activeColorPrimary: Colors.blue,
         inactiveColorPrimary: Colors.grey,
         inactiveColorSecondary: Colors.purple,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => MainScreen2(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),

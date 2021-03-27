@@ -16,13 +16,12 @@ class CustomTabView extends StatefulWidget {
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  HeroController? _heroController;
+  HeroController _heroController = CupertinoApp.createCupertinoHeroController();
   late List<NavigatorObserver?> _navigatorObservers;
 
   @override
   void initState() {
     super.initState();
-    _heroController = CupertinoApp.createCupertinoHeroController();
     _updateObservers();
   }
 
@@ -38,7 +37,7 @@ class _CustomTabViewState extends State<CustomTabView> {
   }
 
   void _updateObservers() {
-    _navigatorObservers = List<NavigatorObserver?>.from(
+    _navigatorObservers = List<NavigatorObserver>.from(
         widget.routeAndNavigatorSettings!.navigatorObservers)
       ..add(_heroController);
   }
