@@ -1,6 +1,6 @@
 part of persistent_bottom_nav_bar;
 
-Future<T?> pushNewScreen<T extends Object>(
+Future<T?> pushNewScreen<T>(
   BuildContext context, {
   required Widget screen,
   bool? withNavBar,
@@ -16,7 +16,7 @@ Future<T?> pushNewScreen<T extends Object>(
           getPageRoute(pageTransitionAnimation, enterPage: screen));
 }
 
-Future<T?> pushDynamicScreen<T extends Object>(
+Future<T?> pushDynamicScreen<T>(
   BuildContext context, {
   required dynamic screen,
   bool? withNavBar,
@@ -27,7 +27,7 @@ Future<T?> pushDynamicScreen<T extends Object>(
   return Navigator.of(context, rootNavigator: !withNavBar).push<T>(screen);
 }
 
-Future<T?> pushNewScreenWithRouteSettings<T extends Object>(
+Future<T?> pushNewScreenWithRouteSettings<T>(
   BuildContext context, {
   required Widget screen,
   required RouteSettings settings,

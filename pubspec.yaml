@@ -3,7 +3,7 @@ description: A do all, highly customizable persistent/static bottom navigation b
 
 homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
 repository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 4.0.1
+version: 4.0.2
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
