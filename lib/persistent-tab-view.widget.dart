@@ -379,7 +379,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
         }
         if (mounted)
           setState(
-            () => _currentIndex = _controller.index,
+            () => _currentIndex = _controller?.index,
           );
       }
     });
@@ -407,7 +407,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
           )
         : widget.items![index].routeAndNavigatorSettings;
 
-    if (widget.floatingActionButton != null) {
+    if (widget.persistentFloatingActionButton != null) {
       return Stack(
         fit: StackFit.expand,
         children: <Widget>[
@@ -423,13 +423,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                 return Material(elevation: 0, child: widget.screens[index]);
               },
             ),
-          ),
-          Positioned(
-            bottom: widget.decoration!.borderRadius != BorderRadius.zero
-                ? 25.0
-                : 10.0,
-            right: 10.0,
-            child: widget.floatingActionButton!,
           ),
         ],
       );
@@ -580,7 +573,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
 
   Widget navigationBarWidget() => Scaffold(
         floatingActionButton: Padding(
-          padding: EdgeInsets.only(bottom: widget.navBarHeight + 2),
+          padding: EdgeInsets.only(bottom: (widget.navBarHeight ?? 56) + 2),
           child: widget.persistentFloatingActionButton,
         ),
         appBar: widget.persistentAppBar,
