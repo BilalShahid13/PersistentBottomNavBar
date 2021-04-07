@@ -18,7 +18,14 @@ class PersistentTabView extends PersistentTabViewBase {
   final Color backgroundColor;
 
   ///A custom widget which is displayed at the bottom right of the display at all times.
-  final Widget floatingActionButton;
+  ///
+  ///Only want the floatingActionButton on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `floatingActionButton` there. Note that that FAB will be displayed near/under this persistent FAB if this is specified: use a Padding widget to move it up so it is visible.
+  final Widget persistentFloatingActionButton;
+  
+  ///A PreferredSizeWidget widget (usually AppBar) which is displayed like the app bar at all times.
+  ///
+  ///Only want the app bar on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `appBar` there. Note that that AppBar will be automatically moved below this persistent app bar if this is specified, resulting in a double AppBar.
+  final PreferredSizeWidget persistentAppBar;
 
   ///Specifies the navBarHeight
   ///
@@ -75,7 +82,8 @@ class PersistentTabView extends PersistentTabViewBase {
       this.backgroundColor = CupertinoColors.white,
       ValueChanged<int> onItemSelected,
       NeumorphicProperties neumorphicProperties,
-      this.floatingActionButton,
+      this.persistentFloatingActionButton,
+      this.persistentAppBar,
       NavBarPadding padding = const NavBarPadding.all(null),
       NavBarDecoration decoration = const NavBarDecoration(),
       this.resizeToAvoidBottomInset = false,
@@ -113,7 +121,8 @@ class PersistentTabView extends PersistentTabViewBase {
           backgroundColor: backgroundColor,
           onItemSelected: onItemSelected,
           neumorphicProperties: neumorphicProperties,
-          floatingActionButton: floatingActionButton,
+          persistentFloatingActionButton: persistentFloatingActionButton,
+          persistentAppBar: persistentAppBar,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
           bottomScreenMargin: bottomScreenMargin,
           onWillPop: onWillPop,
@@ -146,7 +155,8 @@ class PersistentTabView extends PersistentTabViewBase {
     @required this.screens,
     this.controller,
     this.margin = EdgeInsets.zero,
-    this.floatingActionButton,
+    this.persistentFloatingActionButton,
+    this.persistentAppBar,
     Widget customWidget,
     int itemCount,
     this.resizeToAvoidBottomInset = false,
@@ -169,7 +179,8 @@ class PersistentTabView extends PersistentTabViewBase {
           margin: margin,
           routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
-          floatingActionButton: floatingActionButton,
+          persistentFloatingActionButton: persistentFloatingActionButton,
+          persistentAppBar: persistentAppBar,
           customWidget: customWidget,
           itemCount: itemCount,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
@@ -230,8 +241,15 @@ class PersistentTabViewBase extends StatefulWidget {
   ///Works only with style `neumorphic`.
   final NeumorphicProperties neumorphicProperties;
 
-  ///A custom widget which is displayed at the bottom right of the display at all times.
-  final Widget floatingActionButton;
+///A custom widget which is displayed at the bottom right of the display at all times.
+  ///
+  ///Only want the floatingActionButton on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `floatingActionButton` there. Note that that FAB will be displayed near/under this persistent FAB if this is specified: use a Padding widget to move it up so it is visible.
+  final Widget persistentFloatingActionButton;
+  
+  ///A PreferredSizeWidget widget (usually AppBar) which is displayed like the app bar at all times.
+  ///
+  ///Only want the app bar on certain screens? Use another Scaffold around the widget in the `screens` property, and use the `appBar` there. Note that that AppBar will be automatically moved below this persistent app bar if this is specified, resulting in a double AppBar.
+  final PreferredSizeWidget persistentAppBar;
 
   ///Specifies the navBarHeight
   ///
@@ -301,7 +319,8 @@ class PersistentTabViewBase extends StatefulWidget {
     Key key,
     this.screens,
     this.controller,
-    this.floatingActionButton,
+    this.persistentFloatingActionButton,
+    this.persistentAppBar,
     this.margin,
     this.confineInSafeArea,
     this.handleAndroidBackButtonPress,
@@ -382,7 +401,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     }
   }
 
-  Widget _buildScreen(int index) => widget.floatingActionButton != null
+  Widget _buildScreen(int index) => widget.persistentFloatingActionButton != null
       ? Stack(
           fit: StackFit.expand,
           children: <Widget>[
@@ -405,13 +424,6 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   return Material(elevation: 0, child: widget.screens[index]);
                 },
               ),
-            ),
-            Positioned(
-              bottom: widget.decoration.borderRadius != BorderRadius.zero
-                  ? 25.0
-                  : 10.0,
-              right: 10.0,
-              child: widget.floatingActionButton,
             ),
           ],
         )
@@ -605,10 +617,15 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                     return Material(elevation: 0, child: widget.screens[index]);
                   });
 
-  Widget navigationBarWidget() => CupertinoPageScaffold(
+  Widget navigationBarWidget() => Scaffold(
+        floatingActionButton: Padding(
+          padding: EdgeInsets.only(bottom: widget.navBarHeight + 2),
+          child: widget.persistentFloatingActionButton,
+        ),
+        appBar: widget.persistentAppBar,
         resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
         backgroundColor: Colors.transparent,
-        child: PersistentTabScaffold(
+        body: PersistentTabScaffold(
           controller: _controller,
           itemCount: widget.items == null
               ? widget.itemCount ?? 0
