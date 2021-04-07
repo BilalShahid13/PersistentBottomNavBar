@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 import 'custom-widget-tabs.widget.dart';
+import 'modal-screen.dart';
 import 'screens.dart';
 
 void main() => runApp(MyApp());
@@ -46,7 +47,7 @@ class _MainMenuState extends State<MainMenu> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Custom widget example"),
               onPressed: () => pushNewScreen(
                 context,
@@ -58,7 +59,7 @@ class _MainMenuState extends State<MainMenu> {
           ),
           SizedBox(height: 20.0),
           Center(
-            child: RaisedButton(
+            child: ElevatedButton(
               child: Text("Built-in styles example"),
               onPressed: () => pushNewScreen(
                 context,
@@ -150,33 +151,65 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
       PersistentBottomNavBarItem(
         icon: Icon(Icons.home),
         title: "Home",
-        activeColor: Colors.blue,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.blue,
+        inactiveColorPrimary: Colors.grey,
+        inactiveColorSecondary: Colors.purple,
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.search),
         title: ("Search"),
-        activeColor: Colors.teal,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.teal,
+        inactiveColorPrimary: Colors.grey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => MainScreen2(),
+            '/second': (context) => MainScreen3(),
+          },
+        ),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.add),
-        title: ("Add"),
-        activeColor: Colors.blueAccent,
-        inactiveColor: Colors.grey,
-        activeColorAlternate: Colors.white,
-      ),
+          icon: Icon(Icons.add),
+          title: ("Add"),
+          activeColorPrimary: Colors.blueAccent,
+          activeColorSecondary: Colors.white,
+          inactiveColorPrimary: Colors.white,
+          routeAndNavigatorSettings: RouteAndNavigatorSettings(
+            initialRoute: '/',
+            routes: {
+              '/first': (context) => MainScreen2(),
+              '/second': (context) => MainScreen3(),
+            },
+          ),
+          onPressed: (context) {
+            pushDynamicScreen(context,
+                screen: SampleModalScreen(), withNavBar: true);
+          }),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.message),
         title: ("Messages"),
-        activeColor: Colors.deepOrange,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.deepOrange,
+        inactiveColorPrimary: Colors.grey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => MainScreen2(),
+            '/second': (context) => MainScreen3(),
+          },
+        ),
       ),
       PersistentBottomNavBarItem(
         icon: Icon(Icons.settings),
         title: ("Settings"),
-        activeColor: Colors.indigo,
-        inactiveColor: Colors.grey,
+        activeColorPrimary: Colors.indigo,
+        inactiveColorPrimary: Colors.grey,
+        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+          initialRoute: '/',
+          routes: {
+            '/first': (context) => MainScreen2(),
+            '/second': (context) => MainScreen3(),
+          },
+        ),
       ),
     ];
   }
@@ -209,17 +242,10 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
             ? 0.0
             : kBottomNavigationBarHeight,
         hideNavigationBarWhenKeyboardShows: true,
-        margin: EdgeInsets.all(10.0),
-        popActionScreens: PopActionScreensType.once,
+        margin: EdgeInsets.all(0.0),
+        popActionScreens: PopActionScreensType.all,
         bottomScreenMargin: 0.0,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => MainScreen2(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
-        onWillPop: () async {
+        onWillPop: (context) async {
           await showDialog(
             context: context,
             useSafeArea: true,
@@ -227,7 +253,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               height: 50.0,
               width: 50.0,
               color: Colors.white,
-              child: RaisedButton(
+              child: ElevatedButton(
                 child: Text("Close"),
                 onPressed: () {
                   Navigator.pop(context);
@@ -255,7 +281,7 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           duration: Duration(milliseconds: 200),
         ),
         navBarStyle:
-            NavBarStyle.style15, // Choose the nav bar style with this property
+            NavBarStyle.style17, // Choose the nav bar style with this property
       ),
     );
   }
@@ -289,13 +315,13 @@ class CustomNavBarWidget extends StatelessWidget {
               data: IconThemeData(
                   size: 26.0,
                   color: isSelected
-                      ? (item.activeColorAlternate == null
-                          ? item.activeColor
-                          : item.activeColorAlternate)
-                      : item.inactiveColor == null
-                          ? item.activeColor
-                          : item.inactiveColor),
-              child: item.icon,
+                      ? (item.activeColorSecondary == null
+                          ? item.activeColorPrimary
+                          : item.activeColorSecondary)
+                      : item.inactiveColorPrimary == null
+                          ? item.activeColorPrimary
+                          : item.inactiveColorPrimary),
+              child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
             ),
           ),
           Padding(
@@ -307,10 +333,10 @@ class CustomNavBarWidget extends StatelessWidget {
                 item.title,
                 style: TextStyle(
                     color: isSelected
-                        ? (item.activeColorAlternate == null
-                            ? item.activeColor
-                            : item.activeColorAlternate)
-                        : item.inactiveColor,
+                        ? (item.activeColorSecondary == null
+                            ? item.activeColorPrimary
+                            : item.activeColorSecondary)
+                        : item.inactiveColorPrimary,
                     fontWeight: FontWeight.w400,
                     fontSize: 12.0),
               )),

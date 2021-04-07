@@ -2,18 +2,18 @@ part of persistent_bottom_nav_bar;
 
 class OffsetAnimation extends StatefulWidget {
   OffsetAnimation(
-      {Key key,
+      {Key? key,
       this.child,
       this.hideNavigationBar,
       this.navBarHeight,
       this.onAnimationComplete,
       this.extendedLength = false})
       : super(key: key);
-  final Widget child;
-  final bool hideNavigationBar;
-  final double navBarHeight;
+  final Widget? child;
+  final bool? hideNavigationBar;
+  final double? navBarHeight;
   final bool extendedLength;
-  final Function(bool, bool) onAnimationComplete;
+  final Function(bool, bool)? onAnimationComplete;
 
   @override
   _OffsetAnimationState createState() => _OffsetAnimationState();
@@ -21,9 +21,9 @@ class OffsetAnimation extends StatefulWidget {
 
 class _OffsetAnimationState extends State<OffsetAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _navBarHideAnimationController;
-  Animation<Offset> _navBarOffsetAnimation;
-  bool _hideNavigationBar;
+  late AnimationController _navBarHideAnimationController;
+  late Animation<Offset> _navBarOffsetAnimation;
+  bool? _hideNavigationBar;
 
   @override
   void initState() {
@@ -33,14 +33,14 @@ class _OffsetAnimationState extends State<OffsetAnimation>
     _navBarHideAnimationController =
         AnimationController(vsync: this, duration: Duration(milliseconds: 200));
     _navBarOffsetAnimation = Tween<Offset>(
-            begin: Offset(0, 0), end: Offset(0, widget.navBarHeight + 22.0))
+            begin: Offset(0, 0), end: Offset(0, widget.navBarHeight! + 22.0))
         .chain(CurveTween(curve: Curves.ease))
         .animate(_navBarHideAnimationController);
 
     _hideAnimation();
 
     _navBarHideAnimationController.addListener(() {
-      widget.onAnimationComplete(_navBarHideAnimationController.isAnimating,
+      widget.onAnimationComplete!(_navBarHideAnimationController.isAnimating,
           _navBarHideAnimationController.isCompleted);
     });
   }
@@ -52,8 +52,8 @@ class _OffsetAnimationState extends State<OffsetAnimation>
   }
 
   _hideAnimation() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (_hideNavigationBar) {
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      if (_hideNavigationBar!) {
         _navBarHideAnimationController.forward();
       } else {
         _navBarHideAnimationController.reverse();

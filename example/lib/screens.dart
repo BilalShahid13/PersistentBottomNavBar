@@ -34,8 +34,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.blue,
+                child: ElevatedButton(
                   onPressed: () {
                     pushNewScreenWithRouteSettings(
                       context,
@@ -52,19 +51,17 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.deepOrange,
+                child: ElevatedButton(
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
                       useRootNavigator: true,
                       builder: (context) => Center(
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          color: Colors.blue,
                           child: Text(
                             "Exit",
                             style: TextStyle(color: Colors.white),
@@ -80,19 +77,17 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.deepOrange,
+                child: ElevatedButton(
                   onPressed: () {
                     showModalBottomSheet(
                       context: context,
                       backgroundColor: Colors.white,
                       useRootNavigator: false,
                       builder: (context) => Center(
-                        child: RaisedButton(
+                        child: ElevatedButton(
                           onPressed: () {
                             Navigator.pop(context);
                           },
-                          color: Colors.blue,
                           child: Text(
                             "Exit",
                             style: TextStyle(color: Colors.white),
@@ -108,8 +103,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.lime,
+                child: ElevatedButton(
                   onPressed: () {
                     pushDynamicScreen(context,
                         screen: SampleModalScreen(), withNavBar: true);
@@ -121,8 +115,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.purpleAccent,
+                child: ElevatedButton(
                   onPressed: () {
                     this.onScreenHideButtonPressed();
                   },
@@ -135,8 +128,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               Center(
-                child: RaisedButton(
-                  color: Colors.red,
+                child: ElevatedButton(
                   onPressed: () {
                     Navigator.of(this.menuScreenContext).pop();
                   },
@@ -169,8 +161,7 @@ class MainScreen2 extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              RaisedButton(
-                color: Colors.indigo,
+              ElevatedButton(
                 onPressed: () {
                   pushNewScreen(context, screen: MainScreen3());
                 },
@@ -179,8 +170,7 @@ class MainScreen2 extends StatelessWidget {
                   style: TextStyle(color: Colors.white),
                 ),
               ),
-              RaisedButton(
-                color: Colors.indigo,
+              ElevatedButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -206,8 +196,7 @@ class MainScreen3 extends StatelessWidget {
       backgroundColor: Colors.deepOrangeAccent,
       body: Container(
         child: Center(
-          child: RaisedButton(
-            color: Colors.blue,
+          child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },
