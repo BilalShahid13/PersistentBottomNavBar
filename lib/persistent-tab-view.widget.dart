@@ -197,6 +197,15 @@ class PersistentTabView extends PersistentTabViewBase {
             routeAndNavigatorSettings.navigatorKeys != null &&
                 routeAndNavigatorSettings.navigatorKeys.length != items.length,
         "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
+    assert(popAllScreensOnTapOfSelectedTab != null,
+        'popAllScreensOnTapOfSelectedTab must not be null');
+    assert(
+        (popAllScreensOnTapOfSelectedTab &&
+                items != null &&
+                items.isNotEmpty &&
+                items.length == screens.length) ||
+            !popAllScreensOnTapOfSelectedTab,
+        "items must not be null/empty and should have the same length with the screens");
   }
 }
 
