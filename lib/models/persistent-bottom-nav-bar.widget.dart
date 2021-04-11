@@ -20,7 +20,7 @@ class PersistentBottomNavBar extends StatelessWidget {
   final NavBarDecoration navBarDecoration;
   final NavBarStyle navBarStyle;
   final NeumorphicProperties neumorphicProperties;
-  final Widget customNavBarWidget;
+  final Widget Function(NavBarEssentials navBarEssentials) customNavBarWidget;
   final bool confineToSafeArea;
   final bool hideNavigationBar;
   final Function(bool, bool) onAnimationComplete;
@@ -38,7 +38,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                         : confineToSafeArea ?? true,
                     child: Container(
                       color: this.navBarEssentials.backgroundColor,
-                      child: this.customNavBarWidget,
+                      child: this.customNavBarWidget(navBarEssentials),
                     ),
                   )
                 : Container(
@@ -49,7 +49,7 @@ class PersistentBottomNavBar extends StatelessWidget {
                                 (this.hideNavigationBar ?? false)
                             ? false
                             : confineToSafeArea ?? true,
-                        child: this.customNavBarWidget),
+                        child: this.customNavBarWidget(navBarEssentials)),
                   )
             : this.navBarStyle == NavBarStyle.style15 ||
                     this.navBarStyle == NavBarStyle.style16
@@ -198,7 +198,7 @@ class PersistentBottomNavBar extends StatelessWidget {
 
   Widget getNavBarStyle() {
     if (isCustomWidget) {
-      return customNavBarWidget;
+      return this.customNavBarWidget(navBarEssentials);
     } else {
       switch (navBarStyle) {
         case NavBarStyle.style1:

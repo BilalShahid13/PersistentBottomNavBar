@@ -126,6 +126,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         context,
         controller: _controller,
         screens: _buildScreens(),
+        items: _buildScreens()
+            .map((e) => PersistentBottomNavBarItem.custom())
+            .toList(),
         confineInSafeArea: true,
         itemCount: 5,
         handleAndroidBackButtonPress: true,
@@ -137,9 +140,12 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           curve: Curves.ease,
           duration: Duration(milliseconds: 200),
         ),
-        customWidget: CustomNavBarWidget(
+        customWidget: (NavBarEssentials navBarEssentials) => CustomNavBarWidget(
           items: _navBarsItems(),
           onItemSelected: (index) {
+            if (index == _controller.index)
+              navBarEssentials.popAllScreensForTheSelectedTab(index);
+
             setState(() {
               _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
             });

@@ -140,49 +140,51 @@ class PersistentTabView extends PersistentTabViewBase {
         "Number of 'Navigator Keys' must be equal to the number of bottom navigation tabs.");
   }
 
-  PersistentTabView.custom(
-    this.context, {
-    Key key,
-    @required this.screens,
-    this.controller,
-    this.margin = EdgeInsets.zero,
-    this.floatingActionButton,
-    Widget customWidget,
-    int itemCount,
-    this.resizeToAvoidBottomInset = false,
-    this.bottomScreenMargin,
-    this.selectedTabScreenContext,
-    this.hideNavigationBarWhenKeyboardShows = true,
-    this.backgroundColor = CupertinoColors.white,
-    this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
-    this.confineInSafeArea = true,
-    this.onWillPop,
-    this.stateManagement = true,
-    this.handleAndroidBackButtonPress = true,
-    this.hideNavigationBar,
-    this.screenTransitionAnimation = const ScreenTransitionAnimation(),
-  }) : super(
-          key: key,
-          context: context,
-          screens: screens,
-          controller: controller,
-          margin: margin,
-          routeAndNavigatorSettings: routeAndNavigatorSettings,
-          backgroundColor: backgroundColor,
-          floatingActionButton: floatingActionButton,
-          customWidget: customWidget,
-          itemCount: itemCount,
-          resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-          bottomScreenMargin: bottomScreenMargin,
-          onWillPop: onWillPop,
-          confineInSafeArea: confineInSafeArea,
-          stateManagement: stateManagement,
-          handleAndroidBackButtonPress: handleAndroidBackButtonPress,
-          hideNavigationBar: hideNavigationBar,
-          screenTransitionAnimation: screenTransitionAnimation,
-          isCustomWidget: true,
-          decoration: NavBarDecoration(),
-        ) {
+  PersistentTabView.custom(this.context,
+      {Key key,
+      List<PersistentBottomNavBarItem> items,
+      @required this.screens,
+      this.controller,
+      this.margin = EdgeInsets.zero,
+      this.floatingActionButton,
+      Widget Function(NavBarEssentials navBarEssentials) customWidget,
+      int itemCount,
+      this.resizeToAvoidBottomInset = false,
+      this.bottomScreenMargin,
+      this.selectedTabScreenContext,
+      this.hideNavigationBarWhenKeyboardShows = true,
+      this.backgroundColor = CupertinoColors.white,
+      this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+      this.confineInSafeArea = true,
+      this.onWillPop,
+      this.stateManagement = true,
+      this.handleAndroidBackButtonPress = true,
+      this.hideNavigationBar,
+      this.screenTransitionAnimation = const ScreenTransitionAnimation(),
+      bool popAllScreensOnTapOfSelectedTab = true})
+      : super(
+            key: key,
+            items: items,
+            context: context,
+            screens: screens,
+            controller: controller,
+            margin: margin,
+            routeAndNavigatorSettings: routeAndNavigatorSettings,
+            backgroundColor: backgroundColor,
+            floatingActionButton: floatingActionButton,
+            customWidget: customWidget,
+            itemCount: itemCount,
+            resizeToAvoidBottomInset: resizeToAvoidBottomInset,
+            bottomScreenMargin: bottomScreenMargin,
+            onWillPop: onWillPop,
+            confineInSafeArea: confineInSafeArea,
+            stateManagement: stateManagement,
+            handleAndroidBackButtonPress: handleAndroidBackButtonPress,
+            hideNavigationBar: hideNavigationBar,
+            screenTransitionAnimation: screenTransitionAnimation,
+            isCustomWidget: true,
+            decoration: NavBarDecoration(),
+            popAllScreensOnTapOfSelectedTab: popAllScreensOnTapOfSelectedTab) {
     assert(itemCount != null,
         "In case of custom navigation bar style, the property itemCount is required!");
     assert(screens != null, "screens property is required");
@@ -242,7 +244,7 @@ class PersistentTabViewBase extends StatefulWidget {
   final EdgeInsets margin;
 
   ///Custom navigation bar widget. To be only used when `navBarStyle` is set to `NavBarStyle.custom`.
-  final Widget customWidget;
+  final Widget Function(NavBarEssentials navBarEssentials) customWidget;
 
   ///If using `custom` navBarStyle, define this instead of the `items` property
   final int itemCount;
