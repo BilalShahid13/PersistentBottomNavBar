@@ -33,9 +33,11 @@ class BottomNavStyle5 extends StatelessWidget {
                               : item.inactiveColorPrimary == null
                                   ? item.activeColorPrimary
                                   : item.inactiveColorPrimary),
-                      child: isSelected
-                          ? item.icon
-                          : item.inactiveIcon ?? item.icon,
+                      child: item.iconBuilder != null
+                          ? item.iconBuilder!(isSelected, item.icon)
+                          : isSelected
+                              ? item.icon
+                              : item.inactiveIcon ?? item.icon,
                     ),
                   ),
                   Container(

@@ -28,8 +28,11 @@ class NeumorphicBottomNavBar extends StatelessWidget {
                             : item.inactiveColorPrimary == null
                                 ? item.activeColorPrimary
                                 : item.inactiveColorPrimary),
-                    child:
-                        isSelected ? item.icon : item.inactiveIcon ?? item.icon,
+                    child: item.iconBuilder != null
+                        ? item.iconBuilder!(isSelected, item.icon)
+                        : isSelected
+                            ? item.icon
+                            : item.inactiveIcon ?? item.icon,
                   ),
                 ),
                 Padding(
@@ -71,7 +74,11 @@ class NeumorphicBottomNavBar extends StatelessWidget {
                       : item.inactiveColorPrimary == null
                           ? item.activeColorPrimary
                           : item.inactiveColorPrimary),
-              child: isSelected ? item.icon : item.inactiveIcon ?? item.icon,
+              child: item.iconBuilder != null
+                  ? item.iconBuilder!(isSelected, item.icon)
+                  : isSelected
+                      ? item.icon
+                      : item.inactiveIcon ?? item.icon,
             );
 
   Widget _buildItem(BuildContext context, PersistentBottomNavBarItem item,
