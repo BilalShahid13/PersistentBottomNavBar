@@ -36,9 +36,11 @@ class BottomNavSimple extends StatelessWidget {
                                         item.activeColorPrimary)
                                     : item.inactiveColorPrimary ??
                                         item.activeColorPrimary),
-                            child: isSelected
-                                ? item.icon
-                                : item.inactiveIcon ?? item.icon,
+                            child: item.iconBuilder != null
+                                ? item.iconBuilder!(isSelected, item.icon)
+                                : isSelected
+                                    ? item.icon
+                                    : item.inactiveIcon ?? item.icon,
                           ),
                         ),
                         if (item.title == null)
