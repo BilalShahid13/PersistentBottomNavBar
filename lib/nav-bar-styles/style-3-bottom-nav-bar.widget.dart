@@ -55,25 +55,25 @@ class BottomNavStyle3 extends StatelessWidget {
                           padding: const EdgeInsets.only(top: 15.0),
                           child: Material(
                             type: MaterialType.transparency,
-                            child: DefaultTextStyle.merge(
-                              style: TextStyle(
-                                  color: item.textStyle != null
-                                      ? item.textStyle!.apply(
-                                              color: isSelected
-                                                  ? (item.activeColorSecondary ==
-                                                          null
-                                                      ? item.activeColorPrimary
-                                                      : item.activeColorSecondary)
-                                                  : item.inactiveColorPrimary)
-                                          as Color?
-                                      : isSelected
-                                          ? (item.activeColorSecondary == null
-                                              ? item.activeColorPrimary
-                                              : item.activeColorSecondary)
-                                          : item.inactiveColorPrimary,
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 12.0),
-                              child: FittedBox(child: Text(item.title!)),
+                            child: FittedBox(
+                              child: Text(
+                                item.title!,
+                                style: item.textStyle != null
+                                    ? (item.textStyle!.apply(
+                                    color: isSelected
+                                        ? (item.activeColorSecondary ==
+                                        null
+                                        ? item.activeColorPrimary
+                                        : item.activeColorSecondary)
+                                        : item.inactiveColorPrimary))
+                                    : TextStyle(
+                                    color: (item.activeColorSecondary ==
+                                        null
+                                        ? item.activeColorPrimary
+                                        : item.activeColorSecondary),
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12.0),
+                              ),
                             ),
                           ),
                         ),
