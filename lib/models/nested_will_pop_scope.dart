@@ -1,4 +1,4 @@
-part of persistent_bottom_nav_bar;
+import 'package:flutter/material.dart';
 
 class NestedWillPopScope extends StatefulWidget {
   const NestedWillPopScope({

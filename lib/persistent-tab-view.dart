@@ -6,6 +6,8 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart' show CupertinoApp;
+import 'models/nested_will_pop_scope.dart';
+
 
 //Main TabView Widget
 part 'persistent-tab-view.widget.dart';
@@ -22,7 +24,6 @@ part 'models/nav-bar-animation.model.dart';
 part 'models/page-route-transitions.model.dart';
 part 'models/nav-bar-essentials.model.dart';
 part 'models/route-settings.model.dart';
-part 'models/nested_will_pop_scope.dart';
 
 //Utils
 part 'utils/functions.utils.dart';
