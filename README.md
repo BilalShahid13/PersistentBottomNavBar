@@ -218,6 +218,19 @@ If you are pushing a new `modal` screen, use the following function:
 
 - To push bottom sheet on top of the Navigation Bar, use showModalBottomScreen and set it's property `useRootNavigator` to true. See example project for an illustration.
 
+- To handle PopScopes down in the widget tree just implement 'NestedWillPopScope':
+
+    ```dart
+        import 'package:persistent_bottom_nav_bar/models/nested_will_pop_scope.dart';
+        
+        NestedWillPopScope(
+        onWillPop: () async {
+            'your statements to handle PopScope'
+        },
+        child: ThirdNestedScreen(),
+        );
+     ```
+
 ## Custom Navigation Bar Styling
 
 If you want to have your own style for the navigation bar, follow these steps:
