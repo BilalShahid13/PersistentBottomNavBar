@@ -415,7 +415,7 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
 
   Widget _buildScreens() {
     return Container(
-      color: CupertinoColors.black,
+      color: widget.backgroundColor,
       child: Stack(
         fit: StackFit.expand,
         children: List<Widget>.generate(widget.tabCount!, (int index) {
