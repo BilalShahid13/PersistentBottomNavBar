@@ -5,16 +5,16 @@ import 'main.dart';
 import 'screens.dart';
 
 class CustomWidgetExample extends StatefulWidget {
-  final BuildContext menuScreenContext;
-  CustomWidgetExample({Key key, this.menuScreenContext}) : super(key: key);
+  final BuildContext? menuScreenContext;
+  CustomWidgetExample({Key? key, this.menuScreenContext}) : super(key: key);
 
   @override
   _CustomWidgetExampleState createState() => _CustomWidgetExampleState();
 }
 
 class _CustomWidgetExampleState extends State<CustomWidgetExample> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
+  PersistentTabController? _controller;
+  bool? _hideNavBar;
 
   @override
   void initState() {
@@ -30,7 +30,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
           setState(() {
-            _hideNavBar = !_hideNavBar;
+            _hideNavBar = !_hideNavBar!;
           });
         },
       ),
@@ -39,7 +39,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
           setState(() {
-            _hideNavBar = !_hideNavBar;
+            _hideNavBar = !_hideNavBar!;
           });
         },
       ),
@@ -48,7 +48,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
           setState(() {
-            _hideNavBar = !_hideNavBar;
+            _hideNavBar = !_hideNavBar!;
           });
         },
       ),
@@ -57,7 +57,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
           setState(() {
-            _hideNavBar = !_hideNavBar;
+            _hideNavBar = !_hideNavBar!;
           });
         },
       ),
@@ -66,7 +66,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         hideStatus: _hideNavBar,
         onScreenHideButtonPressed: () {
           setState(() {
-            _hideNavBar = !_hideNavBar;
+            _hideNavBar = !_hideNavBar!;
           });
         },
       ),
@@ -127,6 +127,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         controller: _controller,
         screens: _buildScreens(),
         confineInSafeArea: true,
+        navBarHeight: kBottomNavigationBarHeight,
         itemCount: 5,
         handleAndroidBackButtonPress: true,
         stateManagement: true,
@@ -140,10 +141,10 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           items: _navBarsItems(),
           onItemSelected: (index) {
             setState(() {
-              _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
+              _controller!.index = index; // THIS IS CRITICAL!! Don't miss it!
             });
           },
-          selectedIndex: _controller.index,
+          selectedIndex: _controller!.index,
         ),
       ),
     );

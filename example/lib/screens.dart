@@ -4,11 +4,11 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'modal-screen.dart';
 
 class MainScreen extends StatelessWidget {
-  final BuildContext menuScreenContext;
-  final Function onScreenHideButtonPressed;
-  final bool hideStatus;
+  final BuildContext? menuScreenContext;
+  final Function? onScreenHideButtonPressed;
+  final bool? hideStatus;
   const MainScreen(
-      {Key key,
+      {Key? key,
       this.menuScreenContext,
       this.onScreenHideButtonPressed,
       this.hideStatus = false})
@@ -117,10 +117,10 @@ class MainScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    this.onScreenHideButtonPressed();
+                    this.onScreenHideButtonPressed!();
                   },
                   child: Text(
-                    this.hideStatus
+                    this.hideStatus!
                         ? "Unhide Navigation Bar"
                         : "Hide Navigation Bar",
                     style: TextStyle(color: Colors.white),
@@ -130,7 +130,7 @@ class MainScreen extends StatelessWidget {
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.of(this.menuScreenContext).pop();
+                    Navigator.of(this.menuScreenContext!).pop();
                   },
                   child: Text(
                     "<- Main Menu",
@@ -150,7 +150,7 @@ class MainScreen extends StatelessWidget {
 }
 
 class MainScreen2 extends StatelessWidget {
-  const MainScreen2({Key key}) : super(key: key);
+  const MainScreen2({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +188,7 @@ class MainScreen2 extends StatelessWidget {
 }
 
 class MainScreen3 extends StatelessWidget {
-  const MainScreen3({Key key}) : super(key: key);
+  const MainScreen3({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
