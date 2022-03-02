@@ -3,7 +3,7 @@ description: A do all, highly customizable persistent/static bottom navigation b
 
 homepage: https://github.com/cchamm/PersistentBottomNavBarCCC
 repository: https://github.com/cchamm/PersistentBottomNavBarCCC
-version: 5.0.0
+version: 5.0.1
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
