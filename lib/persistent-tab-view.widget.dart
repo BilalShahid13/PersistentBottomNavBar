@@ -42,6 +42,9 @@ class PersistentTabView extends PersistentTabViewBase {
   ///Bottom margin of the screen.
   final double? bottomScreenMargin;
 
+  /// Whether the navigation bar should size itself to avoid the window's bottom inset.
+  ///
+  /// Please check [CupertinoPageScaffold.resizeToAvoidBottomInset] for more details.
   final bool resizeToAvoidBottomInset;
 
   ///Preserves the state of each tab's screen. `true` by default.
