@@ -1,9 +1,9 @@
-name: persistent_bottom_nav_bar
+name: persistent_bottom_nav_bar_ccc
 description: A do all, highly customizable persistent/static bottom navigation bar for flutter. Includes up-to 20 styles.
 
-homepage: https://github.com/BilalShahid13/PersistentBottomNavBar
-repository: https://github.com/BilalShahid13/PersistentBottomNavBar
-version: 4.0.2
+homepage: https://github.com/cchamm/PersistentBottomNavBarCCC
+repository: https://github.com/cchamm/PersistentBottomNavBarCCC
+version: 5.0.0
 
 environment:
   sdk: '>=2.12.0 <3.0.0'
