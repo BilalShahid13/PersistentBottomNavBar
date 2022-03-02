@@ -175,7 +175,9 @@ class PersistentTabView extends PersistentTabViewBase {
           hideNavigationBar: hideNavigationBar,
           screenTransitionAnimation: screenTransitionAnimation,
           isCustomWidget: true,
-          decoration: NavBarDecoration(),
+          decoration: NavBarDecoration(
+            colorBehindNavBar: backgroundColor
+          ),
         ) {
     assert(itemCount == screens.length,
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
