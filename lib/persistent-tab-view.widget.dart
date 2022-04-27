@@ -58,7 +58,7 @@ class PersistentTabView extends PersistentTabViewBase {
 
   final bool hideNavigationBarWhenKeyboardShows;
 
-  ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
+  ///Hides the navigation bar with an transition animation. Use it in conjunction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool? hideNavigationBar;
 
   final BuildContext context;
@@ -150,8 +150,8 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardShows = true,
     this.backgroundColor = CupertinoColors.white,
-    CutsomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
-        const CutsomWidgetRouteAndNavigatorSettings(),
+    CustomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
+        const CustomWidgetRouteAndNavigatorSettings(),
     this.confineInSafeArea = true,
     this.onWillPop,
     this.stateManagement = true,
@@ -279,13 +279,13 @@ class PersistentTabViewBase extends StatefulWidget {
   ///This controls the animation properties of the items of the NavBar.
   final ItemAnimationProperties? itemAnimationProperties;
 
-  ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
+  ///Hides the navigation bar with an transition animation. Use it in conjunction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool? hideNavigationBar;
 
   ///Define navigation bar route name and settings here.
   ///
   ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final CutsomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
+  final CustomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
 
   final bool? isCustomWidget;
 
