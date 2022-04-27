@@ -46,7 +46,7 @@ class RouteAndNavigatorSettings {
   }
 }
 
-class CutsomWidgetRouteAndNavigatorSettings {
+class CustomWidgetRouteAndNavigatorSettings {
   final String? defaultTitle;
 
   final Map<String, WidgetBuilder>? routes;
@@ -61,7 +61,7 @@ class CutsomWidgetRouteAndNavigatorSettings {
 
   final List<GlobalKey<NavigatorState>>? navigatorKeys;
 
-  const CutsomWidgetRouteAndNavigatorSettings({
+  const CustomWidgetRouteAndNavigatorSettings({
     this.defaultTitle,
     this.routes,
     this.onGenerateRoute,
@@ -71,7 +71,7 @@ class CutsomWidgetRouteAndNavigatorSettings {
     this.navigatorKeys,
   });
 
-  CutsomWidgetRouteAndNavigatorSettings copyWith({
+  CustomWidgetRouteAndNavigatorSettings copyWith({
     String? defaultTitle,
     Map<String, WidgetBuilder>? routes,
     RouteFactory? onGenerateRoute,
@@ -80,7 +80,7 @@ class CutsomWidgetRouteAndNavigatorSettings {
     List<NavigatorObserver>? navigatorObservers,
     List<GlobalKey<NavigatorState>>? navigatorKeys,
   }) {
-    return CutsomWidgetRouteAndNavigatorSettings(
+    return CustomWidgetRouteAndNavigatorSettings(
       defaultTitle: defaultTitle ?? this.defaultTitle,
       routes: routes ?? this.routes,
       onGenerateRoute: onGenerateRoute ?? this.onGenerateRoute,

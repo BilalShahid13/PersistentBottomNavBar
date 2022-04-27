@@ -58,7 +58,7 @@ class PersistentTabView extends PersistentTabViewBase {
 
   final bool hideNavigationBarWhenKeyboardShows;
 
-  ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
+  ///Hides the navigation bar with an transition animation. Use it in conjunction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool? hideNavigationBar;
 
   final BuildContext context;
@@ -72,6 +72,7 @@ class PersistentTabView extends PersistentTabViewBase {
       this.margin = EdgeInsets.zero,
       this.backgroundColor = CupertinoColors.white,
       ValueChanged<int>? onItemSelected,
+      bool manuallyHandelPageChange = false,
       NeumorphicProperties? neumorphicProperties,
       this.floatingActionButton,
       NavBarPadding padding = const NavBarPadding.all(null),
@@ -108,6 +109,7 @@ class PersistentTabView extends PersistentTabViewBase {
           navBarHeight: navBarHeight,
           backgroundColor: backgroundColor,
           onItemSelected: onItemSelected,
+          manuallyHandelPageChange: manuallyHandelPageChange,
           neumorphicProperties: neumorphicProperties,
           floatingActionButton: floatingActionButton,
           resizeToAvoidBottomInset: resizeToAvoidBottomInset,
@@ -128,6 +130,10 @@ class PersistentTabView extends PersistentTabViewBase {
         "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens");
     assert(items!.length >= 2 && items.length <= 6,
         "NavBar should have at least 2 or maximum 6 items (Except for styles 15-18)");
+    assert(
+        (manuallyHandelPageChange && onItemSelected != null) ||
+            !manuallyHandelPageChange,
+        "You have to provide onItemSelected callback when yuo set manuallyHandelPageChange to be true");
   }
 
   PersistentTabView.custom(
@@ -144,8 +150,8 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardShows = true,
     this.backgroundColor = CupertinoColors.white,
-    CutsomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
-        const CutsomWidgetRouteAndNavigatorSettings(),
+    CustomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
+        const CustomWidgetRouteAndNavigatorSettings(),
     this.confineInSafeArea = true,
     this.onWillPop,
     this.stateManagement = true,
@@ -200,6 +206,9 @@ class PersistentTabViewBase extends StatefulWidget {
 
   ///Callback when page or tab change is detected.
   final ValueChanged<int>? onItemSelected;
+
+  ///Disables the automatic page change done before `onItemSelected` is called, You will handel the page change manually inside `onItemSelected`.
+  final bool? manuallyHandelPageChange;
 
   ///Specifies the curve properties of the NavBar.
   final NavBarDecoration? decoration;
@@ -270,13 +279,13 @@ class PersistentTabViewBase extends StatefulWidget {
   ///This controls the animation properties of the items of the NavBar.
   final ItemAnimationProperties? itemAnimationProperties;
 
-  ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
+  ///Hides the navigation bar with an transition animation. Use it in conjunction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool? hideNavigationBar;
 
   ///Define navigation bar route name and settings here.
   ///
   ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final CutsomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
+  final CustomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
 
   final bool? isCustomWidget;
 
@@ -301,6 +310,7 @@ class PersistentTabViewBase extends StatefulWidget {
     this.items,
     this.backgroundColor,
     this.onItemSelected,
+    this.manuallyHandelPageChange,
     this.decoration,
     this.padding,
     this.navBarStyle,
@@ -593,14 +603,16 @@ class _PersistentTabViewState extends State<PersistentTabView> {
                   widget.popAllScreensOnTapOfSelectedTab ?? true,
               onItemSelected: widget.onItemSelected != null
                   ? (int index) {
-                      if (_controller!.index != _previousIndex) {
-                        _previousIndex = _controller!.index;
+                      if (!widget.manuallyHandelPageChange!) {
+                        if (_controller!.index != _previousIndex) {
+                          _previousIndex = _controller!.index;
+                        }
+                        if ((widget.popAllScreensOnTapOfSelectedTab ?? true) &&
+                            _previousIndex == index) {
+                          popAllScreens();
+                        }
+                        _controller!.index = index;
                       }
-                      if ((widget.popAllScreensOnTapOfSelectedTab ?? true) &&
-                          _previousIndex == index) {
-                        popAllScreens();
-                      }
-                      _controller!.index = index;
                       widget.onItemSelected!(index);
                     }
                   : (int index) {

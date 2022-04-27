@@ -35,7 +35,7 @@ class PersistentBottomNavBarItem {
 
   ///If you want custom behavior on a press of a NavBar item like display a modal screen, you can declare your logic here.
   ///
-  ///NOTE: This will override the default tab switiching behavior for this particular item.
+  ///NOTE: This will override the default tab switching behavior for this particular item.
   final Function(BuildContext?)? onPressed;
 
   ///Use it when you want to run some code when user presses the NavBar when on the initial screen of that respective tab. The inspiration was taken from the native iOS navigation bar behavior where when performing similar operation, you taken to the top of the list.
