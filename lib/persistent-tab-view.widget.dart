@@ -561,10 +561,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     }
   }
 
-  Widget navigationBarWidget() => CupertinoPageScaffold(
-        resizeToAvoidBottomInset: widget.resizeToAvoidBottomInset,
-        backgroundColor: Colors.transparent,
-        child: PersistentTabScaffold(
+  Widget navigationBarWidget() => PersistentTabScaffold(
           controller: _controller,
           itemCount: widget.items == null
               ? widget.itemCount ?? 0
@@ -650,8 +647,7 @@ class _PersistentTabViewState extends State<PersistentTabView> {
               child: _buildScreen(index),
             );
           },
-        ),
-      );
+        );
 
   @override
   Widget build(BuildContext context) {
