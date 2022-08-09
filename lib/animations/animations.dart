@@ -52,7 +52,7 @@ class _OffsetAnimationState extends State<OffsetAnimation>
   }
 
   _hideAnimation() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       if (_hideNavigationBar!) {
         _navBarHideAnimationController.forward();
       } else {
