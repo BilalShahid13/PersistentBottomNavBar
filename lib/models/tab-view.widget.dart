@@ -62,6 +62,8 @@ class _CustomTabViewState extends State<CustomTabView> {
     } else if (widget.routeAndNavigatorSettings!.routes != null) {
       routeBuilder = widget.routeAndNavigatorSettings!.routes![name!];
     }
+    if (widget.routeAndNavigatorSettings!.onGenerateRoute != null)
+      return widget.routeAndNavigatorSettings!.onGenerateRoute!(settings);
     if (routeBuilder != null) {
       return PageRouteBuilder(
         pageBuilder: (context, animation, secondaryAnimation) =>
@@ -74,8 +76,6 @@ class _CustomTabViewState extends State<CustomTabView> {
                 '/9f580fc5-c252-45d0-af25-9429992db112'),
       );
     }
-    if (widget.routeAndNavigatorSettings!.onGenerateRoute != null)
-      return widget.routeAndNavigatorSettings!.onGenerateRoute!(settings);
     return null;
   }
 
