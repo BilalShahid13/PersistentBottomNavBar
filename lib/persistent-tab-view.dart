@@ -5,8 +5,6 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart' show CupertinoApp;
-
 //Main TabView Widget
 part 'persistent-tab-view.widget.dart';
 
