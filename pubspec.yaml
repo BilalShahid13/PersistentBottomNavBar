@@ -6,7 +6,7 @@ repository: https://github.com/BilalShahid13/PersistentBottomNavBar
 version: 4.0.2
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.17.0 <3.0.0"
 
 dependencies:
   flutter:
