@@ -61,7 +61,7 @@ dependencies:
 Import the package:
 
 ```dart
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 ```
 
 Persistent bottom navigation bar uses `PersistentTabController` as its controller. Here is how to declare it:
@@ -156,7 +156,7 @@ In `platform-specific` behavior, while pushing a new screen, on `Android` it wil
 
 ```dart
 
-    pushNewScreen(
+    PersistentNavBarNavigator.pushNewScreen(
         context,
         screen: MainScreen(),
         withNavBar: true, // OPTIONAL VALUE. True by default.
@@ -167,7 +167,7 @@ In `platform-specific` behavior, while pushing a new screen, on `Android` it wil
 
 ```dart
 
-    pushNewScreenWithRouteSettings(
+    PersistentNavBarNavigator.pushNewScreenWithRouteSettings(
         context,
         settings: RouteSettings(name: MainScreen.routeName),
         screen: MainScreen(),
@@ -181,7 +181,7 @@ If you are pushing a new `modal` screen, use the following function:
 
 ```dart
 
-    pushDynamicScreen(
+    PersistentNavBarNavigator.pushDynamicScreen(
         context,
         screen: HomeModalScreen(),
         withNavBar: true,

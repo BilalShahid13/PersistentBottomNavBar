@@ -2,7 +2,7 @@ part of persistent_bottom_nav_bar;
 
 class OffsetAnimation extends StatefulWidget {
   OffsetAnimation(
-      {Key? key,
+      {final Key? key,
       this.child,
       this.hideNavigationBar,
       this.navBarHeight,
@@ -31,9 +31,9 @@ class _OffsetAnimationState extends State<OffsetAnimation>
     _hideNavigationBar = widget.hideNavigationBar;
 
     _navBarHideAnimationController =
-        AnimationController(vsync: this, duration: Duration(milliseconds: 200));
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
     _navBarOffsetAnimation = Tween<Offset>(
-            begin: Offset(0, 0), end: Offset(0, widget.navBarHeight! + 22.0))
+            begin: Offset.zero, end: Offset(0, widget.navBarHeight! + 22.0))
         .chain(CurveTween(curve: Curves.ease))
         .animate(_navBarHideAnimationController);
 
@@ -51,8 +51,8 @@ class _OffsetAnimationState extends State<OffsetAnimation>
     super.dispose();
   }
 
-  _hideAnimation() {
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+  void _hideAnimation() {
+    WidgetsBinding.instance.addPostFrameCallback((final _) {
       if (_hideNavigationBar!) {
         _navBarHideAnimationController.forward();
       } else {
@@ -62,7 +62,7 @@ class _OffsetAnimationState extends State<OffsetAnimation>
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(final BuildContext context) {
     if (_hideNavigationBar != null ||
         _hideNavigationBar != widget.hideNavigationBar) {
       _hideNavigationBar = widget.hideNavigationBar;
@@ -71,7 +71,7 @@ class _OffsetAnimationState extends State<OffsetAnimation>
     return AnimatedBuilder(
       animation: _navBarOffsetAnimation,
       child: widget.child,
-      builder: (context, child) => Transform.translate(
+      builder: (final context, final child) => Transform.translate(
         offset: _navBarOffsetAnimation.value,
         child: child,
       ),
