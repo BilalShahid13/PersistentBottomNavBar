@@ -40,7 +40,6 @@ class PersistentTabScaffold extends StatefulWidget {
     required this.tabBar,
     required this.tabBuilder,
     final Key? key,
-    
     this.controller,
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
@@ -275,7 +274,8 @@ class _TabSwitchingView extends StatefulWidget {
     required this.tabBuilder,
     required this.screenTransitionAnimation,
     required this.backgroundColor,
-  }) : assert(tabCount != null && tabCount > 0, "tabCount must not be null and less than 1");
+  }) : assert(tabCount != null && tabCount > 0,
+            "tabCount must not be null and less than 1");
 
   final int currentTabIndex;
   final int? tabCount;
@@ -379,16 +379,18 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
     if (_lastIndex! > widget.currentTabIndex &&
         !_animationControllers[_lastIndex!]!.isAnimating) {
       _animationControllers[_lastIndex!]!.reset();
-      _animations[_lastIndex!] = Tween(begin: 0.toDouble(), end: _animationValue)
-          .chain(CurveTween(curve: widget.screenTransitionAnimation!.curve))
-          .animate(_animationControllers[_lastIndex!]!);
+      _animations[_lastIndex!] =
+          Tween(begin: 0.toDouble(), end: _animationValue)
+              .chain(CurveTween(curve: widget.screenTransitionAnimation!.curve))
+              .animate(_animationControllers[_lastIndex!]!);
       _animationControllers[_lastIndex!]!.forward();
     } else if (_lastIndex! < widget.currentTabIndex &&
         !_animationControllers[_lastIndex!]!.isAnimating) {
       _animationControllers[_lastIndex!]!.reset();
-      _animations[_lastIndex!] = Tween(begin: 0.toDouble(), end: -_animationValue!)
-          .chain(CurveTween(curve: widget.screenTransitionAnimation!.curve))
-          .animate(_animationControllers[_lastIndex!]!);
+      _animations[_lastIndex!] =
+          Tween(begin: 0.toDouble(), end: -_animationValue!)
+              .chain(CurveTween(curve: widget.screenTransitionAnimation!.curve))
+              .animate(_animationControllers[_lastIndex!]!);
       _animationControllers[_lastIndex!]!.forward();
     }
   }
@@ -416,38 +418,42 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
   }
 
   DecoratedBox _buildScreens() => DecoratedBox(
-      decoration: const BoxDecoration(color: CupertinoColors.black),
-      child: Stack(
-        fit: StackFit.expand,
-        children: List<Widget>.generate(widget.tabCount!, (final index) {
-          final bool active = index == widget.currentTabIndex ||
-              (widget.screenTransitionAnimation!.animateTabTransition &&
-                  index == _lastIndex);
-          shouldBuildTab[index] = active || shouldBuildTab[index];
+        decoration: const BoxDecoration(color: CupertinoColors.black),
+        child: Stack(
+          fit: StackFit.expand,
+          children: List<Widget>.generate(widget.tabCount!, (final index) {
+            final bool active = index == widget.currentTabIndex ||
+                (widget.screenTransitionAnimation!.animateTabTransition &&
+                    index == _lastIndex);
+            shouldBuildTab[index] = active || shouldBuildTab[index];
 
-          return Offstage(
-            offstage: !active,
-            child: TickerMode(
-              enabled: active,
-              child: FocusScope(
-                node: tabFocusNodes[index],
-                child: Builder(builder: (final context) => shouldBuildTab[index]
-                      ? (widget.screenTransitionAnimation!.animateTabTransition
-                          ? AnimatedBuilder(
-                              animation: _animations[index]!,
-                              builder: (final context, final child) => Transform.translate(
-                                offset: Offset(_animations[index]!.value, 0),
-                                child: widget.tabBuilder(context, index),
-                              ),
-                            )
-                          : widget.tabBuilder(context, index))
-                      : Container()),
+            return Offstage(
+              offstage: !active,
+              child: TickerMode(
+                enabled: active,
+                child: FocusScope(
+                  node: tabFocusNodes[index],
+                  child: Builder(
+                      builder: (final context) => shouldBuildTab[index]
+                          ? (widget.screenTransitionAnimation!
+                                  .animateTabTransition
+                              ? AnimatedBuilder(
+                                  animation: _animations[index]!,
+                                  builder: (final context, final child) =>
+                                      Transform.translate(
+                                    offset:
+                                        Offset(_animations[index]!.value, 0),
+                                    child: widget.tabBuilder(context, index),
+                                  ),
+                                )
+                              : widget.tabBuilder(context, index))
+                          : Container()),
+                ),
               ),
-            ),
-          );
-        }),
-      ),
-    );
+            );
+          }),
+        ),
+      );
 
   @override
   void didChangeDependencies() {

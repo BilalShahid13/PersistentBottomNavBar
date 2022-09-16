@@ -70,7 +70,8 @@ class NeumorphicBottomNavBar extends StatelessWidget {
           final double? height) =>
       navBarEssentials!.navBarHeight == 0
           ? const SizedBox.shrink()
-          : PersistentBottomNavigationBarUtilFunctions.opaque(navBarEssentials!.items!, navBarEssentials!.selectedIndex)
+          : PersistentBottomNavigationBarUtilFunctions.opaque(
+                  navBarEssentials!.items!, navBarEssentials!.selectedIndex)
               ? NeumorphicContainer(
                   decoration: NeumorphicDecoration(
                     borderRadius: BorderRadius.circular(
@@ -101,11 +102,12 @@ class NeumorphicBottomNavBar extends StatelessWidget {
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: PersistentBottomNavigationBarUtilFunctions.getBackgroundColor(
-                        context,
-                        navBarEssentials!.items,
-                        navBarEssentials!.backgroundColor,
-                        navBarEssentials!.selectedIndex),
+                    color: PersistentBottomNavigationBarUtilFunctions
+                        .getBackgroundColor(
+                            context,
+                            navBarEssentials!.items,
+                            navBarEssentials!.backgroundColor,
+                            navBarEssentials!.selectedIndex),
                   ),
                   height: height! + 20,
                   width: 60,

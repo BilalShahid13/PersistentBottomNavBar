@@ -1,11 +1,10 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle8 extends StatefulWidget {
-
   BottomNavStyle8({
     final Key? key,
     this.navBarEssentials = const NavBarEssentials(items: null),
-  }): super(key: key);
+  }) : super(key: key);
   final NavBarEssentials? navBarEssentials;
 
   @override
@@ -46,58 +45,67 @@ class _BottomNavStyle8State extends State<BottomNavStyle8>
     });
   }
 
-  Widget _buildItem(final PersistentBottomNavBarItem item, final bool isSelected,
-      final double? height, final int itemIndex) => widget.navBarEssentials!.navBarHeight == 0
-        ? const SizedBox.shrink()
-        : Container(
-            alignment: Alignment.center,
-            height: height,
-            width: double.maxFinite,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(
-                  child: IconTheme(
-                    data: IconThemeData(
-                        size: item.iconSize,
-                        color: isSelected
-                            ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                            : item.inactiveColorPrimary ?? item.activeColorPrimary),
-                    child:
-                        isSelected ? item.icon : item.inactiveIcon ?? item.icon,
+  Widget _buildItem(final PersistentBottomNavBarItem item,
+          final bool isSelected, final double? height, final int itemIndex) =>
+      widget.navBarEssentials!.navBarHeight == 0
+          ? const SizedBox.shrink()
+          : Container(
+              alignment: Alignment.center,
+              height: height,
+              width: double.maxFinite,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: IconTheme(
+                      data: IconThemeData(
+                          size: item.iconSize,
+                          color: isSelected
+                              ? (item.activeColorSecondary ??
+                                  item.activeColorPrimary)
+                              : item.inactiveColorPrimary ??
+                                  item.activeColorPrimary),
+                      child: isSelected
+                          ? item.icon
+                          : item.inactiveIcon ?? item.icon,
+                    ),
                   ),
-                ),
-                if (item.title == null) const SizedBox.shrink() else AnimatedBuilder(
-                        animation: _animationList[itemIndex],
-                        builder: (final context, final child) => Transform.scale(
-                          scale: _animationList[itemIndex].value,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 15),
-                            child: Material(
-                              type: MaterialType.transparency,
-                              child: FittedBox(
-                                child: Text(
-                                  item.title!,
-                                  style: item.textStyle != null
-                                      ? (item.textStyle!.apply(
-                                          color: isSelected
-                                              ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                                              : item.inactiveColorPrimary))
-                                      : TextStyle(
-                                          color: isSelected
-                                              ? (item.activeColorSecondary ?? item.activeColorPrimary)
-                                              : item.inactiveColorPrimary,
-                                          fontWeight: FontWeight.w400,
-                                          fontSize: 12),
-                                ),
+                  if (item.title == null)
+                    const SizedBox.shrink()
+                  else
+                    AnimatedBuilder(
+                      animation: _animationList[itemIndex],
+                      builder: (final context, final child) => Transform.scale(
+                        scale: _animationList[itemIndex].value,
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 15),
+                          child: Material(
+                            type: MaterialType.transparency,
+                            child: FittedBox(
+                              child: Text(
+                                item.title!,
+                                style: item.textStyle != null
+                                    ? (item.textStyle!.apply(
+                                        color: isSelected
+                                            ? (item.activeColorSecondary ??
+                                                item.activeColorPrimary)
+                                            : item.inactiveColorPrimary))
+                                    : TextStyle(
+                                        color: isSelected
+                                            ? (item.activeColorSecondary ??
+                                                item.activeColorPrimary)
+                                            : item.inactiveColorPrimary,
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: 12),
                               ),
                             ),
                           ),
                         ),
-                      )
-              ],
-            ),
-          );
+                      ),
+                    )
+                ],
+              ),
+            );
 
   @override
   void dispose() {

@@ -142,7 +142,8 @@ class NeumorphicContainer extends StatelessWidget {
     return Color.fromRGBO(colors["r"]!, colors["g"]!, colors["b"]!, 1);
   }
 
-  Gradient _getFlatGradients(final Color baseColor, final double depth) => LinearGradient(
+  Gradient _getFlatGradients(final Color baseColor, final double depth) =>
+      LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [
@@ -161,7 +162,8 @@ class NeumorphicContainer extends StatelessWidget {
         ],
       );
 
-  Gradient _getConvexGradients(final Color baseColor, final double depth) => LinearGradient(
+  Gradient _getConvexGradients(final Color baseColor, final double depth) =>
+      LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
         colors: [

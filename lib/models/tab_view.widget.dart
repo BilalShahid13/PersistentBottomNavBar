@@ -14,7 +14,8 @@ class CustomTabView extends StatefulWidget {
 }
 
 class _CustomTabViewState extends State<CustomTabView> {
-  final HeroController _heroController = CupertinoApp.createCupertinoHeroController();
+  final HeroController _heroController =
+      CupertinoApp.createCupertinoHeroController();
   late List<NavigatorObserver?> _navigatorObservers;
 
   @override
@@ -42,11 +43,11 @@ class _CustomTabViewState extends State<CustomTabView> {
 
   @override
   Widget build(final BuildContext context) => Navigator(
-      key: widget.routeAndNavigatorSettings!.navigatorKey,
-      onGenerateRoute: _onGenerateRoute,
-      onUnknownRoute: _onUnknownRoute,
-      observers: _navigatorObservers as List<NavigatorObserver>,
-    );
+        key: widget.routeAndNavigatorSettings!.navigatorKey,
+        onGenerateRoute: _onGenerateRoute,
+        onUnknownRoute: _onUnknownRoute,
+        observers: _navigatorObservers as List<NavigatorObserver>,
+      );
 
   Route<dynamic>? _onGenerateRoute(final RouteSettings settings) {
     final String? name = settings.name;
@@ -60,9 +61,12 @@ class _CustomTabViewState extends State<CustomTabView> {
     }
     if (routeBuilder != null) {
       return PageRouteBuilder(
-        pageBuilder: (final context, final animation, final secondaryAnimation) =>
-            routeBuilder!(context),
-        transitionsBuilder: (final context, final animation, final secondaryAnimation, final child) => child,
+        pageBuilder:
+            (final context, final animation, final secondaryAnimation) =>
+                routeBuilder!(context),
+        transitionsBuilder: (final context, final animation,
+                final secondaryAnimation, final child) =>
+            child,
         settings: RouteSettings(
             name: widget.routeAndNavigatorSettings!.initialRoute ??
                 "/9f580fc5-c252-45d0-af25-9429992db112"),

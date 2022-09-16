@@ -4,7 +4,7 @@ class BottomNavStyle13 extends StatefulWidget {
   BottomNavStyle13({
     final Key? key,
     this.navBarEssentials = const NavBarEssentials(items: null),
-  }): super(key: key);
+  }) : super(key: key);
   final NavBarEssentials? navBarEssentials;
 
   @override

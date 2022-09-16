@@ -1,7 +1,6 @@
 part of persistent_bottom_nav_bar;
 
 class NeumorphicProperties {
-
   const NeumorphicProperties({
     this.bevel = 12.0,
     this.borderRadius = 15.0,

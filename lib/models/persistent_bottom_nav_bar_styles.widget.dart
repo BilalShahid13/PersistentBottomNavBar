@@ -27,7 +27,6 @@ enum NavBarStyle {
 enum PopActionScreensType { once, all }
 
 class NavBarDecoration {
-
   const NavBarDecoration({
     this.border,
     this.gradient,
@@ -36,6 +35,7 @@ class NavBarDecoration {
     this.boxShadow,
     this.adjustScreenBottomPaddingOnCurve = true,
   });
+
   ///Defines the curve radius of the corners of the NavBar.
   final BorderRadius? borderRadius;
 
