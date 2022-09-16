@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
 class OffsetAnimation extends StatefulWidget {
-  OffsetAnimation(
+  const OffsetAnimation(
       {final Key? key,
       this.child,
       this.hideNavigationBar,

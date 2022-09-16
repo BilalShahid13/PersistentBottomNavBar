@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle17 extends StatelessWidget {
-  BottomNavStyle17({
+  const BottomNavStyle17({
     final Key? key,
     this.navBarEssentials = const NavBarEssentials(items: null),
     this.navBarDecoration = const NavBarDecoration(),

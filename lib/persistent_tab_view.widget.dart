@@ -80,7 +80,7 @@ class PersistentTabView extends PersistentTabViewBase {
           screenTransitionAnimation: screenTransitionAnimation,
         );
 
-  PersistentTabView.custom(
+  const PersistentTabView.custom(
     this.context, {
     required final Widget customWidget,
     required final int itemCount,

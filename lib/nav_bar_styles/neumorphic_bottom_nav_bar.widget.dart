@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
 class NeumorphicBottomNavBar extends StatelessWidget {
-  NeumorphicBottomNavBar({
+  const NeumorphicBottomNavBar({
     final Key? key,
     this.navBarEssentials,
     this.neumorphicProperties = const NeumorphicProperties(),

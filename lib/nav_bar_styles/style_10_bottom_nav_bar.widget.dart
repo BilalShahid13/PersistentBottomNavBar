@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
 class BottomNavStyle10 extends StatelessWidget {
-  BottomNavStyle10({
+  const BottomNavStyle10({
     final Key? key,
     this.navBarEssentials,
   }) : super(key: key);

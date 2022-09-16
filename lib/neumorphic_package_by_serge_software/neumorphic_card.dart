@@ -50,7 +50,7 @@ class NeumorphicContainer extends StatelessWidget {
   final BoxConstraints? constraints;
   final EdgeInsetsGeometry? margin;
   final EdgeInsets? padding;
-  final dynamic transform;
+  final Matrix4? transform;
 
   @override
   Widget build(final BuildContext context) {
