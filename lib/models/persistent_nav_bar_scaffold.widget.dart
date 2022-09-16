@@ -316,10 +316,10 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
       key = UniqueKey();
     }
 
-    _initAniamtionControllers();
+    _initAnimationControllers();
   }
 
-  void _initAniamtionControllers() {
+  void _initAnimationControllers() {
     if (widget.screenTransitionAnimation!.animateTabTransition) {
       _animationControllers =
           List<AnimationController?>.filled(widget.tabCount!, null);
@@ -488,13 +488,13 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
     _animationValue = MediaQuery.of(context).size.width;
     if (_tabCount != widget.tabCount) {
       _tabCount = widget.tabCount;
-      _initAniamtionControllers();
+      _initAnimationControllers();
     }
     if (widget.screenTransitionAnimation!.animateTabTransition &&
             _animationControllers.first!.duration !=
                 widget.screenTransitionAnimation!.duration ||
         _animationCurve != widget.screenTransitionAnimation!.curve) {
-      _initAniamtionControllers();
+      _initAnimationControllers();
     }
     if (_showAnimation !=
         widget.screenTransitionAnimation!.animateTabTransition) {

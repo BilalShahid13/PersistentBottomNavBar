@@ -14,7 +14,7 @@ part "models/nav_bar_padding.model.dart";
 part "models/neumorphic_properties.widget.dart";
 part "models/page_route_transitions.model.dart";
 part "models/persistent_bottom_nav_item.widget.dart";
-part "models/persistent_bottom_nav_bar-styles.widget.dart";
+part "models/persistent_bottom_nav_bar_styles.widget.dart";
 part "models/persistent_bottom_nav_bar.widget.dart";
 //Models
 part "models/persistent_nav_bar_scaffold.widget.dart";
