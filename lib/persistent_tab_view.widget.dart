@@ -46,7 +46,8 @@ class PersistentTabView extends PersistentTabViewBase {
             "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens"),
         assert(items!.length >= 2 && items.length <= 6,
             "NavBar should have at least 2 or maximum 6 items (Except for styles 15-18)"),
-        assert(handleAndroidBackButtonPress && onWillPop == null,
+        assert(handleAndroidBackButtonPress && onWillPop == null ||
+            !handleAndroidBackButtonPress && onWillPop != null,
             "If you declare the onWillPop function, you will have to handle the back function functionality yourself as your onWillPop function will override the default function."),
         super(
           key: key,
@@ -104,7 +105,8 @@ class PersistentTabView extends PersistentTabViewBase {
     this.screenTransitionAnimation = const ScreenTransitionAnimation(),
   })  : assert(itemCount == screens.length,
             "screens and items length should be same. If you are using the onPressed callback function of 'PersistentBottomNavBarItem', enter a dummy screen like Container() in its place in the screens"),
-        assert(handleAndroidBackButtonPress && onWillPop != null,
+        assert(handleAndroidBackButtonPress && onWillPop == null ||
+            !handleAndroidBackButtonPress && onWillPop != null,
             "If you declare the onWillPop function, you will have to handle the back function functionality yourself as your onWillPop function will override the defualt function."),
         super(
           key: key,
@@ -686,9 +688,11 @@ class _PersistentTabViewState extends State<PersistentTabView> {
     if (widget.handleAndroidBackButtonPress || widget.onWillPop != null) {
       return WillPopScope(
         onWillPop: !widget.handleAndroidBackButtonPress &&
-                widget.onWillPop != null
-            ? widget.onWillPop!(_contextList[_controller!.index])
-                as Future<bool> Function()?
+            widget.onWillPop != null
+            ? () async {
+                final result = await widget.onWillPop!(_contextList[_controller!.index]);
+                return Future.value(result);
+              }
             : widget.handleAndroidBackButtonPress && widget.onWillPop != null
                 ? () async {
                     if (_controller!.index == 0 &&
