@@ -45,7 +45,6 @@ class _PersistentTabScaffold extends StatefulWidget {
     required this.navBarPosition,
     final Key? key,
     this.controller,
-    this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
     this.bottomScreenMargin,
     this.stateManagement,
@@ -63,8 +62,6 @@ class _PersistentTabScaffold extends StatefulWidget {
   final PersistentTabController? controller;
 
   final IndexedWidgetBuilder tabBuilder;
-
-  final Color? backgroundColor;
 
   final bool resizeToAvoidBottomInset;
 

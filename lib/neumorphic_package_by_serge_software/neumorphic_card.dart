@@ -16,13 +16,10 @@ class _NeumorphicContainer extends StatelessWidget {
     this.curveType = CurveType.convex,
     final Color? color,
     final NeumorphicDecoration? decoration,
-    this.alignment,
     this.width,
     this.height,
     final BoxConstraints? constraints,
-    this.margin,
     this.padding,
-    this.transform,
     final Key? key,
   })  : decoration = decoration ?? NeumorphicDecoration(color: color),
         constraints = (width != null || height != null)
@@ -44,13 +41,10 @@ class _NeumorphicContainer extends StatelessWidget {
   /// argument.
   final NeumorphicDecoration decoration;
 
-  final AlignmentGeometry? alignment;
   final double? width;
   final double? height;
   final BoxConstraints? constraints;
-  final EdgeInsetsGeometry? margin;
   final EdgeInsets? padding;
-  final Matrix4? transform;
 
   @override
   Widget build(final BuildContext context) {
@@ -105,13 +99,10 @@ class _NeumorphicContainer extends StatelessWidget {
 
     return AnimatedContainer(
       duration: const Duration(milliseconds: 150),
-      alignment: alignment,
       width: width,
       height: height,
       constraints: constraints,
-      margin: margin,
       padding: padding,
-      transform: transform,
       decoration: BoxDecoration(
         borderRadius: decoration.borderRadius,
         gradient: gradient,

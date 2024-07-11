@@ -50,13 +50,11 @@ class _OffsetAnimation extends StatefulWidget {
     required this.navBarHeight,
     required this.navBarHideAnimationController,
     this.onAnimationComplete,
-    this.extendedLength = false,
     final Key? key,
   }) : super(key: key);
   final Widget child;
   final bool hideNavigationBar;
   final double navBarHeight;
-  final bool extendedLength;
   // ignore: avoid_positional_boolean_parameters
   final Function(bool isAnimating, bool isComplete)? onAnimationComplete;
   final AnimationController navBarHideAnimationController;

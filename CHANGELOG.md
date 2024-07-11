@@ -5,10 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.2] - 2024-07-11
+- Fixed issues reported by `flutter analyze`.
+
 ## [6.0.1] - 2024-07-11
 - Removed deprecated classes.
 - Fixed unwanted trigger of `onWillPop` when Android back button is pressed.
-- Fixed the bug where bar in Style3 and Style4 would not work correctly when margin was applied.
+- Fixed the bug where bar in `Style3` and `Style4` would not work correctly when margin was applied.
 - Fixed typos in Readme and Changelog.
 - Updated example project to run on latest Android versions.
 
