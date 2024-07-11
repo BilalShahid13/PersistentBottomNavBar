@@ -62,7 +62,7 @@ dependencies:
 Import the package:
 
 ```dart
-import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 ```
 
 Persistent bottom navigation bar uses `PersistentTabController` as its controller. Here is how to declare it:
