@@ -44,8 +44,8 @@ class RouteAndNavigatorSettings {
       );
 }
 
-class CustomWidgetRouteAndNavigatorSettings {
-  const CustomWidgetRouteAndNavigatorSettings({
+class _CustomWidgetRouteAndNavigatorSettings {
+  const _CustomWidgetRouteAndNavigatorSettings({
     this.defaultTitle,
     this.routes,
     this.onGenerateRoute,
@@ -68,7 +68,7 @@ class CustomWidgetRouteAndNavigatorSettings {
 
   final List<GlobalKey<NavigatorState>>? navigatorKeys;
 
-  CustomWidgetRouteAndNavigatorSettings copyWith({
+  _CustomWidgetRouteAndNavigatorSettings copyWith({
     final String? defaultTitle,
     final Map<String, WidgetBuilder>? routes,
     final RouteFactory? onGenerateRoute,
@@ -77,7 +77,7 @@ class CustomWidgetRouteAndNavigatorSettings {
     final List<NavigatorObserver>? navigatorObservers,
     final List<GlobalKey<NavigatorState>>? navigatorKeys,
   }) =>
-      CustomWidgetRouteAndNavigatorSettings(
+      _CustomWidgetRouteAndNavigatorSettings(
         defaultTitle: defaultTitle ?? this.defaultTitle,
         routes: routes ?? this.routes,
         onGenerateRoute: onGenerateRoute ?? this.onGenerateRoute,

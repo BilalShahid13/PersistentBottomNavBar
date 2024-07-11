@@ -1,22 +1,23 @@
+// ignore_for_file: avoid_redundant_argument_values
+
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
+import "package:persistent_bottom_nav_bar_example_project/animated-icons.screen.dart";
 
 import "package:persistent_bottom_nav_bar_example_project/custom-widget-tabs.widget.dart";
 import "package:persistent_bottom_nav_bar_example_project/screens.dart";
 
 void main() => runApp(const MyApp());
 
-BuildContext testContext;
+BuildContext? testContext;
 
 class MyApp extends StatelessWidget {
-  const MyApp({final Key key}) : super(key: key);
+  const MyApp({final Key? key}) : super(key: key);
 
   @override
   Widget build(final BuildContext context) => MaterialApp(
         title: "Persistent Bottom Navigation Bar example project",
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-        ),
+        theme: ThemeData.dark(),
         home: const MainMenu(),
         initialRoute: "/",
         routes: {
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({final Key key}) : super(key: key);
+  const MainMenu({final Key? key}) : super(key: key);
 
   @override
   _MainMenuState createState() => _MainMenuState();
@@ -67,6 +68,18 @@ class _MainMenuState extends State<MainMenu> {
                 ),
               ),
             ),
+            const SizedBox(height: 20),
+            Center(
+              child: ElevatedButton(
+                child: const Text("Animated icons example"),
+                onPressed: () => PersistentNavBarNavigator.pushNewScreen(
+                  context,
+                  screen: AnimatedIconScreen(
+                    menuScreenContext: context,
+                  ),
+                ),
+              ),
+            ),
           ],
         ),
       );
@@ -75,8 +88,10 @@ class _MainMenuState extends State<MainMenu> {
 // ----------------------------------------- Provided Style ----------------------------------------- //
 
 class ProvidedStylesExample extends StatefulWidget {
-  const ProvidedStylesExample({final Key key, this.menuScreenContext})
-      : super(key: key);
+  const ProvidedStylesExample({
+    required this.menuScreenContext,
+    final Key? key,
+  }) : super(key: key);
   final BuildContext menuScreenContext;
 
   @override
@@ -84,25 +99,42 @@ class ProvidedStylesExample extends StatefulWidget {
 }
 
 class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
+  late PersistentTabController _controller;
+  late bool _hideNavBar;
+  final List<ScrollController> _scrollControllers = [
+    ScrollController(),
+    ScrollController(),
+  ];
+
+  NavBarStyle _navBarStyle = NavBarStyle.simple;
 
   @override
   void initState() {
     super.initState();
-    _controller = PersistentTabController();
+    _controller = PersistentTabController(initialIndex: 1);
     _hideNavBar = false;
+  }
+
+  @override
+  void dispose() {
+    for (final element in _scrollControllers) {
+      element.dispose();
+    }
+    super.dispose();
   }
 
   List<Widget> _buildScreens() => [
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers.first,
           hideStatus: _hideNavBar,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
             });
           },
+          onNavBarStyleChanged: (final value) =>
+              setState(() => _navBarStyle = value),
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
@@ -112,6 +144,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               _hideNavBar = !_hideNavBar;
             });
           },
+          onNavBarStyleChanged: (final value) =>
+              setState(() => _navBarStyle = value),
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
@@ -121,6 +155,8 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               _hideNavBar = !_hideNavBar;
             });
           },
+          onNavBarStyleChanged: (final value) =>
+              setState(() => _navBarStyle = value),
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
@@ -130,30 +166,45 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               _hideNavBar = !_hideNavBar;
             });
           },
+          onNavBarStyleChanged: (final value) =>
+              setState(() => _navBarStyle = value),
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers.last,
           hideStatus: _hideNavBar,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
             });
           },
+          onNavBarStyleChanged: (final value) =>
+              setState(() => _navBarStyle = value),
         ),
       ];
 
+  Color? _getSecondaryItemColorForSpecificStyles() =>
+      _navBarStyle == NavBarStyle.style7 ||
+              _navBarStyle == NavBarStyle.style10 ||
+              _navBarStyle == NavBarStyle.style15 ||
+              _navBarStyle == NavBarStyle.style16 ||
+              _navBarStyle == NavBarStyle.style17 ||
+              _navBarStyle == NavBarStyle.style18
+          ? Colors.white
+          : null;
+
   List<PersistentBottomNavBarItem> _navBarsItems() => [
         PersistentBottomNavBarItem(
-            icon: const Icon(Icons.home),
-            title: "Home",
-            activeColorPrimary: Colors.blue,
-            inactiveColorPrimary: Colors.grey,
-            inactiveColorSecondary: Colors.purple),
-        PersistentBottomNavBarItem(
-          icon: const Icon(Icons.search),
-          title: "Search",
-          activeColorPrimary: Colors.teal,
+          icon: const Icon(Icons.home),
+          title: "Home",
+          opacity: 0.7,
+          activeColorPrimary: Colors.blue,
+          activeColorSecondary: _navBarStyle == NavBarStyle.style7 ||
+                  _navBarStyle == NavBarStyle.style10
+              ? Colors.white
+              : null,
           inactiveColorPrimary: Colors.grey,
+          scrollController: _scrollControllers.first,
           routeAndNavigatorSettings: RouteAndNavigatorSettings(
             initialRoute: "/",
             routes: {
@@ -161,56 +212,58 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
               "/second": (final context) => const MainScreen3(),
             },
           ),
+        ),
+        PersistentBottomNavBarItem(
+          icon: const Icon(Icons.search),
+          title: "Search",
+          activeColorPrimary: Colors.teal,
+          activeColorSecondary: _navBarStyle == NavBarStyle.style7 ||
+                  _navBarStyle == NavBarStyle.style10
+              ? Colors.white
+              : null,
+          inactiveColorPrimary: Colors.grey,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.add),
           title: "Add",
           activeColorPrimary: Colors.blueAccent,
           inactiveColorPrimary: Colors.grey,
-          routeAndNavigatorSettings: RouteAndNavigatorSettings(
-            initialRoute: "/",
-            routes: {
-              "/first": (final context) => const MainScreen2(),
-              "/second": (final context) => const MainScreen3(),
-            },
-          ),
+          activeColorSecondary: _getSecondaryItemColorForSpecificStyles(),
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.message),
           title: "Messages",
           activeColorPrimary: Colors.deepOrange,
           inactiveColorPrimary: Colors.grey,
-          routeAndNavigatorSettings: RouteAndNavigatorSettings(
-            initialRoute: "/",
-            routes: {
-              "/first": (final context) => const MainScreen2(),
-              "/second": (final context) => const MainScreen3(),
-            },
-          ),
+          activeColorSecondary: _navBarStyle == NavBarStyle.style7 ||
+                  _navBarStyle == NavBarStyle.style10
+              ? Colors.white
+              : null,
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.settings),
           title: "Settings",
           activeColorPrimary: Colors.indigo,
           inactiveColorPrimary: Colors.grey,
-          routeAndNavigatorSettings: RouteAndNavigatorSettings(
-            initialRoute: "/",
-            routes: {
-              "/first": (final context) => const MainScreen2(),
-              "/second": (final context) => const MainScreen3(),
-            },
-          ),
+          activeColorSecondary: _navBarStyle == NavBarStyle.style7 ||
+                  _navBarStyle == NavBarStyle.style10
+              ? Colors.white
+              : null,
+          scrollController: _scrollControllers.last,
         ),
       ];
 
   @override
   Widget build(final BuildContext context) => Scaffold(
-        appBar: AppBar(title: const Text("Navigation Bar Demo")),
-        drawer: Drawer(
+        appBar: AppBar(
+          title: const Text("Navigation Bar Demo"),
+          backgroundColor: Colors.grey.shade900,
+        ),
+        drawer: const Drawer(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Text("This is the Drawer"),
               ],
             ),
@@ -221,14 +274,31 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           controller: _controller,
           screens: _buildScreens(),
           items: _navBarsItems(),
-          resizeToAvoidBottomInset: true,
-          navBarHeight: MediaQuery.of(context).viewInsets.bottom > 0
-              ? 0.0
-              : kBottomNavigationBarHeight,
-          bottomScreenMargin: 0,
+          handleAndroidBackButtonPress: true,
+          resizeToAvoidBottomInset: false,
+          stateManagement: true,
+          hideNavigationBarWhenKeyboardAppears: true,
+          popBehaviorOnSelectedNavBarItemPress: PopBehavior.once,
+          hideOnScrollSettings: HideOnScrollSettings(
+            hideNavBarOnScroll: true,
+            scrollControllers: _scrollControllers,
+          ),
+          padding: const EdgeInsets.only(top: 8),
+          floatingActionButton: IconButton(
+            icon: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.orange),
+              child: const Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+            ),
+            onPressed: () {},
+          ),
           onWillPop: (final context) async {
             await showDialog(
-              context: context,
+              context: context ?? this.context,
               useSafeArea: true,
               builder: (final context) => Container(
                 height: 50,
@@ -247,18 +317,30 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
           selectedTabScreenContext: (final context) {
             testContext = context;
           },
-          backgroundColor: Colors.black,
-          hideNavigationBar: _hideNavBar,
-          decoration: const NavBarDecoration(colorBehindNavBar: Colors.indigo),
-          itemAnimationProperties: const ItemAnimationProperties(
-            duration: Duration(milliseconds: 400),
-            curve: Curves.ease,
+          backgroundColor: Colors.grey.shade900,
+          isVisible: !_hideNavBar,
+          animationSettings: const NavBarAnimationSettings(
+            navBarItemAnimation: ItemAnimationSettings(
+              // Navigation Bar's items animation properties.
+              duration: Duration(milliseconds: 400),
+              curve: Curves.ease,
+            ),
+            screenTransitionAnimation: ScreenTransitionAnimationSettings(
+              // Screen transition animation on change of selected tab.
+              animateTabTransition: true,
+              duration: Duration(milliseconds: 300),
+              screenTransitionAnimationType:
+                  ScreenTransitionAnimationType.fadeIn,
+            ),
+            onNavBarHideAnimation: OnHideAnimationSettings(
+              duration: Duration(milliseconds: 100),
+              curve: Curves.bounceInOut,
+            ),
           ),
-          screenTransitionAnimation: const ScreenTransitionAnimation(
-            animateTabTransition: true,
-          ),
-          navBarStyle: NavBarStyle
-              .style19, // Choose the nav bar style with this property
+          confineToSafeArea: true,
+          navBarHeight: kBottomNavigationBarHeight,
+          navBarStyle:
+              _navBarStyle, // Choose the nav bar style with this property
         ),
       );
 }
@@ -268,11 +350,12 @@ class _ProvidedStylesExampleState extends State<ProvidedStylesExample> {
 class CustomNavBarWidget extends StatelessWidget {
   const CustomNavBarWidget(
     this.items, {
-    final Key key,
-    this.selectedIndex,
-    this.onItemSelected,
+    required this.selectedIndex,
+    required this.onItemSelected,
+    final Key? key,
   }) : super(key: key);
   final int selectedIndex;
+  // List<PersistentBottomNavBarItem> is just for example here. It can be anything you want like List<YourItemWidget>
   final List<PersistentBottomNavBarItem> items;
   final ValueChanged<int> onItemSelected;
 
@@ -301,7 +384,7 @@ class CustomNavBarWidget extends StatelessWidget {
                 type: MaterialType.transparency,
                 child: FittedBox(
                     child: Text(
-                  item.title,
+                  item.title ?? "",
                   style: TextStyle(
                       color: isSelected
                           ? (item.activeColorSecondary ??
@@ -318,7 +401,7 @@ class CustomNavBarWidget extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) => Container(
-        color: Colors.white,
+        color: Colors.grey.shade900,
         child: SizedBox(
           width: double.infinity,
           height: kBottomNavigationBarHeight,

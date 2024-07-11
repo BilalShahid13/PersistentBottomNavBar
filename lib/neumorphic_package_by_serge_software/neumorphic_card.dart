@@ -9,8 +9,8 @@ enum CurveType {
   flat,
 }
 
-class NeumorphicContainer extends StatelessWidget {
-  NeumorphicContainer({
+class _NeumorphicContainer extends StatelessWidget {
+  _NeumorphicContainer({
     this.child,
     this.bevel = 12.0,
     this.curveType = CurveType.convex,

@@ -1,29 +1,25 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavStyle4 extends StatelessWidget {
-  const BottomNavStyle4({
+class _BottomNavStyle4 extends StatelessWidget {
+  const _BottomNavStyle4({
+    required this.navBarEssentials,
     final Key? key,
-    this.navBarEssentials = const NavBarEssentials(items: null),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
+  final _NavBarEssentials navBarEssentials;
 
   Widget _buildItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
           : AnimatedContainer(
               width: 100,
               height: height,
-              duration: navBarEssentials!.itemAnimationProperties!.duration ??
-                  const Duration(milliseconds: 1000),
-              curve: navBarEssentials!.itemAnimationProperties!.curve ??
-                  Curves.ease,
+              duration: navBarEssentials.itemAnimationProperties.duration,
+              curve: navBarEssentials.itemAnimationProperties.curve,
               child: AnimatedContainer(
                 alignment: Alignment.center,
-                duration: navBarEssentials!.itemAnimationProperties!.duration ??
-                    const Duration(milliseconds: 1000),
-                curve: navBarEssentials!.itemAnimationProperties!.curve ??
-                    Curves.ease,
+                duration: navBarEssentials.itemAnimationProperties.duration,
+                curve: navBarEssentials.itemAnimationProperties.curve,
                 height: height! / 1.6,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -75,47 +71,32 @@ class BottomNavStyle4 extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final Color selectedItemActiveColor = navBarEssentials!
-        .items![navBarEssentials!.selectedIndex!].activeColorPrimary;
+    final Color selectedItemActiveColor = navBarEssentials
+        .items[navBarEssentials.selectedIndex].activeColorPrimary;
     final double itemWidth = (MediaQuery.of(context).size.width -
-            ((navBarEssentials!.padding?.left ??
-                    MediaQuery.of(context).size.width * 0.05) +
-                (navBarEssentials!.padding?.right ??
-                    MediaQuery.of(context).size.width * 0.05))) /
-        navBarEssentials!.items!.length;
+            (navBarEssentials.padding.left + navBarEssentials.padding.right)) /
+        navBarEssentials.items.length;
     return Container(
       width: double.infinity,
-      height: navBarEssentials!.navBarHeight,
-      padding: EdgeInsets.only(
-          top: navBarEssentials!.padding?.top ?? 0.0,
-          left: navBarEssentials!.padding?.left ??
-              MediaQuery.of(context).size.width * 0.05,
-          right: navBarEssentials!.padding?.right ??
-              MediaQuery.of(context).size.width * 0.05,
-          bottom: navBarEssentials!.padding?.bottom ??
-              navBarEssentials!.navBarHeight! * 0.1),
+      height: navBarEssentials.navBarHeight,
+      padding: navBarEssentials.padding,
       child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
               AnimatedContainer(
-                duration: navBarEssentials!.itemAnimationProperties!.duration ??
-                    const Duration(milliseconds: 300),
-                curve: navBarEssentials!.itemAnimationProperties!.curve ??
-                    Curves.ease,
+                duration: navBarEssentials.itemAnimationProperties.duration,
+                curve: navBarEssentials.itemAnimationProperties.curve,
                 color: Colors.transparent,
-                width: navBarEssentials!.selectedIndex == 0
+                width: navBarEssentials.selectedIndex == 0
                     ? MediaQuery.of(context).size.width * 0.0
-                    : itemWidth * navBarEssentials!.selectedIndex!,
+                    : itemWidth * navBarEssentials.selectedIndex,
                 height: 4,
               ),
               Flexible(
                 child: AnimatedContainer(
-                  duration:
-                      navBarEssentials!.itemAnimationProperties!.duration ??
-                          const Duration(milliseconds: 300),
-                  curve: navBarEssentials!.itemAnimationProperties!.curve ??
-                      Curves.ease,
+                  duration: navBarEssentials.itemAnimationProperties.duration,
+                  curve: navBarEssentials.itemAnimationProperties.curve,
                   width: itemWidth,
                   height: 4,
                   alignment: Alignment.center,
@@ -135,25 +116,32 @@ class BottomNavStyle4 extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(top: 5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: navBarEssentials!.items!.map((final item) {
-                  final int index = navBarEssentials!.items!.indexOf(item);
+                mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
+                children: navBarEssentials.items.map((final item) {
+                  final int index = navBarEssentials.items.indexOf(item);
                   return Flexible(
                     child: GestureDetector(
                       onTap: () {
-                        if (navBarEssentials!.items![index].onPressed != null) {
-                          navBarEssentials!.items![index].onPressed!(
-                              navBarEssentials!.selectedScreenBuildContext);
+                        if (index != navBarEssentials.selectedIndex) {
+                          navBarEssentials.items[index].iconAnimationController
+                              ?.forward();
+                          navBarEssentials.items[navBarEssentials.selectedIndex]
+                              .iconAnimationController
+                              ?.reverse();
+                        }
+                        if (navBarEssentials.items[index].onPressed != null) {
+                          navBarEssentials.items[index].onPressed!(
+                              navBarEssentials.selectedScreenBuildContext);
                         } else {
-                          navBarEssentials!.onItemSelected!(index);
+                          navBarEssentials.onItemSelected?.call(index);
                         }
                       },
                       child: Container(
                         color: Colors.transparent,
                         child: _buildItem(
                             item,
-                            navBarEssentials!.selectedIndex == index,
-                            navBarEssentials!.navBarHeight),
+                            navBarEssentials.selectedIndex == index,
+                            navBarEssentials.navBarHeight),
                       ),
                     ),
                   );

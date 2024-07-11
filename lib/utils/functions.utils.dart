@@ -1,26 +1,28 @@
 part of persistent_bottom_nav_bar;
 
-class PersistentBottomNavigationBarUtilFunctions {
-  PersistentBottomNavigationBarUtilFunctions._();
+class _PersistentBottomNavigationBarUtilFunctions {
+  _PersistentBottomNavigationBarUtilFunctions._();
 
   static BoxDecoration getNavBarDecoration({
     required final double opacity,
-    final bool showElevation = true,
-    final NavBarDecoration? decoration = const NavBarDecoration(),
+    final NavBarDecoration decoration = const NavBarDecoration(),
     final bool showBorder = true,
     final bool showOpacity = true,
     final Color? color = Colors.white,
   }) {
     if (opacity < 1.0) {
       return BoxDecoration(
-        border: showBorder ? decoration!.border : null,
-        borderRadius: decoration!.borderRadius,
-        color: color!.withOpacity(opacity),
-      );
+          border: showBorder ? decoration.border : null,
+          borderRadius: decoration.borderRadius,
+          color: decoration.boxShadow != null
+              ? Colors.transparent
+              : color!.withOpacity(opacity),
+          gradient: decoration.gradient,
+          boxShadow: decoration.boxShadow);
     } else {
       return BoxDecoration(
-        border: showBorder ? decoration!.border : null,
-        borderRadius: decoration!.borderRadius,
+        border: showBorder ? decoration.border : null,
+        borderRadius: decoration.borderRadius,
         color: color,
         gradient: decoration.gradient,
         boxShadow: decoration.boxShadow,
@@ -57,13 +59,12 @@ class PersistentBottomNavigationBarUtilFunctions {
 
   static Color getBackgroundColor(
       final BuildContext context,
-      final List<PersistentBottomNavBarItem>? items,
+      final List<PersistentBottomNavBarItem> items,
       final Color? color,
       final int? selectedIndex) {
     if (color == null) {
       return Colors.white;
-    } else if (!opaque(items!, selectedIndex) &&
-        isColorOpaque(context, color)) {
+    } else if (!opaque(items, selectedIndex) && isColorOpaque(context, color)) {
       return color.withOpacity(getTranslucencyAmount(items, selectedIndex));
     } else {
       return color;

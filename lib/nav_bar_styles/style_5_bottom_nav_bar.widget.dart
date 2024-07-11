@@ -1,15 +1,15 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavStyle5 extends StatelessWidget {
-  const BottomNavStyle5({
+class _BottomNavStyle5 extends StatelessWidget {
+  const _BottomNavStyle5({
+    required this.navBarEssentials,
     final Key? key,
-    this.navBarEssentials = const NavBarEssentials(items: null),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
+  final _NavBarEssentials navBarEssentials;
 
   Widget _buildItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
           : SizedBox(
               width: 150,
@@ -52,36 +52,35 @@ class BottomNavStyle5 extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Container(
         width: double.infinity,
-        height: navBarEssentials!.navBarHeight,
-        padding: EdgeInsets.only(
-            left: navBarEssentials!.padding?.left ??
-                MediaQuery.of(context).size.width * 0.05,
-            right: navBarEssentials!.padding?.right ??
-                MediaQuery.of(context).size.width * 0.05,
-            top: navBarEssentials!.padding?.top ??
-                navBarEssentials!.navBarHeight! * 0.06,
-            bottom: navBarEssentials!.padding?.bottom ??
-                navBarEssentials!.navBarHeight! * 0.16),
+        height: navBarEssentials.navBarHeight,
+        padding: navBarEssentials.padding,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: navBarEssentials!.items!.map((final item) {
-            final int index = navBarEssentials!.items!.indexOf(item);
+          mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
+          children: navBarEssentials.items.map((final item) {
+            final int index = navBarEssentials.items.indexOf(item);
             return Flexible(
               child: GestureDetector(
                 onTap: () {
-                  if (navBarEssentials!.items![index].onPressed != null) {
-                    navBarEssentials!.items![index].onPressed!(
-                        navBarEssentials!.selectedScreenBuildContext);
+                  if (index != navBarEssentials.selectedIndex) {
+                    navBarEssentials.items[index].iconAnimationController
+                        ?.forward();
+                    navBarEssentials.items[navBarEssentials.selectedIndex]
+                        .iconAnimationController
+                        ?.reverse();
+                  }
+                  if (navBarEssentials.items[index].onPressed != null) {
+                    navBarEssentials.items[index].onPressed!(
+                        navBarEssentials.selectedScreenBuildContext);
                   } else {
-                    navBarEssentials!.onItemSelected!(index);
+                    navBarEssentials.onItemSelected?.call(index);
                   }
                 },
                 child: Container(
                   color: Colors.transparent,
                   child: _buildItem(
                       item,
-                      navBarEssentials!.selectedIndex == index,
-                      navBarEssentials!.navBarHeight),
+                      navBarEssentials.selectedIndex == index,
+                      navBarEssentials.navBarHeight),
                 ),
               ),
             );

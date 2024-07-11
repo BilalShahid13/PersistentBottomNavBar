@@ -1,17 +1,17 @@
 part of persistent_bottom_nav_bar;
 
-class NeumorphicBottomNavBar extends StatelessWidget {
-  const NeumorphicBottomNavBar({
+class _NeumorphicBottomNavBar extends StatelessWidget {
+  const _NeumorphicBottomNavBar({
+    required this.navBarEssentials,
+    required this.neumorphicProperties,
     final Key? key,
-    this.navBarEssentials,
-    this.neumorphicProperties = const NeumorphicProperties(),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
-  final NeumorphicProperties? neumorphicProperties;
+  final _NavBarEssentials navBarEssentials;
+  final NeumorphicProperties neumorphicProperties;
 
   Widget _getNavItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      neumorphicProperties != null && neumorphicProperties!.showSubtitleText
+      neumorphicProperties.showSubtitleText
           ? Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -68,32 +68,22 @@ class NeumorphicBottomNavBar extends StatelessWidget {
           final PersistentBottomNavBarItem item,
           final bool isSelected,
           final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
-          : PersistentBottomNavigationBarUtilFunctions.opaque(
-                  navBarEssentials!.items!, navBarEssentials!.selectedIndex)
-              ? NeumorphicContainer(
+          : _PersistentBottomNavigationBarUtilFunctions.opaque(
+                  navBarEssentials.items, navBarEssentials.selectedIndex)
+              ? _NeumorphicContainer(
                   decoration: NeumorphicDecoration(
                     borderRadius: BorderRadius.circular(
-                        neumorphicProperties == null
-                            ? 15.0
-                            : neumorphicProperties!.borderRadius),
-                    color: navBarEssentials!.backgroundColor,
-                    border: neumorphicProperties == null
-                        ? null
-                        : neumorphicProperties!.border,
-                    shape: neumorphicProperties == null
-                        ? BoxShape.rectangle
-                        : neumorphicProperties!.shape,
+                        neumorphicProperties.borderRadius),
+                    color: navBarEssentials.backgroundColor,
+                    border: neumorphicProperties.border,
+                    shape: neumorphicProperties.shape,
                   ),
-                  bevel: neumorphicProperties == null
-                      ? 12.0
-                      : neumorphicProperties!.bevel,
+                  bevel: neumorphicProperties.bevel,
                   curveType: isSelected
                       ? CurveType.emboss
-                      : neumorphicProperties == null
-                          ? CurveType.concave
-                          : neumorphicProperties!.curveType,
+                      : neumorphicProperties.curveType,
                   height: height! + 20,
                   width: 60,
                   padding: const EdgeInsets.all(6),
@@ -102,12 +92,12 @@ class NeumorphicBottomNavBar extends StatelessWidget {
               : Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(15),
-                    color: PersistentBottomNavigationBarUtilFunctions
+                    color: _PersistentBottomNavigationBarUtilFunctions
                         .getBackgroundColor(
                             context,
-                            navBarEssentials!.items,
-                            navBarEssentials!.backgroundColor,
-                            navBarEssentials!.selectedIndex),
+                            navBarEssentials.items,
+                            navBarEssentials.backgroundColor,
+                            navBarEssentials.selectedIndex),
                   ),
                   height: height! + 20,
                   width: 60,
@@ -118,35 +108,34 @@ class NeumorphicBottomNavBar extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Container(
         width: double.infinity,
-        height: navBarEssentials!.navBarHeight,
-        padding: EdgeInsets.only(
-            left: navBarEssentials!.padding?.left ??
-                MediaQuery.of(context).size.width * 0.04,
-            right: navBarEssentials!.padding?.right ??
-                MediaQuery.of(context).size.width * 0.04,
-            top: navBarEssentials!.padding?.top ??
-                navBarEssentials!.navBarHeight! * 0.15,
-            bottom: navBarEssentials!.padding?.bottom ??
-                navBarEssentials!.navBarHeight! * 0.12),
+        height: navBarEssentials.navBarHeight,
+        padding: navBarEssentials.padding,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: navBarEssentials!.items!.map((final item) {
-            final int index = navBarEssentials!.items!.indexOf(item);
+          mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
+          children: navBarEssentials.items.map((final item) {
+            final int index = navBarEssentials.items.indexOf(item);
             return Flexible(
               child: GestureDetector(
                 onTap: () {
-                  if (navBarEssentials!.items![index].onPressed != null) {
-                    navBarEssentials!.items![index].onPressed!(
-                        navBarEssentials!.selectedScreenBuildContext);
+                  if (index != navBarEssentials.selectedIndex) {
+                    navBarEssentials.items[index].iconAnimationController
+                        ?.forward();
+                    navBarEssentials.items[navBarEssentials.selectedIndex]
+                        .iconAnimationController
+                        ?.reverse();
+                  }
+                  if (navBarEssentials.items[index].onPressed != null) {
+                    navBarEssentials.items[index].onPressed!(
+                        navBarEssentials.selectedScreenBuildContext);
                   } else {
-                    navBarEssentials!.onItemSelected!(index);
+                    navBarEssentials.onItemSelected?.call(index);
                   }
                 },
                 child: _buildItem(
                     context,
                     item,
-                    navBarEssentials!.selectedIndex == index,
-                    navBarEssentials!.navBarHeight),
+                    navBarEssentials.selectedIndex == index,
+                    navBarEssentials.navBarHeight),
               ),
             );
           }).toList(),

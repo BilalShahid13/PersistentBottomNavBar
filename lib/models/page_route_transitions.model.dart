@@ -71,7 +71,7 @@ Widget _scaleRotate(
                 CurvedAnimation(parent: animation, curve: Curves.linear)),
             child: child));
 
-class _AnimatedPageRoute extends PageRouteBuilder {
+class _AnimatedPageRoute extends PageRouteBuilder<dynamic> {
   _AnimatedPageRoute(
       {this.exitPage,
       this.enterPage,
@@ -143,7 +143,7 @@ Widget _getAnimation(
   return Container();
 }
 
-Route<dynamic> getPageRoute(final PageTransitionAnimation transitionAnimation,
+Route<dynamic> _getPageRoute(final PageTransitionAnimation transitionAnimation,
     {final RouteSettings? settings,
     final Widget? enterPage,
     final Widget? exitPage}) {

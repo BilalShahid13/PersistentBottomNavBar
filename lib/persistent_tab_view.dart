@@ -1,5 +1,6 @@
 library persistent_bottom_nav_bar;
 
+import "dart:collection";
 import "dart:math";
 import "dart:ui";
 
@@ -8,15 +9,15 @@ import "package:flutter/material.dart";
 
 //Animations
 part "animations/animations.dart";
+//Models
 part "models/nav_bar_animation.model.dart";
 part "models/nav_bar_essentials.model.dart";
-part "models/nav_bar_padding.model.dart";
 part "models/neumorphic_properties.widget.dart";
 part "models/page_route_transitions.model.dart";
 part "models/persistent_bottom_nav_item.widget.dart";
 part "models/persistent_bottom_nav_bar_styles.widget.dart";
 part "models/persistent_bottom_nav_bar.widget.dart";
-//Models
+part "models/nav_bar_scroll_data.model.dart";
 part "models/persistent_nav_bar_scaffold.widget.dart";
 part "models/route_settings.model.dart";
 part "models/tab_view.widget.dart";

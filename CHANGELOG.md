@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.0] - 2024-07-11
+- There are many new features and some breaking changes introduced in this version. I will do my best to list all down here but I will still advise to check the example project to cover and see all of the changes for yourself.
+- **Breaking Changes**
+    - `NavBarPadding` is replaced with `EdgeInsets` in the `padding` property.
+    - `itemAnimationProperties` and `screenTransitionAnimation` are now part of property `animationSettings`.
+    - Renamed `confineInSafeArea` to `confineToSafeArea`.
+    - Removed redundant properties `popAllScreensOnTapOfSelectedTab` and `popAllScreensOnTapAnyTabs`. Added new property `popBehaviorOnSelectedNavBarItemPress` to cover this behavior.
+    - Property `hideNavigationBar` is replaced with `isVisible`. 
+- **New Features**
+    - Updated maximum supported Flutter SDK version.
+    - Animated icons are now supported.
+    - Hiding of navigation bar on scroll down motion is now supported through property `hideOnScrollSettings`. Hiding animation settings can be controlled from `animationSettings`. Please check the readme file and example project for better understanding.
+    - You can now scroll to top on a scrollable screen when an already selected navigation bar tab is pressed. You will need to provide scroll controllers in both this and above mentioned functionality.
+    - New `fadeIn` animation in `screenTransitionAnimation`.
+    - New function `popUntilFirstScreenOnSelectedTabScreen`introduced in `PersistentNavBarNavigator`.
+    - If opacity is greater than 0 in `PersistentBottomNavBarItem` and `boxShadow` is applied `NavBarDecoration`, `backgroundColor` will be set to transparent to achieve partial transparent navigation bar effect like on Spotify Android. 
+- **Bug Fixes**
+    - Fixed null errors around `NavBarDecoration`.
+    - Removed jitter in animation when property `hideNavigationBar` was changed.
+    - Fixed error -> The getter 'backgroundColor' isn't defined for the type 'ThemeData'.
+    - Fixed the issue where wrong animation state was shown when `initialIndex` on `PersistentTabController` was other than 0 in `style19`.
+    - `floatingActionButton` is now fixed above the screens instead of separate button for each screen.
+
 ## [5.0.2] - 2022-09-16
 - Fixed onWillPop assert error
 

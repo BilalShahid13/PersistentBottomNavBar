@@ -6,7 +6,7 @@
 
 A persistent/static bottom navigation bar for Flutter.
 
-NOTE: Those migrating from **pre 2.0.0** version should check the latest Readme and instructions as there are many breaking changes introduced in the 2.0.0 update
+NOTE: Those migrating from **pre 6.0.0** version should check the latest readme and changelog as there are many breaking changes introduced in the latest update.
 
 ![Persistent Behavior](gifs/persistent.gif)
 
@@ -48,6 +48,7 @@ NOTE: Those migrating from **pre 2.0.0** version should check the latest Readme 
 - Can be `translucent` for a particular tab.
 - Custom styling for the navigation bar. Click [here](#custom-navigation-bar-styling) for more information.
 - Handles hardware/software Android back button.
+- Supports animted icons.
 
 ## Getting Started
 
@@ -87,29 +88,29 @@ class MyApp extends StatelessWidget {
         controller: _controller,
         screens: _buildScreens(),
         items: _navBarsItems(),
-        confineInSafeArea: true,
-        backgroundColor: Colors.white, // Default is Colors.white.
         handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+        resizeToAvoidBottomInset: true, // This needs to be true if you want to move up the screen on a non-scrollable screen when keyboard appears. Default is true.
         stateManagement: true, // Default is true.
-        hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-        decoration: NavBarDecoration(
-          borderRadius: BorderRadius.circular(10.0),
-          colorBehindNavBar: Colors.white,
+        hideNavigationBarWhenKeyboardAppears: true,
+        popBehaviorOnSelectedNavBarItemPress: PopActionScreensType.all,
+        padding: const EdgeInsets.only(top: 8),
+        backgroundColor: Colors.grey.shade900,
+        isVisible: true,
+        animationSettings: const NavBarAnimationSettings(
+            navBarItemAnimation: ItemAnimationSettings( // Navigation Bar's items animation properties.
+                duration: Duration(milliseconds: 400),
+                curve: Curves.ease,
+            ),
+            screenTransitionAnimation: ScreenTransitionAnimationSettings( // Screen transition animation on change of selected tab.
+                animateTabTransition: true,
+                duration: Duration(milliseconds: 200),
+                screenTransitionAnimationType: ScreenTransitionAnimationType.fadeIn,
+            ),
         ),
-        popAllScreensOnTapOfSelectedTab: true,
-        popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: ItemAnimationProperties( // Navigation Bar's items animation properties.
-          duration: Duration(milliseconds: 200),
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: ScreenTransitionAnimation( // Screen transition animation on change of selected tab.
-          animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
-        ),
-        navBarStyle: NavBarStyle.style1, // Choose the nav bar style with this property.
-    );
+        confineToSafeArea: true,
+        navBarHeight: kBottomNavigationBarHeight,
+        navBarStyle: _navBarStyle, // Choose the nav bar style with this property
+      );
   }
 }
 
@@ -135,12 +136,28 @@ class MyApp extends StatelessWidget {
                 title: ("Home"),
                 activeColorPrimary: CupertinoColors.activeBlue,
                 inactiveColorPrimary: CupertinoColors.systemGrey,
+                scrollController: _scrollController1,
+                routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                    initialRoute: "/",
+                    routes: {
+                    "/first": (final context) => const MainScreen2(),
+                    "/second": (final context) => const MainScreen3(),
+                    },
+                ),
             ),
             PersistentBottomNavBarItem(
                 icon: Icon(CupertinoIcons.settings),
                 title: ("Settings"),
                 activeColorPrimary: CupertinoColors.activeBlue,
                 inactiveColorPrimary: CupertinoColors.systemGrey,
+                scrollController: _scrollController2,
+                routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                    initialRoute: "/",
+                    routes: {
+                    "/first": (final context) => const MainScreen2(),
+                    "/second": (final context) => const MainScreen3(),
+                    },
+                ),
             ),
         ];
     }
@@ -292,7 +309,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                     width: double.infinity,
                     height: 60.0,
                     child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
                     children: items.map((item) {
                         int index = items.indexOf(item);
                         return Flexible(
@@ -325,23 +342,28 @@ If you want to have your own style for the navigation bar, follow these steps:
             return PersistentTabView.custom(
                 context,
                 controller: _controller,
-                itemCount: items.length, // This is required in case of custom style! Pass the number of items for the nav bar.
                 screens: _buildScreens(),
-                confineInSafeArea: true,
-                handleAndroidBackButtonPress: true,
-                onItemSelected: (int) {
-                    setState(() {}); // This is required to update the nav bar if Android back button is pressed
-                },
-                customWidget: CustomNavBarWidget( // Your custom widget goes here
-                    items: _navBarsItems(),
-                    selectedIndex: _controller.index,
-                    onItemSelected: (index) {
-                        setState(() {
-                            _controller.index = index; // NOTE: THIS IS CRITICAL!! Don't miss it!
-                        });
-                    },
+                itemCount: 5,
+                isVisible: true,
+                hideOnScrollSettings: HideOnScrollSettings(
+                    hideNavBarOnScroll: true,
+                    scrollControllers: _scrollControllers,
                 ),
-            );
+                backgroundColor: Colors.grey.shade900,
+                customWidget: CustomNavBarWidget(
+                        _navBarsItems(),
+                        onItemSelected: (final index) {
+                             //Scroll to top for custom widget. For non custom widget, declare property `scrollController` in `PersistentBottomNavBarItem`.
+                            if (index == _controller.index) {
+                                _scrollControllers[index].animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
+                            }
+                            setState(() {
+                                _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
+                            });
+                        },
+                        selectedIndex: _controller.index,
+                    ),
+                ),
         }
     }
 
@@ -351,4 +373,28 @@ If you want to have your own style for the navigation bar, follow these steps:
 
 3. Done! As we can see, some of the other properties like `iconSize`, `items` are not required here so you can skip those properties. To control the **bottom padding** of the screen, use `bottomScreenPadding`. If you give too much `bottomScreenPadding` but less height in the custom widget or vice versa, layout issues might appear.
 
+## Animated Icons
+
+Animated icons are now supported in `PersistentBottomNavBarItem`. You will need to define and use an `AnimationController` and `Animation<double>` for it to work. Following is an example.
+
+    ```dart
+
+        final _animationController =  AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+        final _animationValue = Tween<double>(begin: 0.toDouble(), end: 1.toDouble()).animate(_animationController),
+
+        PersistentBottomNavBarItem(
+          icon: AnimatedIcon(
+            icon: AnimatedIcons.home_menu,
+            progress: _animationValue,
+          ),
+          iconAnimationController: _animationController,
+          title: "Home",
+          activeColorPrimary: Colors.blue,
+          activeColorSecondary: _navBarStyle == NavBarStyle.style7 || _navBarStyle == NavBarStyle.style10 ? Colors.white : null,
+          inactiveColorPrimary: Colors.grey,
+        ), 
+
+    ```
+
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.
+

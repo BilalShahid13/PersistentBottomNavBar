@@ -1,28 +1,26 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavStyle1 extends StatelessWidget {
-  const BottomNavStyle1({
+class _BottomNavStyle1 extends StatelessWidget {
+  const _BottomNavStyle1({
+    required this.navBarEssentials,
     final Key? key,
-    this.navBarEssentials = const NavBarEssentials(items: null),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
+  final _NavBarEssentials navBarEssentials;
 
   Widget _buildItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
           : AnimatedContainer(
               width: isSelected ? 120 : 50,
               height: height! / 1.6,
-              duration: navBarEssentials!.itemAnimationProperties?.duration ??
-                  const Duration(milliseconds: 400),
-              curve: navBarEssentials!.itemAnimationProperties?.curve ??
-                  Curves.ease,
+              duration: navBarEssentials.itemAnimationProperties.duration,
+              curve: navBarEssentials.itemAnimationProperties.curve,
               padding: EdgeInsets.all(item.contentPadding),
               decoration: BoxDecoration(
                 color: isSelected
                     ? item.activeColorPrimary.withOpacity(0.2)
-                    : navBarEssentials!.backgroundColor!.withOpacity(0),
+                    : navBarEssentials.backgroundColor.withOpacity(0),
                 borderRadius: const BorderRadius.all(Radius.circular(50)),
               ),
               child: Container(
@@ -82,38 +80,32 @@ class BottomNavStyle1 extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Container(
       width: double.infinity,
-      height: navBarEssentials!.navBarHeight,
-      padding: navBarEssentials!.padding == null
-          ? EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.07,
-              vertical: navBarEssentials!.navBarHeight! * 0.15,
-            )
-          : EdgeInsets.only(
-              top: navBarEssentials!.padding?.top ??
-                  navBarEssentials!.navBarHeight! * 0.15,
-              left: navBarEssentials!.padding?.left ??
-                  MediaQuery.of(context).size.width * 0.07,
-              right: navBarEssentials!.padding?.right ??
-                  MediaQuery.of(context).size.width * 0.07,
-              bottom: navBarEssentials!.padding?.bottom ??
-                  navBarEssentials!.navBarHeight! * 0.15),
+      height: navBarEssentials.navBarHeight,
+      padding: navBarEssentials.padding,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: navBarEssentials!.items!.map((final item) {
-          final int index = navBarEssentials!.items!.indexOf(item);
+        mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
+        children: navBarEssentials.items.map((final item) {
+          final int index = navBarEssentials.items.indexOf(item);
           return Flexible(
-            flex: navBarEssentials!.selectedIndex == index ? 2 : 1,
+            flex: navBarEssentials.selectedIndex == index ? 2 : 1,
             child: GestureDetector(
               onTap: () {
-                if (navBarEssentials!.items![index].onPressed != null) {
-                  navBarEssentials!.items![index]
-                      .onPressed!(navBarEssentials!.selectedScreenBuildContext);
+                if (index != navBarEssentials.selectedIndex) {
+                  navBarEssentials.items[index].iconAnimationController
+                      ?.forward();
+                  navBarEssentials.items[navBarEssentials.selectedIndex]
+                      .iconAnimationController
+                      ?.reverse();
+                }
+                if (navBarEssentials.items[index].onPressed != null) {
+                  navBarEssentials.items[index]
+                      .onPressed!(navBarEssentials.selectedScreenBuildContext);
                 } else {
-                  navBarEssentials!.onItemSelected!(index);
+                  navBarEssentials.onItemSelected?.call(index);
                 }
               },
-              child: _buildItem(item, navBarEssentials!.selectedIndex == index,
-                  navBarEssentials!.navBarHeight),
+              child: _buildItem(item, navBarEssentials.selectedIndex == index,
+                  navBarEssentials.navBarHeight),
             ),
           );
         }).toList(),

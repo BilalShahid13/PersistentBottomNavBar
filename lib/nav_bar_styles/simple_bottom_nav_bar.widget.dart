@@ -1,15 +1,15 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavSimple extends StatelessWidget {
-  const BottomNavSimple({
+class _BottomNavSimple extends StatelessWidget {
+  const _BottomNavSimple({
+    required this.navBarEssentials,
     final Key? key,
-    this.navBarEssentials = const NavBarEssentials(items: null),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
+  final _NavBarEssentials navBarEssentials;
 
   Widget _buildItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
           : AnimatedContainer(
               width: 150,
@@ -25,7 +25,7 @@ class BottomNavSimple extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   children: <Widget>[
                     Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
                       children: <Widget>[
                         Expanded(
                           child: IconTheme(
@@ -77,34 +77,31 @@ class BottomNavSimple extends StatelessWidget {
   @override
   Widget build(final BuildContext context) => Container(
         width: double.infinity,
-        height: navBarEssentials!.navBarHeight,
-        padding: EdgeInsets.only(
-            left: navBarEssentials!.padding?.left ??
-                MediaQuery.of(context).size.width * 0.04,
-            right: navBarEssentials!.padding?.right ??
-                MediaQuery.of(context).size.width * 0.04,
-            top: navBarEssentials!.padding?.top ??
-                navBarEssentials!.navBarHeight! * 0.15,
-            bottom: navBarEssentials!.padding?.bottom ??
-                navBarEssentials!.navBarHeight! * 0.12),
+        height: navBarEssentials.navBarHeight,
+        padding: navBarEssentials.padding,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: navBarEssentials!.items!.map((final item) {
-            final int index = navBarEssentials!.items!.indexOf(item);
+          mainAxisAlignment: navBarEssentials.navBarItemsAlignment,
+          children: navBarEssentials.items.map((final item) {
+            final int index = navBarEssentials.items.indexOf(item);
             return Flexible(
               child: GestureDetector(
                 onTap: () {
-                  if (navBarEssentials!.items![index].onPressed != null) {
-                    navBarEssentials!.items![index].onPressed!(
-                        navBarEssentials!.selectedScreenBuildContext);
+                  if (index != navBarEssentials.selectedIndex) {
+                    navBarEssentials.items[index].iconAnimationController
+                        ?.forward();
+                    navBarEssentials.items[navBarEssentials.selectedIndex]
+                        .iconAnimationController
+                        ?.reverse();
+                  }
+                  if (navBarEssentials.items[index].onPressed != null) {
+                    navBarEssentials.items[index].onPressed!(
+                        navBarEssentials.selectedScreenBuildContext);
                   } else {
-                    navBarEssentials!.onItemSelected!(index);
+                    navBarEssentials.onItemSelected?.call(index);
                   }
                 },
-                child: _buildItem(
-                    item,
-                    navBarEssentials!.selectedIndex == index,
-                    navBarEssentials!.navBarHeight),
+                child: _buildItem(item, navBarEssentials.selectedIndex == index,
+                    navBarEssentials.navBarHeight),
               ),
             );
           }).toList(),

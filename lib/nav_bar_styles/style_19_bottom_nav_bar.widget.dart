@@ -1,15 +1,15 @@
 part of persistent_bottom_nav_bar;
 
-class BottomNavStyle19 extends StatelessWidget {
-  const BottomNavStyle19({
+class _BottomNavStyle19 extends StatelessWidget {
+  const _BottomNavStyle19({
+    required this.navBarEssentials,
     final Key? key,
-    this.navBarEssentials = const NavBarEssentials(items: null),
   }) : super(key: key);
-  final NavBarEssentials? navBarEssentials;
+  final _NavBarEssentials navBarEssentials;
 
   Widget _buildItem(final PersistentBottomNavBarItem item,
           final bool isSelected, final double? height) =>
-      navBarEssentials!.navBarHeight == 0
+      navBarEssentials.navBarHeight == 0
           ? const SizedBox.shrink()
           : SizedBox(
               width: 150,
@@ -31,55 +31,39 @@ class BottomNavStyle19 extends StatelessWidget {
 
   @override
   Widget build(final BuildContext context) {
-    final padding = EdgeInsets.only(
-      left: navBarEssentials!.padding?.left ??
-          MediaQuery.of(context).size.width * 0.05,
-      right: navBarEssentials!.padding?.right ??
-          MediaQuery.of(context).size.width * 0.05,
-      top: navBarEssentials!.padding?.top ??
-          navBarEssentials!.navBarHeight! * 0.06,
-      bottom: navBarEssentials!.padding?.bottom ??
-          navBarEssentials!.navBarHeight! * 0.16,
-    );
     final double itemWidth = (MediaQuery.of(context).size.width -
-            ((navBarEssentials!.padding?.left ??
-                    MediaQuery.of(context).size.width * 0.05) +
-                (navBarEssentials!.padding?.right ??
-                    MediaQuery.of(context).size.width * 0.05))) /
-        navBarEssentials!.items!.length;
+            (navBarEssentials.padding.left + navBarEssentials.padding.right)) /
+        navBarEssentials.items.length;
     return SizedBox(
       width: double.infinity,
-      height: navBarEssentials!.navBarHeight,
+      height: navBarEssentials.navBarHeight,
       child: Stack(
         children: [
           Transform.translate(
             offset: const Offset(0, -20),
-            child: CurvedBazier(
-              color: navBarEssentials?.backgroundColor?.withOpacity(
-                      navBarEssentials!
-                          .items![navBarEssentials!.selectedIndex!].opacity) ??
-                  Colors.white,
-              index: navBarEssentials?.selectedIndex ?? 0,
-              numberOfTabItems: navBarEssentials?.items?.length ?? 0,
-              padding: padding,
+            child: _CurvedBazier(
+              color: navBarEssentials.backgroundColor.withOpacity(
+                  navBarEssentials
+                      .items[navBarEssentials.selectedIndex].opacity),
+              index: navBarEssentials.selectedIndex,
+              numberOfTabItems: navBarEssentials.items.length,
+              padding: navBarEssentials.padding,
             ),
           ),
           Padding(
-            padding: padding,
+            padding: navBarEssentials.padding,
             child: Stack(
               children: [
                 Row(
                   children: [
                     AnimatedContainer(
                       duration:
-                          navBarEssentials!.itemAnimationProperties!.duration ??
-                              const Duration(milliseconds: 300),
-                      curve: navBarEssentials!.itemAnimationProperties!.curve ??
-                          Curves.ease,
+                          navBarEssentials.itemAnimationProperties.duration,
+                      curve: navBarEssentials.itemAnimationProperties.curve,
                       color: Colors.transparent,
-                      width: navBarEssentials!.selectedIndex == 0
+                      width: navBarEssentials.selectedIndex == 0
                           ? 0
-                          : itemWidth * navBarEssentials!.selectedIndex!,
+                          : itemWidth * navBarEssentials.selectedIndex,
                       height: 4,
                     ),
                     Flexible(
@@ -88,12 +72,10 @@ class BottomNavStyle19 extends StatelessWidget {
                         child: Transform.scale(
                           scale: 1.6,
                           child: AnimatedContainer(
-                            duration: navBarEssentials!
-                                    .itemAnimationProperties!.duration ??
-                                const Duration(milliseconds: 300),
-                            curve: navBarEssentials!
-                                    .itemAnimationProperties!.curve ??
-                                Curves.ease,
+                            duration: navBarEssentials
+                                .itemAnimationProperties.duration,
+                            curve:
+                                navBarEssentials.itemAnimationProperties.curve,
                             width: itemWidth,
                             height: itemWidth,
                             alignment: Alignment.center,
@@ -101,12 +83,10 @@ class BottomNavStyle19 extends StatelessWidget {
                               height: itemWidth,
                               width: itemWidth,
                               decoration: BoxDecoration(
-                                color: navBarEssentials?.backgroundColor
-                                        ?.withOpacity(navBarEssentials!
-                                            .items![navBarEssentials!
-                                                .selectedIndex!]
-                                            .opacity) ??
-                                    Colors.white,
+                                color: navBarEssentials.backgroundColor
+                                    .withOpacity(navBarEssentials
+                                        .items[navBarEssentials.selectedIndex]
+                                        .opacity),
                                 shape: BoxShape.circle,
                               ),
                             ),
@@ -118,25 +98,31 @@ class BottomNavStyle19 extends StatelessWidget {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: navBarEssentials!.items!.map((final item) {
-                    final int index = navBarEssentials!.items!.indexOf(item);
+                  children: navBarEssentials.items.map((final item) {
+                    final int index = navBarEssentials.items.indexOf(item);
                     return Expanded(
                       child: GestureDetector(
                         onTap: () {
-                          if (navBarEssentials!.items![index].onPressed !=
-                              null) {
-                            navBarEssentials!.items![index].onPressed!(
-                                navBarEssentials!.selectedScreenBuildContext);
+                          if (index != navBarEssentials.selectedIndex) {
+                            navBarEssentials
+                                .items[index].iconAnimationController
+                                ?.forward();
+                            navBarEssentials
+                                .items[navBarEssentials.selectedIndex]
+                                .iconAnimationController
+                                ?.reverse();
+                          }
+                          if (navBarEssentials.items[index].onPressed != null) {
+                            navBarEssentials.items[index].onPressed!(
+                                navBarEssentials.selectedScreenBuildContext);
                           } else {
-                            navBarEssentials!.onItemSelected!(index);
+                            navBarEssentials.onItemSelected?.call(index);
                           }
                         },
                         child: _buildItem(
                           item,
-                          navBarEssentials!.selectedIndex == index,
-                          (navBarEssentials!.navBarHeight ??
-                                  kBottomNavigationBarHeight) -
-                              20,
+                          navBarEssentials.selectedIndex == index,
+                          navBarEssentials.navBarHeight - 20,
                         ),
                       ),
                     );

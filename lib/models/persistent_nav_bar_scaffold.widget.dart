@@ -35,27 +35,30 @@ class PersistentTabController extends ChangeNotifier {
   }
 }
 
-class PersistentTabScaffold extends StatefulWidget {
-  PersistentTabScaffold({
+class _PersistentTabScaffold extends StatefulWidget {
+  _PersistentTabScaffold({
     required this.tabBar,
     required this.tabBuilder,
+    required this.navBarHeightFactor,
+    required this.animationSettings,
+    required this.hideNavBar,
+    required this.navBarPosition,
     final Key? key,
     this.controller,
     this.backgroundColor,
     this.resizeToAvoidBottomInset = true,
     this.bottomScreenMargin,
     this.stateManagement,
-    this.screenTransitionAnimation,
-    this.hideNavigationBarWhenKeyboardShows,
     this.itemCount,
-    this.animatePadding = false,
+    this.confineToSafeArea = true,
+    this.floatingActionWidget,
   })  : assert(
             controller == null || controller.index < itemCount!,
             "The PersistentTabController's current index ${controller.index} is "
-            "out of bounds for the tab bar with ${tabBar.navBarEssentials!.items!.length} tabs"),
+            "out of bounds for the tab bar with ${tabBar.navBarEssentials.items.length} tabs"),
         super(key: key);
 
-  final PersistentBottomNavBar tabBar;
+  final _PersistentBottomNavBar tabBar;
 
   final PersistentTabController? controller;
 
@@ -65,31 +68,35 @@ class PersistentTabScaffold extends StatefulWidget {
 
   final bool resizeToAvoidBottomInset;
 
+  final bool confineToSafeArea;
+
   final int? itemCount;
 
   final double? bottomScreenMargin;
 
   final bool? stateManagement;
 
-  final ScreenTransitionAnimation? screenTransitionAnimation;
+  final NavBarAnimationSettings animationSettings;
 
-  final bool? hideNavigationBarWhenKeyboardShows;
+  final Animation<double> navBarHeightFactor;
 
-  final bool animatePadding;
+  final Widget? floatingActionWidget;
+
+  final bool hideNavBar;
+
+  final NavBarPosition navBarPosition;
 
   @override
   _PersistentTabScaffoldState createState() => _PersistentTabScaffoldState();
 }
 
-class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
+class _PersistentTabScaffoldState extends State<_PersistentTabScaffold> {
   PersistentTabController? _controller;
-  int? _selectedIndex;
   late bool _isTapAction;
 
   @override
   void initState() {
     super.initState();
-    _selectedIndex = widget.controller!.index;
     _isTapAction = false;
     _updateTabController();
   }
@@ -97,7 +104,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   void _updateTabController({final bool shouldDisposeOldController = false}) {
     final PersistentTabController newController = widget.controller ??
         PersistentTabController(
-            initialIndex: widget.tabBar.navBarEssentials!.selectedIndex!);
+            initialIndex: widget.tabBar.navBarEssentials.selectedIndex);
 
     if (newController == _controller) {
       return;
@@ -122,7 +129,7 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
   }
 
   @override
-  void didUpdateWidget(final PersistentTabScaffold oldWidget) {
+  void didUpdateWidget(final _PersistentTabScaffold oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.controller != oldWidget.controller) {
       _updateTabController(
@@ -138,117 +145,149 @@ class _PersistentTabScaffoldState extends State<PersistentTabScaffold> {
     MediaQueryData newMediaQuery = MediaQuery.of(context);
     if (_isTapAction) {
       _isTapAction = false;
-    } else {
-      _selectedIndex = widget.tabBar.navBarEssentials!.selectedIndex;
     }
     Widget content = _TabSwitchingView(
       currentTabIndex: _controller!.index,
       tabCount: widget.itemCount,
       tabBuilder: widget.tabBuilder,
       stateManagement: widget.stateManagement,
-      screenTransitionAnimation: widget.screenTransitionAnimation,
-      backgroundColor: widget.tabBar.navBarEssentials!.backgroundColor,
+      screenTransitionAnimation:
+          widget.animationSettings.screenTransitionAnimation,
+      backgroundColor: widget.tabBar.navBarEssentials.backgroundColor,
     );
-    double contentPadding = 0;
 
     if (widget.resizeToAvoidBottomInset) {
       newMediaQuery = newMediaQuery.removeViewInsets(removeBottom: true);
     }
 
-    if (!widget.tabBar.opaque(_selectedIndex)) {
-      contentPadding = 0.0;
-    } else if (widget
-            .tabBar.navBarDecoration!.adjustScreenBottomPaddingOnCurve &&
-        widget.tabBar.navBarDecoration!.borderRadius != BorderRadius.zero) {
-      final double bottomPadding = widget.bottomScreenMargin ??
-          widget.tabBar.navBarEssentials!.navBarHeight! -
-              (widget.tabBar.navBarDecoration!.borderRadius != null
-                  ? min(
-                      widget.tabBar.navBarEssentials!.navBarHeight!,
-                      max(
-                              widget.tabBar.navBarDecoration!.borderRadius!
-                                  .topRight.y,
-                              widget.tabBar.navBarDecoration!.borderRadius!
-                                  .topLeft.y) +
-                          (widget.tabBar.navBarDecoration?.border != null
-                              ? widget.tabBar.navBarDecoration!.border!
-                                  .dimensions.vertical
-                              : 0.0))
-                  : 0.0);
-      contentPadding = bottomPadding;
-    } else {
-      if (!widget.resizeToAvoidBottomInset ||
-          widget.tabBar.navBarEssentials!.navBarHeight! >
-              existingMediaQuery.viewInsets.bottom) {
-        final double bottomPadding = widget.bottomScreenMargin ??
-            widget.tabBar.navBarEssentials!.navBarHeight! +
-                (widget.tabBar.navBarDecoration?.border != null
-                    ? widget
-                        .tabBar.navBarDecoration!.border!.dimensions.vertical
-                    : 0.0);
-        contentPadding = bottomPadding;
-      }
-    }
+    content = DecoratedBox(
+      decoration: BoxDecoration(
+        color: widget.tabBar.navBarDecoration.colorBehindNavBar,
+      ),
+      child: Column(
+        children: [
+          if (widget.navBarPosition == NavBarPosition.top)
+            AnimatedBuilder(
+              animation: widget.navBarHeightFactor,
+              builder: (final context, final _) => SizedBox(
+                height: widget.navBarHeightFactor.value *
+                    (widget.bottomScreenMargin ??
+                        (widget.confineToSafeArea
+                            ? (widget.tabBar.navBarEssentials.navBarHeight) +
+                                MediaQuery.paddingOf(context).bottom
+                            : 0)),
+              ),
+            ),
+          Expanded(
+            child: MediaQuery(
+              data: newMediaQuery,
+              child: widget.floatingActionWidget != null
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        content,
+                        if (widget.bottomScreenMargin == 0 ||
+                            !widget.confineToSafeArea)
+                          AnimatedPositioned(
+                            duration: widget.animationSettings
+                                .onNavBarHideAnimation.duration,
+                            curve: widget
+                                .animationSettings.onNavBarHideAnimation.curve,
+                            bottom: widget.hideNavBar
+                                ? 10
+                                : (widget.bottomScreenMargin ??
+                                            (widget.confineToSafeArea
+                                                ? (widget
+                                                        .tabBar
+                                                        .navBarEssentials
+                                                        .navBarHeight) +
+                                                    MediaQuery.paddingOf(
+                                                            context)
+                                                        .bottom
+                                                : 0)) ==
+                                        0
+                                    ? (widget.tabBar.navBarEssentials
+                                            .navBarHeight) +
+                                        MediaQuery.paddingOf(context).bottom
+                                    : 0,
+                            right: 10,
+                            child: widget.floatingActionWidget!,
+                          )
+                        else
+                          Positioned(
+                            bottom: widget.hideNavBar
+                                ? 10
+                                : (widget.bottomScreenMargin ??
+                                            (widget.confineToSafeArea
+                                                ? (widget
+                                                        .tabBar
+                                                        .navBarEssentials
+                                                        .navBarHeight) +
+                                                    MediaQuery.paddingOf(
+                                                            context)
+                                                        .bottom
+                                                : 0)) ==
+                                        0
+                                    ? (widget.tabBar.navBarEssentials
+                                            .navBarHeight) +
+                                        MediaQuery.paddingOf(context).bottom
+                                    : 0,
+                            right: 10,
+                            child: widget.floatingActionWidget!,
+                          ),
+                      ],
+                    )
+                  : content,
+            ),
+          ),
+          if (widget.navBarPosition == NavBarPosition.bottom)
+            AnimatedBuilder(
+              animation: widget.navBarHeightFactor,
+              builder: (final context, final _) => SizedBox(
+                height: widget.navBarHeightFactor.value *
+                    (widget.bottomScreenMargin ??
+                        (widget.confineToSafeArea
+                            ? (widget.tabBar.navBarEssentials.navBarHeight) +
+                                MediaQuery.paddingOf(context).bottom
+                            : 0)),
+              ),
+            )
+        ],
+      ),
+    );
 
-    if (widget.tabBar.hideNavigationBar != null) {
-      content = MediaQuery(
-        data: newMediaQuery,
-        child: AnimatedContainer(
-          duration: Duration(
-              milliseconds:
-                  widget.animatePadding || widget.tabBar.hideNavigationBar!
-                      ? widget.tabBar.hideNavigationBar!
-                          ? 200
-                          : 400
-                      : 0),
-          curve:
-              widget.tabBar.hideNavigationBar! ? Curves.linear : Curves.easeIn,
-          color: widget.tabBar.navBarDecoration!.colorBehindNavBar,
-          padding: EdgeInsets.only(bottom: contentPadding),
-          child: content,
+    final navigationBar = MediaQuery(
+      data: existingMediaQuery.copyWith(textScaler: TextScaler.noScaling),
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: widget.tabBar.copyWith(
+          selectedIndex: _controller!.index,
+          onItemSelected: (final newIndex) {
+            _controller!.index = newIndex;
+            if (widget.tabBar.navBarEssentials.onItemSelected != null) {
+              setState(() {
+                _isTapAction = true;
+                widget.tabBar.navBarEssentials.onItemSelected?.call(newIndex);
+              });
+            }
+          },
         ),
-      );
-    } else {
-      content = MediaQuery(
-        data: newMediaQuery,
-        child: Container(
-          color: widget.tabBar.navBarDecoration!.colorBehindNavBar,
-          padding: EdgeInsets.only(bottom: contentPadding),
-          child: content,
-        ),
-      );
-    }
+      ),
+    );
 
     return DecoratedBox(
       decoration:
-          widget.tabBar.navBarDecoration!.borderRadius != BorderRadius.zero
+          widget.tabBar.navBarDecoration.borderRadius != BorderRadius.zero
               ? BoxDecoration(
                   color: CupertinoColors.black.withOpacity(0),
-                  borderRadius: widget.tabBar.navBarDecoration!.borderRadius,
+                  borderRadius: widget.tabBar.navBarDecoration.borderRadius,
                 )
               : BoxDecoration(color: CupertinoColors.black.withOpacity(1)),
       child: Stack(
         children: <Widget>[
+          if (widget.navBarPosition == NavBarPosition.top) navigationBar,
           content,
-          MediaQuery(
-            data: existingMediaQuery.copyWith(textScaleFactor: 1),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: widget.tabBar.copyWith(
-                selectedIndex: _controller!.index,
-                onItemSelected: (final newIndex) {
-                  _controller!.index = newIndex;
-                  if (widget.tabBar.navBarEssentials!.onItemSelected != null) {
-                    setState(() {
-                      _selectedIndex = newIndex;
-                      _isTapAction = true;
-                      widget.tabBar.navBarEssentials!.onItemSelected!(newIndex);
-                    });
-                  }
-                },
-              ),
-            ),
-          ),
+          if (widget.navBarPosition == NavBarPosition.bottom) navigationBar,
         ],
       ),
     );
@@ -281,7 +320,7 @@ class _TabSwitchingView extends StatefulWidget {
   final int? tabCount;
   final IndexedWidgetBuilder tabBuilder;
   final bool? stateManagement;
-  final ScreenTransitionAnimation? screenTransitionAnimation;
+  final ScreenTransitionAnimationSettings? screenTransitionAnimation;
   final Color? backgroundColor;
 
   @override
@@ -370,7 +409,9 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
       }
     }
     FocusScope.of(context).setFirstFocus(tabFocusNodes[widget.currentTabIndex]);
-    if (widget.screenTransitionAnimation!.animateTabTransition) {
+    if (widget.screenTransitionAnimation!.animateTabTransition &&
+        widget.screenTransitionAnimation!.screenTransitionAnimationType ==
+            ScreenTransitionAnimationType.slide) {
       _lastPageAnimation();
     }
   }
@@ -437,17 +478,40 @@ class _TabSwitchingViewState extends State<_TabSwitchingView>
                       builder: (final context) => shouldBuildTab[index]
                           ? (widget.screenTransitionAnimation!
                                   .animateTabTransition
-                              ? AnimatedBuilder(
-                                  animation: _animations[index]!,
-                                  builder: (final context, final child) =>
-                                      Transform.translate(
-                                    offset:
-                                        Offset(_animations[index]!.value, 0),
-                                    child: widget.tabBuilder(context, index),
-                                  ),
-                                )
+                              ? (widget.screenTransitionAnimation!
+                                          .screenTransitionAnimationType ==
+                                      ScreenTransitionAnimationType.slide
+                                  ? AnimatedBuilder(
+                                      animation: _animations[index]!,
+                                      builder: (final context, final child) =>
+                                          Transform.translate(
+                                        offset: Offset(
+                                            _animations[index]!.value, 0),
+                                        child:
+                                            widget.tabBuilder(context, index),
+                                      ),
+                                    )
+                                  : AnimatedOpacity(
+                                      opacity: index == widget.currentTabIndex
+                                          ? 1
+                                          : 0,
+                                      duration: widget
+                                          .screenTransitionAnimation!.duration,
+                                      curve: widget
+                                          .screenTransitionAnimation!.curve,
+                                      child: AnimatedBuilder(
+                                        animation: _animations[index]!,
+                                        builder: (final context, final child) =>
+                                            Transform.translate(
+                                          offset: Offset(
+                                              _animations[index]!.value, 0),
+                                          child:
+                                              widget.tabBuilder(context, index),
+                                        ),
+                                      ),
+                                    ))
                               : widget.tabBuilder(context, index))
-                          : Container()),
+                          : const SizedBox()),
                 ),
               ),
             );

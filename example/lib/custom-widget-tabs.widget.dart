@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_redundant_argument_values
+
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_tab_view.dart";
 
@@ -5,8 +7,10 @@ import "package:persistent_bottom_nav_bar_example_project/main.dart";
 import "package:persistent_bottom_nav_bar_example_project/screens.dart";
 
 class CustomWidgetExample extends StatefulWidget {
-  const CustomWidgetExample({final Key key, this.menuScreenContext})
-      : super(key: key);
+  const CustomWidgetExample({
+    required this.menuScreenContext,
+    final Key? key,
+  }) : super(key: key);
   final BuildContext menuScreenContext;
 
   @override
@@ -14,8 +18,15 @@ class CustomWidgetExample extends StatefulWidget {
 }
 
 class _CustomWidgetExampleState extends State<CustomWidgetExample> {
-  PersistentTabController _controller;
-  bool _hideNavBar;
+  late PersistentTabController _controller;
+  final List<ScrollController> _scrollControllers = [
+    ScrollController(),
+    ScrollController(),
+    ScrollController(),
+    ScrollController(),
+    ScrollController(),
+  ];
+  late bool _hideNavBar;
 
   @override
   void initState() {
@@ -24,10 +35,20 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
     _hideNavBar = false;
   }
 
+  @override
+  void dispose() {
+    for (final element in _scrollControllers) {
+      element.dispose();
+    }
+    super.dispose();
+  }
+
   List<Widget> _buildScreens() => [
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers.first,
           hideStatus: _hideNavBar,
+          showNavBarStyles: false,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
@@ -36,7 +57,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers[1],
           hideStatus: _hideNavBar,
+          showNavBarStyles: false,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
@@ -45,7 +68,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers[2],
           hideStatus: _hideNavBar,
+          showNavBarStyles: false,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
@@ -54,7 +79,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers[3],
           hideStatus: _hideNavBar,
+          showNavBarStyles: false,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
@@ -63,7 +90,9 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         ),
         MainScreen(
           menuScreenContext: widget.menuScreenContext,
+          scrollController: _scrollControllers.last,
           hideStatus: _hideNavBar,
+          showNavBarStyles: false,
           onScreenHideButtonPressed: () {
             setState(() {
               _hideNavBar = !_hideNavBar;
@@ -72,6 +101,7 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
         ),
       ];
 
+  // List<PersistentBottomNavBarItem> is just for example here. It can be anything you want like List<YourItemWidget>
   List<PersistentBottomNavBarItem> _navBarsItems() => [
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.home),
@@ -108,11 +138,11 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
   @override
   Widget build(final BuildContext context) => Scaffold(
         appBar: AppBar(title: const Text("Navigation Bar Demo")),
-        drawer: Drawer(
+        drawer: const Drawer(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const <Widget>[
+              children: <Widget>[
                 Text("This is the Drawer"),
               ],
             ),
@@ -123,13 +153,22 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
           controller: _controller,
           screens: _buildScreens(),
           itemCount: 5,
-          hideNavigationBar: _hideNavBar,
-          screenTransitionAnimation: const ScreenTransitionAnimation(
-            animateTabTransition: true,
+          isVisible: !_hideNavBar,
+          hideOnScrollSettings: HideOnScrollSettings(
+            hideNavBarOnScroll: true,
+            scrollControllers: _scrollControllers,
           ),
+          backgroundColor: Colors.grey.shade900,
           customWidget: CustomNavBarWidget(
             _navBarsItems(),
             onItemSelected: (final index) {
+              //Scroll to top
+              if (index == _controller.index) {
+                _scrollControllers[index].animateTo(0,
+                    duration: const Duration(milliseconds: 200),
+                    curve: Curves.ease);
+              }
+
               setState(() {
                 _controller.index = index; // THIS IS CRITICAL!! Don't miss it!
               });

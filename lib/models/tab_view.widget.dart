@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
-class CustomTabView extends StatefulWidget {
-  const CustomTabView({
+class _CustomTabView extends StatefulWidget {
+  const _CustomTabView({
     final Key? key,
     this.builder,
     this.routeAndNavigatorSettings,
@@ -13,7 +13,7 @@ class CustomTabView extends StatefulWidget {
   _CustomTabViewState createState() => _CustomTabViewState();
 }
 
-class _CustomTabViewState extends State<CustomTabView> {
+class _CustomTabViewState extends State<_CustomTabView> {
   final HeroController _heroController =
       CupertinoApp.createCupertinoHeroController();
   late List<NavigatorObserver?> _navigatorObservers;
@@ -25,7 +25,7 @@ class _CustomTabViewState extends State<CustomTabView> {
   }
 
   @override
-  void didUpdateWidget(final CustomTabView oldWidget) {
+  void didUpdateWidget(final _CustomTabView oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.routeAndNavigatorSettings!.navigatorKey !=
             oldWidget.routeAndNavigatorSettings!.navigatorKey ||

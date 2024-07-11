@@ -1,7 +1,7 @@
 part of persistent_bottom_nav_bar;
 
-class CurvedBazier extends StatefulWidget {
-  const CurvedBazier({
+class _CurvedBazier extends StatefulWidget {
+  const _CurvedBazier({
     required this.color,
     required this.index,
     required this.numberOfTabItems,
@@ -15,10 +15,10 @@ class CurvedBazier extends StatefulWidget {
   final EdgeInsets padding;
 
   @override
-  State<CurvedBazier> createState() => _CurvedBazierState();
+  State<_CurvedBazier> createState() => _CurvedBazierState();
 }
 
-class _CurvedBazierState extends State<CurvedBazier>
+class _CurvedBazierState extends State<_CurvedBazier>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _heightFactorAnimation;
@@ -31,7 +31,9 @@ class _CurvedBazierState extends State<CurvedBazier>
     _index = widget.index;
     _animationController = AnimationController(
         vsync: this, duration: const Duration(milliseconds: 300));
-    _heightFactorAnimation = Tween<double>(begin: 0, end: 1)
+
+    final initialAnimationValue = widget.index / widget.numberOfTabItems;
+    _heightFactorAnimation = Tween<double>(begin: initialAnimationValue, end: 1)
         .chain(CurveTween(curve: Curves.ease))
         .animate(_animationController);
   }

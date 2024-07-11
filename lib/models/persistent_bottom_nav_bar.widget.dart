@@ -1,192 +1,217 @@
+// ignore_for_file: avoid_positional_boolean_parameters
+
 part of persistent_bottom_nav_bar;
 
-class PersistentBottomNavBar extends StatelessWidget {
-  const PersistentBottomNavBar({
-    final Key? key,
-    this.margin,
-    this.confineToSafeArea,
+class _PersistentBottomNavBar extends StatelessWidget {
+  const _PersistentBottomNavBar({
+    required this.confineToSafeArea,
+    required this.navBarEssentials,
+    required this.navBarDecoration,
+    required this.navBarStyle,
+    required this.hideNavigationBar,
+    required this.navBarHideAnimationController,
+    this.margin = EdgeInsets.zero,
     this.customNavBarWidget,
-    this.hideNavigationBar,
     this.onAnimationComplete,
     this.neumorphicProperties = const NeumorphicProperties(),
-    this.navBarEssentials,
-    this.navBarDecoration,
-    this.navBarStyle,
     this.isCustomWidget = false,
+    final Key? key,
   }) : super(key: key);
 
-  final NavBarEssentials? navBarEssentials;
-  final EdgeInsets? margin;
-  final NavBarDecoration? navBarDecoration;
-  final NavBarStyle? navBarStyle;
+  final AnimationController navBarHideAnimationController;
+  final _NavBarEssentials navBarEssentials;
+  final EdgeInsets margin;
+  final NavBarDecoration navBarDecoration;
+  final NavBarStyle navBarStyle;
   final NeumorphicProperties? neumorphicProperties;
   final Widget? customNavBarWidget;
-  final bool? confineToSafeArea;
-  final bool? hideNavigationBar;
+  final bool confineToSafeArea;
+  final bool hideNavigationBar;
   final Function(bool, bool)? onAnimationComplete;
-  final bool? isCustomWidget;
+  final bool isCustomWidget;
 
-  Padding _navBarWidget() => Padding(
-        padding: margin!,
-        child: isCustomWidget!
-            ? margin!.bottom > 0
-                ? SafeArea(
-                    top: false,
-                    bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                            (hideNavigationBar ?? false)
-                        ? false
-                        : confineToSafeArea ?? true,
-                    child: Container(
-                      color: navBarEssentials!.backgroundColor,
-                      height: navBarEssentials!.navBarHeight,
-                      child: customNavBarWidget,
-                    ),
-                  )
-                : Container(
-                    color: navBarEssentials!.backgroundColor,
-                    child: SafeArea(
-                        top: false,
-                        bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                (hideNavigationBar ?? false)
-                            ? false
-                            : confineToSafeArea ?? true,
+  Padding _navBarWidget(final BuildContext context) => Padding(
+        padding: margin,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (isCustomWidget)
+              margin.bottom > 0
+                  ? DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: navBarEssentials.backgroundColor,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: confineToSafeArea
+                                ? MediaQuery.paddingOf(context).bottom
+                                : 0),
                         child: SizedBox(
-                            height: navBarEssentials!.navBarHeight,
-                            child: customNavBarWidget)),
-                  )
-            : navBarStyle == NavBarStyle.style19
-                ? margin!.bottom > 0
-                    ? SafeArea(
-                        top: false,
-                        right: false,
-                        left: false,
-                        bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                (hideNavigationBar ?? false)
-                            ? false
-                            : confineToSafeArea ?? true,
-                        child: getNavBarStyle(),
-                      )
-                    : DecoratedBox(
-                        decoration: PersistentBottomNavigationBarUtilFunctions
-                            .getNavBarDecoration(
-                          decoration: navBarDecoration,
-                          color: navBarEssentials!.backgroundColor,
-                          opacity: navBarEssentials!
-                              .items![navBarEssentials!.selectedIndex!].opacity,
+                          height: navBarEssentials.navBarHeight,
+                          child: customNavBarWidget,
                         ),
-                        child: SafeArea(
-                          top: false,
-                          right: false,
-                          left: false,
-                          bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                  (hideNavigationBar ?? false)
-                              ? false
-                              : confineToSafeArea ?? true,
+                      ),
+                    )
+                  : DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: navBarEssentials.backgroundColor,
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            bottom: confineToSafeArea
+                                ? MediaQuery.paddingOf(context).bottom
+                                : 0),
+                        child: SizedBox(
+                          height: navBarEssentials.navBarHeight,
+                          child: customNavBarWidget,
+                        ),
+                      ),
+                    )
+            else
+              navBarStyle == NavBarStyle.style19
+                  ? margin.bottom > 0
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                              bottom: confineToSafeArea
+                                  ? MediaQuery.paddingOf(context).bottom
+                                  : 0),
                           child: getNavBarStyle(),
-                        ),
-                      )
-                : navBarStyle == NavBarStyle.style15 ||
-                        navBarStyle == NavBarStyle.style16
-                    ? margin!.bottom > 0
-                        ? SafeArea(
-                            top: false,
-                            right: false,
-                            left: false,
-                            bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                    (hideNavigationBar ?? false)
-                                ? false
-                                : confineToSafeArea ?? true,
-                            child: DecoratedBox(
+                        )
+                      : DecoratedBox(
+                          decoration:
+                              _PersistentBottomNavigationBarUtilFunctions
+                                  .getNavBarDecoration(
+                            decoration: navBarDecoration,
+                            color: navBarEssentials.backgroundColor,
+                            opacity: navBarEssentials
+                                .items[navBarEssentials.selectedIndex].opacity,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                bottom: confineToSafeArea
+                                    ? MediaQuery.paddingOf(context).bottom
+                                    : 0),
+                            child: getNavBarStyle(),
+                          ),
+                        )
+                  : navBarStyle == NavBarStyle.style15 ||
+                          navBarStyle == NavBarStyle.style16
+                      ? margin.bottom > 0
+                          ? DecoratedBox(
                               decoration:
-                                  PersistentBottomNavigationBarUtilFunctions
+                                  _PersistentBottomNavigationBarUtilFunctions
                                       .getNavBarDecoration(
                                 decoration: navBarDecoration,
-                                color: navBarEssentials!.backgroundColor,
-                                opacity: navBarEssentials!
-                                    .items![navBarEssentials!.selectedIndex!]
+                                color: navBarEssentials.backgroundColor,
+                                opacity: navBarEssentials
+                                    .items[navBarEssentials.selectedIndex]
                                     .opacity,
                               ),
-                              child: getNavBarStyle(),
-                            ),
-                          )
-                        : DecoratedBox(
-                            decoration:
-                                PersistentBottomNavigationBarUtilFunctions
-                                    .getNavBarDecoration(
-                              decoration: navBarDecoration,
-                              color: navBarEssentials!.backgroundColor,
-                              opacity: navBarEssentials!
-                                  .items![navBarEssentials!.selectedIndex!]
-                                  .opacity,
-                            ),
-                            child: SafeArea(
-                              top: false,
-                              right: false,
-                              left: false,
-                              bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                      (hideNavigationBar ?? false)
-                                  ? false
-                                  : confineToSafeArea ?? true,
-                              child: getNavBarStyle(),
-                            ),
-                          )
-                    : DecoratedBox(
-                        decoration: PersistentBottomNavigationBarUtilFunctions
-                            .getNavBarDecoration(
-                          decoration: navBarDecoration,
-                          showBorder: false,
-                          color: navBarEssentials!.backgroundColor,
-                          opacity: navBarEssentials!
-                              .items![navBarEssentials!.selectedIndex!].opacity,
-                        ),
-                        child: ClipRRect(
-                          borderRadius: navBarDecoration!.borderRadius ??
-                              BorderRadius.zero,
-                          child: BackdropFilter(
-                            filter: navBarEssentials!
-                                    .items![navBarEssentials!.selectedIndex!]
-                                    .filter ??
-                                ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                            child: DecoratedBox(
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: confineToSafeArea
+                                        ? MediaQuery.paddingOf(context).bottom
+                                        : 0),
+                                child: getNavBarStyle(),
+                              ),
+                            )
+                          : DecoratedBox(
                               decoration:
-                                  PersistentBottomNavigationBarUtilFunctions
+                                  _PersistentBottomNavigationBarUtilFunctions
+                                      .getNavBarDecoration(
+                                decoration: navBarDecoration,
+                                color: navBarEssentials.backgroundColor,
+                                opacity: navBarEssentials
+                                    .items[navBarEssentials.selectedIndex]
+                                    .opacity,
+                              ),
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: confineToSafeArea
+                                        ? MediaQuery.paddingOf(context).bottom
+                                        : 0),
+                                child: getNavBarStyle(),
+                              ),
+                            )
+                      : navBarDecoration.useBackdropFilter
+                          ? DecoratedBox(
+                              decoration:
+                                  _PersistentBottomNavigationBarUtilFunctions
+                                      .getNavBarDecoration(
+                                decoration: navBarDecoration,
+                                showBorder: false,
+                                color: navBarEssentials.backgroundColor,
+                                opacity: navBarEssentials
+                                    .items[navBarEssentials.selectedIndex]
+                                    .opacity,
+                              ),
+                              child: ClipRRect(
+                                borderRadius: navBarDecoration.borderRadius ??
+                                    BorderRadius.zero,
+                                child: BackdropFilter(
+                                  filter: navBarEssentials
+                                          .items[navBarEssentials.selectedIndex]
+                                          .filter ??
+                                      ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                                  child: DecoratedBox(
+                                    decoration:
+                                        _PersistentBottomNavigationBarUtilFunctions
+                                            .getNavBarDecoration(
+                                      showOpacity: false,
+                                      decoration: navBarDecoration,
+                                      color: navBarEssentials.backgroundColor,
+                                      opacity: navBarEssentials
+                                          .items[navBarEssentials.selectedIndex]
+                                          .opacity,
+                                    ),
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          bottom: confineToSafeArea
+                                              ? MediaQuery.paddingOf(context)
+                                                  .bottom
+                                              : 0),
+                                      child: getNavBarStyle(),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          : DecoratedBox(
+                              decoration:
+                                  _PersistentBottomNavigationBarUtilFunctions
                                       .getNavBarDecoration(
                                 showOpacity: false,
                                 decoration: navBarDecoration,
-                                color: navBarEssentials!.backgroundColor,
-                                opacity: navBarEssentials!
-                                    .items![navBarEssentials!.selectedIndex!]
+                                color: navBarEssentials.backgroundColor,
+                                opacity: navBarEssentials
+                                    .items[navBarEssentials.selectedIndex]
                                     .opacity,
                               ),
-                              child: SafeArea(
-                                top: false,
-                                right: false,
-                                left: false,
-                                bottom: navBarEssentials!.navBarHeight == 0.0 ||
-                                        (hideNavigationBar ?? false)
-                                    ? false
-                                    : confineToSafeArea ?? true,
+                              child: Padding(
+                                padding: EdgeInsets.only(
+                                    bottom: confineToSafeArea
+                                        ? MediaQuery.paddingOf(context).bottom
+                                        : 0),
                                 child: getNavBarStyle(),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
+          ],
+        ),
       );
 
   @override
-  Widget build(final BuildContext context) => hideNavigationBar == null
-      ? _navBarWidget()
-      : OffsetAnimation(
-          hideNavigationBar: hideNavigationBar,
-          navBarHeight: navBarEssentials!.navBarHeight,
-          onAnimationComplete: (final isAnimating, final isComplete) {
-            onAnimationComplete!(isAnimating, isComplete);
-          },
-          child: _navBarWidget(),
-        );
+  Widget build(final BuildContext context) => OffsetAnimation(
+        hideNavigationBar: hideNavigationBar,
+        navBarHeight: navBarEssentials.navBarHeight +
+            MediaQuery.paddingOf(context).bottom,
+        navBarHideAnimationController: navBarHideAnimationController,
+        onAnimationComplete: (final isAnimating, final isComplete) {
+          onAnimationComplete!(isAnimating, isComplete);
+        },
+        child: _navBarWidget(context),
+      );
 
-  PersistentBottomNavBar copyWith(
+  _PersistentBottomNavBar copyWith(
           {final int? selectedIndex,
           final double? iconSize,
           final int? previousIndex,
@@ -203,124 +228,128 @@ class PersistentBottomNavBar extends StatelessWidget {
           final Function(int)? popAllScreensForTheSelectedTab,
           final bool? popScreensOnTapOfSelectedTab,
           final NavBarDecoration? navBarDecoration,
-          final NavBarEssentials? navBarEssentials,
+          final _NavBarEssentials? navBarEssentials,
           final bool? confineToSafeArea,
-          final ItemAnimationProperties? itemAnimationProperties,
+          final ItemAnimationSettings? itemAnimationProperties,
           final Function? onAnimationComplete,
+          final AnimationController? navBarHideAnimationController,
           final bool? hideNavigationBar,
           final bool? isCustomWidget,
           final EdgeInsets? padding}) =>
-      PersistentBottomNavBar(
+      _PersistentBottomNavBar(
           confineToSafeArea: confineToSafeArea ?? this.confineToSafeArea,
           margin: margin ?? this.margin,
+          navBarHideAnimationController: navBarHideAnimationController ??
+              this.navBarHideAnimationController,
           neumorphicProperties:
               neumorphicProperties ?? this.neumorphicProperties,
           navBarStyle: navBarStyle ?? this.navBarStyle,
           hideNavigationBar: hideNavigationBar ?? this.hideNavigationBar,
           customNavBarWidget: customNavBarWidget ?? this.customNavBarWidget,
-          onAnimationComplete:
-              onAnimationComplete as dynamic Function(bool, bool)? ??
-                  this.onAnimationComplete,
+          onAnimationComplete: onAnimationComplete as dynamic Function(
+                  bool isAnimating, bool isComplete)? ??
+              this.onAnimationComplete,
           navBarEssentials: navBarEssentials ?? this.navBarEssentials,
           isCustomWidget: isCustomWidget ?? this.isCustomWidget,
           navBarDecoration: navBarDecoration ?? this.navBarDecoration);
 
-  bool opaque(final int? index) => navBarEssentials!.items == null
+  bool opaque(final int? index) => navBarEssentials.items.isEmpty
       ? true
-      : !(navBarEssentials!.items![index!].opacity < 1.0);
+      : !(navBarEssentials.items[index!].opacity < 1.0);
 
   Widget getNavBarStyle() {
-    if (isCustomWidget!) {
+    if (isCustomWidget) {
       return customNavBarWidget ?? const SizedBox.shrink();
     } else {
       switch (navBarStyle) {
         case NavBarStyle.style1:
-          return BottomNavStyle1(
+          return _BottomNavStyle1(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style2:
-          return BottomNavStyle2(
+          return _BottomNavStyle2(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style3:
-          return BottomNavStyle3(
+          return _BottomNavStyle3(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style4:
-          return BottomNavStyle4(
+          return _BottomNavStyle4(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style5:
-          return BottomNavStyle5(
+          return _BottomNavStyle5(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style6:
-          return BottomNavStyle6(
+          return _BottomNavStyle6(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style7:
-          return BottomNavStyle7(
+          return _BottomNavStyle7(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style8:
-          return BottomNavStyle8(
+          return _BottomNavStyle8(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style9:
-          return BottomNavStyle9(
+          return _BottomNavStyle9(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style10:
-          return BottomNavStyle10(
+          return _BottomNavStyle10(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style11:
-          return BottomNavStyle11(
+          return _BottomNavStyle11(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style12:
-          return BottomNavStyle12(
+          return _BottomNavStyle12(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style13:
-          return BottomNavStyle13(
+          return _BottomNavStyle13(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style14:
-          return BottomNavStyle14(
+          return _BottomNavStyle14(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.style15:
-          return BottomNavStyle15(
+          return _BottomNavStyle15(
             navBarEssentials: navBarEssentials,
             navBarDecoration: navBarDecoration,
           );
         case NavBarStyle.style16:
-          return BottomNavStyle16(
+          return _BottomNavStyle16(
             navBarEssentials: navBarEssentials,
             navBarDecoration: navBarDecoration,
           );
         case NavBarStyle.style17:
-          return BottomNavStyle17(
+          return _BottomNavStyle17(
             navBarEssentials: navBarEssentials,
             navBarDecoration: navBarDecoration,
           );
         case NavBarStyle.style18:
-          return BottomNavStyle18(
+          return _BottomNavStyle18(
             navBarEssentials: navBarEssentials,
             navBarDecoration: navBarDecoration,
           );
         case NavBarStyle.style19:
-          return BottomNavStyle19(
+          return _BottomNavStyle19(
             navBarEssentials: navBarEssentials,
           );
         case NavBarStyle.neumorphic:
-          return NeumorphicBottomNavBar(
+          return _NeumorphicBottomNavBar(
             navBarEssentials: navBarEssentials,
-            neumorphicProperties: neumorphicProperties,
+            neumorphicProperties:
+                neumorphicProperties ?? const NeumorphicProperties(),
           );
         default:
-          return BottomNavSimple(
+          return _BottomNavSimple(
             navBarEssentials: navBarEssentials,
           );
       }

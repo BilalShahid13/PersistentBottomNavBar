@@ -16,7 +16,10 @@ class PersistentBottomNavBarItem {
       this.textStyle,
       this.iconSize = 26.0,
       this.onSelectedTabPressWhenNoScreensPushed,
+      this.iconAnimationController,
+      this.scrollController,
       this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+      this.scrollToTopOnNavBarItemPress = true,
       this.onPressed})
       : assert(opacity >= 0 && opacity <= 1.0,
             "Opacity cannot be greater than 1 and less than 0");
@@ -24,7 +27,7 @@ class PersistentBottomNavBarItem {
   ///Icon for the bar item.
   final Widget icon;
 
-  ///In-Active icon for the bar item.
+  ///In-Active icon for the bar item. This is an optional property and will only be used if defined.
   final Widget? inactiveIcon;
 
   ///Title for the bar item. Might not appear is some `styles`.
@@ -73,4 +76,13 @@ class PersistentBottomNavBarItem {
   final double iconSize;
 
   final RouteAndNavigatorSettings routeAndNavigatorSettings;
+
+  ///For animated icons to work, this property must not be `null` or left empty.
+  final AnimationController? iconAnimationController;
+
+  ///For `scrollToTopOnNavBarItemPress` to work, this property must not be `null` or left empty.
+  final ScrollController? scrollController;
+
+  ///If an already selected navigation bar is tapped again, the scroll controller provided in `PersistentBottomNavBarItem` will animate to top.
+  final bool scrollToTopOnNavBarItemPress;
 }
