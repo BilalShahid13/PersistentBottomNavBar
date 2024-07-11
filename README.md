@@ -427,24 +427,23 @@ If you want to have your own style for the navigation bar, follow these steps:
 
 Animated icons are now supported in `PersistentBottomNavBarItem`. You will need to define and use an `AnimationController` and `Animation<double>` for it to work. Following is an example.
 
-    ```dart
 
-        final _animationController =  AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-        final _animationValue = Tween<double>(begin: 0.toDouble(), end: 1.toDouble()).animate(_animationController),
 
-        final item = PersistentBottomNavBarItem(
-            icon: AnimatedIcon(
-            icon: AnimatedIcons.home_menu,
-            progress: _animationValue,
-            ),
-            iconAnimationController: _animationController,
-            title: "Home",
-            activeColorPrimary: Colors.blue,
-            activeColorSecondary: _navBarStyle == NavBarStyle.style7 || _navBarStyle == NavBarStyle.style10 ? Colors.white : null,
-            inactiveColorPrimary: Colors.grey,
-        ); 
+    final _animationController =  AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    final _animationValue = Tween<double>(begin: 0.toDouble(), end: 1.toDouble()).animate(_animationController),
 
-    ```
+    final item = PersistentBottomNavBarItem(
+        icon: AnimatedIcon(
+        icon: AnimatedIcons.home_menu,
+        progress: _animationValue,
+        ),
+        iconAnimationController: _animationController,
+        title: "Home",
+        activeColorPrimary: Colors.blue,
+        activeColorSecondary: _navBarStyle == NavBarStyle.style7 || _navBarStyle == NavBarStyle.style10 ? Colors.white : null,
+        inactiveColorPrimary: Colors.grey,
+    ); 
+
 
 For better understanding, refer to the [example project](https://github.com/BilalShahid13/PersistentBottomNavBar/tree/master/example) in the official git repo.
 
