@@ -29,7 +29,7 @@ class PersistentNavBarNavigator {
     return Navigator.of(context, rootNavigator: !withNavBar).push<T>(screen);
   }
 
-  ///If you haven't defined a routeName for the first screen of the selected tab then you don't use the optional property `routeName`.
+  ///If you haven't defined a routeName for the first screen of the selected tab then don't use the optional property `routeName`. Otherwise it may not work as intended
   static void popUntilFirstScreenOnSelectedTabScreen(final BuildContext context,
           {final String? routeName}) =>
       Navigator.popUntil(

@@ -11,7 +11,7 @@ part of persistent_bottom_nav_bar;
 
 class PersistentTabView extends PersistentTabViewBase {
   PersistentTabView(this.context,
-      {required this.screens,
+      {required final List<Widget> screens,
       final Key? key,
       final List<PersistentBottomNavBarItem> items = const [],
       this.controller,
@@ -81,7 +81,7 @@ class PersistentTabView extends PersistentTabViewBase {
     this.context, {
     required final Widget customWidget,
     required final int itemCount,
-    required this.screens,
+    required final List<CustomNavBarScreen> screens,
     final Key? key,
     this.controller,
     this.margin = EdgeInsets.zero,
@@ -91,8 +91,6 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardAppears = true,
     this.backgroundColor = CupertinoColors.white,
-    final CustomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
-        const CustomWidgetRouteAndNavigatorSettings(),
     this.confineToSafeArea = true,
     this.onWillPop,
     this.hideOnScrollSettings = const HideOnScrollSettings(),
@@ -107,11 +105,10 @@ class PersistentTabView extends PersistentTabViewBase {
         super(
           key: key,
           context: context,
-          screens: screens,
+          customNavBarScreens: screens,
           controller: controller,
           margin: margin,
           hideOnScrollSettings: hideOnScrollSettings,
-          routeAndNavigatorSettings: routeAndNavigatorSettings,
           backgroundColor: backgroundColor,
           floatingActionButton: floatingActionButton,
           customWidget: customWidget,
@@ -128,10 +125,6 @@ class PersistentTabView extends PersistentTabViewBase {
           navBarPosition: NavBarPosition.bottom,
           navBarHeight: navBarHeight,
         );
-
-  ///Screens that will be displayed on tapping of persistent bottom navigation bar items.
-  @override
-  final List<Widget> screens;
 
   ///Controller for persistent bottom navigation bar. Will be declared if left empty.
   @override
@@ -214,6 +207,7 @@ class PersistentTabViewBase extends StatefulWidget {
   const PersistentTabViewBase({
     final Key? key,
     this.screens = const [],
+    this.customNavBarScreens = const [],
     this.controller,
     this.floatingActionButton,
     this.hideOnScrollSettings = const HideOnScrollSettings(),
@@ -241,7 +235,6 @@ class PersistentTabViewBase extends StatefulWidget {
     this.hideNavigationBarWhenKeyboardAppears = true,
     this.isCustomWidget = false,
     this.selectedTabScreenContext,
-    this.routeAndNavigatorSettings,
     this.navBarItemsAlignment = MainAxisAlignment.spaceAround,
     this.navBarPosition = NavBarPosition.bottom,
   }) : super(key: key);
@@ -251,6 +244,8 @@ class PersistentTabViewBase extends StatefulWidget {
 
   ///Screens that will be displayed on tapping of persistent bottom navigation bar items.
   final List<Widget> screens;
+
+  final List<CustomNavBarScreen> customNavBarScreens;
 
   ///Controller for persistent bottom navigation bar. Will be declared if left empty.
   final PersistentTabController? controller;
@@ -326,11 +321,6 @@ class PersistentTabViewBase extends StatefulWidget {
 
   ///Hides the navigation bar with an transition animation. Use it in conjuction with [Provider](https://pub.dev/packages/provider) for better results.
   final bool isVisible;
-
-  ///Define navigation bar route name and settings here.
-  ///
-  ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final CustomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
 
   ///When these scroll controllers detect a scroll down motion, the navigation bar hides automatically. A hidden navigation bar appears again when scroll up motion is detected.
   final HideOnScrollSettings hideOnScrollSettings;
@@ -464,23 +454,10 @@ class _PersistentTabViewState extends State<PersistentTabView>
   }
 
   Widget _buildScreen(final int index) {
-    final RouteAndNavigatorSettings routeAndNavigatorSettings = widget
-            .isCustomWidget
-        ? RouteAndNavigatorSettings(
-            defaultTitle: widget.routeAndNavigatorSettings?.defaultTitle,
-            initialRoute: widget.routeAndNavigatorSettings?.initialRoute,
-            navigatorKey:
-                widget.routeAndNavigatorSettings?.navigatorKeys == null
-                    ? null
-                    : widget.routeAndNavigatorSettings
-                        ?.navigatorKeys![_controller.index],
-            navigatorObservers:
-                widget.routeAndNavigatorSettings?.navigatorObservers ?? [],
-            onGenerateRoute: widget.routeAndNavigatorSettings?.onGenerateRoute,
-            onUnknownRoute: widget.routeAndNavigatorSettings?.onUnknownRoute,
-            routes: widget.routeAndNavigatorSettings?.routes,
-          )
-        : widget.items[index].routeAndNavigatorSettings;
+    final RouteAndNavigatorSettings? routeAndNavigatorSettings =
+        widget.isCustomWidget
+            ? widget.customNavBarScreens[index].routeAndNavigatorSettings
+            : widget.items[index].routeAndNavigatorSettings;
 
     if (widget.navBarStyle == NavBarStyle.style15) {
       return Stack(
@@ -495,7 +472,11 @@ class _PersistentTabViewState extends State<PersistentTabView>
                   _sendScreenContext = false;
                   widget.selectedTabScreenContext!(_contextList[index]);
                 }
-                return Material(child: widget.screens[index]);
+                return Material(
+                  child: widget.isCustomWidget
+                      ? widget.customNavBarScreens[index].screen
+                      : widget.screens[index],
+                );
               },
             ),
           ),
@@ -561,7 +542,11 @@ class _PersistentTabViewState extends State<PersistentTabView>
                   _sendScreenContext = false;
                   widget.selectedTabScreenContext?.call(_contextList[index]);
                 }
-                return Material(child: widget.screens[index]);
+                return Material(
+                  child: widget.isCustomWidget
+                      ? widget.customNavBarScreens[index].screen
+                      : widget.screens[index],
+                );
               },
             ),
           ),
@@ -619,7 +604,11 @@ class _PersistentTabViewState extends State<PersistentTabView>
               _sendScreenContext = false;
               widget.selectedTabScreenContext?.call(_contextList[index]);
             }
-            return Material(child: widget.screens[index]);
+            return Material(
+              child: widget.isCustomWidget
+                  ? widget.customNavBarScreens[index].screen
+                  : widget.screens[index],
+            );
           });
     }
   }
@@ -812,10 +801,11 @@ class _PersistentTabViewState extends State<PersistentTabView>
       Navigator.popUntil(
           _contextList[_controller.index]!,
           ModalRoute.withName(widget.isCustomWidget
-              ? (widget.routeAndNavigatorSettings?.initialRoute ??
+              ? (widget.customNavBarScreens[_controller.index]
+                      .routeAndNavigatorSettings?.initialRoute ??
                   "/9f580fc5-c252-45d0-af25-9429992db112")
               : widget.items[_controller.index].routeAndNavigatorSettings
-                      .initialRoute ??
+                      ?.initialRoute ??
                   "/9f580fc5-c252-45d0-af25-9429992db112"));
     }
   }

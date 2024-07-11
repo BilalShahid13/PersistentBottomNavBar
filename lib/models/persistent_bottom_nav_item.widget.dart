@@ -18,7 +18,7 @@ class PersistentBottomNavBarItem {
       this.onSelectedTabPressWhenNoScreensPushed,
       this.iconAnimationController,
       this.scrollController,
-      this.routeAndNavigatorSettings = const RouteAndNavigatorSettings(),
+      this.routeAndNavigatorSettings,
       this.scrollToTopOnNavBarItemPress = true,
       this.onPressed})
       : assert(opacity >= 0 && opacity <= 1.0,
@@ -75,7 +75,7 @@ class PersistentBottomNavBarItem {
 
   final double iconSize;
 
-  final RouteAndNavigatorSettings routeAndNavigatorSettings;
+  final RouteAndNavigatorSettings? routeAndNavigatorSettings;
 
   ///For animated icons to work, this property must not be `null` or left empty.
   final AnimationController? iconAnimationController;

@@ -206,6 +206,17 @@ If you are pushing a new `modal` screen, use the following function:
 
 ```
 
+Pop all screens until the first screen on the selected tab
+
+```dart
+
+    PersistentNavBarNavigator.popUntilFirstScreenOnSelectedTabScreen(
+        context,
+        routeName: "/", //If you haven't defined a routeName for the first screen of the selected tab then don't use the optional property `routeName`. Otherwise it may not work as intended
+    );
+
+```
+
 ### Some Useful Tips
 
 - Pop to any screen in the navigation graph for a given tab:
@@ -342,7 +353,48 @@ If you want to have your own style for the navigation bar, follow these steps:
             return PersistentTabView.custom(
                 context,
                 controller: _controller,
-                screens: _buildScreens(),
+                screens: [
+                    CustomNavBarScreen(
+                        //You can declare route settings for custom navigation bar screen here
+                        routeAndNavigatorSettings: RouteAndNavigatorSettings(
+                        initialRoute: "/",
+                        routes: {
+                                "/first": (final context) => const MainScreen2(),
+                                "/second": (final context) => const MainScreen3(),
+                            },
+                        ),
+                        screen: MainScreen(
+                            menuScreenContext: widget.menuScreenContext,
+                            scrollController: _scrollControllers.first,
+
+                        ),                    ),
+                    CustomNavBarScreen(
+                        screen: MainScreen(
+                            menuScreenContext: widget.menuScreenContext,
+                            scrollController: _scrollControllers[1],
+
+                        ),
+                    ),
+                    CustomNavBarScreen(
+                        screen: MainScreen(
+                            menuScreenContext: widget.menuScreenContext,
+                            scrollController: _scrollControllers[2],
+                        ),
+                    ),
+                    CustomNavBarScreen(
+                        screen: MainScreen(
+                            menuScreenContext: widget.menuScreenContext,
+                            scrollController: _scrollControllers[3],
+
+                        ),
+                    ),
+                    CustomNavBarScreen(
+                        screen: MainScreen(
+                            menuScreenContext: widget.menuScreenContext,
+                            scrollController: _scrollControllers.last,
+                        ),
+                    ),
+                ],
                 itemCount: 5,
                 isVisible: true,
                 hideOnScrollSettings: HideOnScrollSettings(
@@ -351,8 +403,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                 ),
                 backgroundColor: Colors.grey.shade900,
                 customWidget: CustomNavBarWidget(
-                        _navBarsItems(),
-                        onItemSelected: (final index) {
+                        _navBarsItems(),                        onItemSelected: (final index) {
                              //Scroll to top for custom widget. For non custom widget, declare property `scrollController` in `PersistentBottomNavBarItem`.
                             if (index == _controller.index) {
                                 _scrollControllers[index].animateTo(0, duration: const Duration(milliseconds: 200), curve: Curves.ease);
@@ -364,8 +415,7 @@ If you want to have your own style for the navigation bar, follow these steps:
                         selectedIndex: _controller.index,
                     ),
                 ),
-        }
-    }
+        }    }
 
     ```
 

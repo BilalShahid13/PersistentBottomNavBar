@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.0] - 2024-07-11
+- **Breaking Changes**
+    - For `PersistentTabView.custom`, `List<Widget> screens` has been replaced with `List<CustomNavBarScreen> screens`. 
+    - Property `routeAndNavigatorSettings` has been removed from `PersistentTabView.custom`. You now define `RouteAndNavigatorSettings` for each screen separately in `CustomNavBarScreen`. Please refer to the [Readme](https://pub.dev/packages/persistent_bottom_nav_bar#custom-navigation-bar-styling) file for more instructions.
+
 ## [6.1.1] - 2024-07-11
 - Updated README.md
 

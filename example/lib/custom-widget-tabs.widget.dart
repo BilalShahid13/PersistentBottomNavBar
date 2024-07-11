@@ -43,61 +43,78 @@ class _CustomWidgetExampleState extends State<CustomWidgetExample> {
     super.dispose();
   }
 
-  List<Widget> _buildScreens() => [
-        MainScreen(
-          menuScreenContext: widget.menuScreenContext,
-          scrollController: _scrollControllers.first,
-          hideStatus: _hideNavBar,
-          showNavBarStyles: false,
-          onScreenHideButtonPressed: () {
-            setState(() {
-              _hideNavBar = !_hideNavBar;
-            });
-          },
+  List<CustomNavBarScreen> _buildScreens() => [
+        CustomNavBarScreen(
+          routeAndNavigatorSettings: RouteAndNavigatorSettings(
+            initialRoute: "/",
+            routes: {
+              "/first": (final context) => const MainScreen2(),
+              "/second": (final context) => const MainScreen3(),
+            },
+          ),
+          screen: MainScreen(
+            menuScreenContext: widget.menuScreenContext,
+            scrollController: _scrollControllers.first,
+            hideStatus: _hideNavBar,
+            showNavBarStyles: false,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
         ),
-        MainScreen(
-          menuScreenContext: widget.menuScreenContext,
-          scrollController: _scrollControllers[1],
-          hideStatus: _hideNavBar,
-          showNavBarStyles: false,
-          onScreenHideButtonPressed: () {
-            setState(() {
-              _hideNavBar = !_hideNavBar;
-            });
-          },
+        CustomNavBarScreen(
+          screen: MainScreen(
+            menuScreenContext: widget.menuScreenContext,
+            scrollController: _scrollControllers[1],
+            hideStatus: _hideNavBar,
+            showNavBarStyles: false,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
         ),
-        MainScreen(
-          menuScreenContext: widget.menuScreenContext,
-          scrollController: _scrollControllers[2],
-          hideStatus: _hideNavBar,
-          showNavBarStyles: false,
-          onScreenHideButtonPressed: () {
-            setState(() {
-              _hideNavBar = !_hideNavBar;
-            });
-          },
+        CustomNavBarScreen(
+          screen: MainScreen(
+            menuScreenContext: widget.menuScreenContext,
+            scrollController: _scrollControllers[2],
+            hideStatus: _hideNavBar,
+            showNavBarStyles: false,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
         ),
-        MainScreen(
-          menuScreenContext: widget.menuScreenContext,
-          scrollController: _scrollControllers[3],
-          hideStatus: _hideNavBar,
-          showNavBarStyles: false,
-          onScreenHideButtonPressed: () {
-            setState(() {
-              _hideNavBar = !_hideNavBar;
-            });
-          },
+        CustomNavBarScreen(
+          screen: MainScreen(
+            menuScreenContext: widget.menuScreenContext,
+            scrollController: _scrollControllers[3],
+            hideStatus: _hideNavBar,
+            showNavBarStyles: false,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
         ),
-        MainScreen(
-          menuScreenContext: widget.menuScreenContext,
-          scrollController: _scrollControllers.last,
-          hideStatus: _hideNavBar,
-          showNavBarStyles: false,
-          onScreenHideButtonPressed: () {
-            setState(() {
-              _hideNavBar = !_hideNavBar;
-            });
-          },
+        CustomNavBarScreen(
+          screen: MainScreen(
+            menuScreenContext: widget.menuScreenContext,
+            scrollController: _scrollControllers.last,
+            hideStatus: _hideNavBar,
+            showNavBarStyles: false,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
         ),
       ];
 
