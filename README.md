@@ -6,7 +6,7 @@
 
 A persistent/static bottom navigation bar for Flutter.
 
-NOTE: Those migrating from **pre 6.0.0** version should check the latest readme and changelog as there are many breaking changes introduced in the latest update.
+NOTE: Those migrating from **pre 6.0.0** version should check the latest readme and [changelog](https://pub.dev/packages/persistent_bottom_nav_bar/changelog) as there are many breaking changes introduced in the latest update.
 
 ![Persistent Behavior](gifs/persistent.gif)
 
@@ -48,7 +48,7 @@ NOTE: Those migrating from **pre 6.0.0** version should check the latest readme 
 - Can be `translucent` for a particular tab.
 - Custom styling for the navigation bar. Click [here](#custom-navigation-bar-styling) for more information.
 - Handles hardware/software Android back button.
-- Supports animted icons.
+- Supports animated icons.
 
 ## Getting Started
 
@@ -379,20 +379,20 @@ Animated icons are now supported in `PersistentBottomNavBarItem`. You will need 
 
     ```dart
 
-        final _animationController =  AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
-        final _animationValue = Tween<double>(begin: 0.toDouble(), end: 1.toDouble()).animate(_animationController),
+    final _animationController =  AnimationController(vsync: this, duration: const Duration(milliseconds: 400));
+    final _animationValue = Tween<double>(begin: 0.toDouble(), end: 1.toDouble()).animate(_animationController),
 
-        PersistentBottomNavBarItem(
-          icon: AnimatedIcon(
-            icon: AnimatedIcons.home_menu,
-            progress: _animationValue,
-          ),
-          iconAnimationController: _animationController,
-          title: "Home",
-          activeColorPrimary: Colors.blue,
-          activeColorSecondary: _navBarStyle == NavBarStyle.style7 || _navBarStyle == NavBarStyle.style10 ? Colors.white : null,
-          inactiveColorPrimary: Colors.grey,
-        ), 
+    PersistentBottomNavBarItem(
+        icon: AnimatedIcon(
+        icon: AnimatedIcons.home_menu,
+        progress: _animationValue,
+        ),
+        iconAnimationController: _animationController,
+        title: "Home",
+        activeColorPrimary: Colors.blue,
+        activeColorSecondary: _navBarStyle == NavBarStyle.style7 || _navBarStyle == NavBarStyle.style10 ? Colors.white : null,
+        inactiveColorPrimary: Colors.grey,
+    ), 
 
     ```
 

@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.0.1] - 2024-07-11
+- Removed deprecated classes.
+- Fixed unwanted trigger of `onWillPop` when Android back button is pressed.
+- Fixed the bug where bar in Style3 and Style4 would not work correctly when margin was applied.
+- Fixed typos in Readme and Changelog.
+- Updated example project to run on latest Android versions.
+
+
 ## [6.0.0] - 2024-07-11
 - There are many new features and some breaking changes introduced in this version. I will do my best to list all down here but I will still advise to check the example project to cover and see all of the changes for yourself.
 - **Breaking Changes**
@@ -20,7 +28,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     - You can now scroll to top on a scrollable screen when an already selected navigation bar tab is pressed. You will need to provide scroll controllers in both this and above mentioned functionality.
     - New `fadeIn` animation in `screenTransitionAnimation`.
     - New function `popUntilFirstScreenOnSelectedTabScreen`introduced in `PersistentNavBarNavigator`.
-    - If opacity is greater than 0 in `PersistentBottomNavBarItem` and `boxShadow` is applied `NavBarDecoration`, `backgroundColor` will be set to transparent to achieve partial transparent navigation bar effect like on Spotify Android. 
+    - If opacity is less than 1 in `PersistentBottomNavBarItem` and `boxShadow` is applied `NavBarDecoration`, `backgroundColor` will be set to transparent to achieve partial transparent navigation bar effect like on Spotify Android. 
 - **Bug Fixes**
     - Fixed null errors around `NavBarDecoration`.
     - Removed jitter in animation when property `hideNavigationBar` was changed.

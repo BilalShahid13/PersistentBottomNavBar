@@ -161,7 +161,7 @@ class PersistentTabView extends PersistentTabViewBase {
   ///Handles android back button actions. Defaults to `true`.
   ///
   ///Action based on scenarios:
-  ///1. If the you are on the first tab with all screens popped of the given tab, the app will close.
+  ///1. If the you are on the first tab with all screens popped of the given tab, the app will close if `handleAndroidBackButtonPress` is set to `false`. If `handleAndroidBackButtonPress` is set to true, nothing will happen.
   ///2. If you are on another tab with all screens popped of that given tab, you will be switched to first tab.
   ///3. If there are screens pushed on the selected tab, a screen will pop on a respective back button press.
   @override
@@ -178,7 +178,7 @@ class PersistentTabView extends PersistentTabViewBase {
   @override
   final bool stateManagement;
 
-  ///If you want to perform a custom action on Android when exiting the app, you can write your logic here. Returns context of the selected screen.
+  ///If you want to perform a custom action on Android when exiting the app, you can write your logic here. Returns context of the selected screen. If you to exit the app make sure to set `handleAndroidBackButtonPress` as false.
   @override
   final Future<bool> Function(BuildContext?)? onWillPop;
 
@@ -361,6 +361,7 @@ class _PersistentTabViewState extends State<PersistentTabView>
   late bool _sendScreenContext;
   late bool _hideNavigationBar;
   late bool _hideNavigationAfterScrollDown;
+  late bool _canPop;
   late final AnimationController _navBarHideAnimationController;
   late final Animation<double> _navBarHeightFactor;
   late final HashMap<ScrollController, _NavBarScrollModel> _lastScrollOffset =
@@ -391,6 +392,7 @@ class _PersistentTabViewState extends State<PersistentTabView>
     _isAnimating = false;
     _sendScreenContext = false;
     _hideNavigationAfterScrollDown = false;
+    _canPop = false;
 
     _controller.addListener(() {
       if (_controller.index != _currentIndex) {
@@ -647,6 +649,7 @@ class _PersistentTabViewState extends State<PersistentTabView>
             selectedIndex: _controller.index,
             previousIndex: _previousIndex,
             padding: widget.padding,
+            margin: widget.margin,
             navBarItemsAlignment: widget.navBarItemsAlignment,
             selectedScreenBuildContext: _contextList[_controller.index],
             itemAnimationProperties:
@@ -698,7 +701,6 @@ class _PersistentTabViewState extends State<PersistentTabView>
           navBarHideAnimationController: _navBarHideAnimationController,
           isCustomWidget: widget.isCustomWidget,
           navBarDecoration: widget.decoration,
-          margin: widget.margin,
           confineToSafeArea:
               widget.margin.bottom > 0 ? false : widget.confineToSafeArea,
           hideNavigationBar: _hideNavigationBar,
@@ -736,43 +738,57 @@ class _PersistentTabViewState extends State<PersistentTabView>
     }
 
     if (widget.handleAndroidBackButtonPress || widget.onWillPop != null) {
-      return WillPopScope(
-        onWillPop: !widget.handleAndroidBackButtonPress &&
-                widget.onWillPop != null
-            ? () async {
-                final result =
-                    await widget.onWillPop!(_contextList[_controller.index]);
-                return Future.value(result);
+      return PopScope(
+        canPop: _canPop,
+        onPopInvoked: (final _) async {
+          if (!widget.handleAndroidBackButtonPress &&
+              widget.onWillPop != null &&
+              !Navigator.canPop(_contextList[_controller.index]!)) {
+            final result =
+                await widget.onWillPop!(_contextList[_controller.index]);
+            if (result && !Navigator.canPop(_contextList[_controller.index]!)) {
+              setState(() {
+                _canPop = true;
+              });
+              Navigator.pop(context);
+              _canPop = false;
+              return;
+            }
+          } else if (!widget.handleAndroidBackButtonPress &&
+              widget.onWillPop != null) {
+            await Navigator.maybePop(_contextList[_controller.index]!);
+            return;
+          } else if (widget.handleAndroidBackButtonPress &&
+              widget.onWillPop != null) {
+            if (_controller.index == 0 &&
+                !Navigator.canPop(_contextList.first!)) {
+              await widget.onWillPop!(_contextList.first);
+              return;
+            } else {
+              if (Navigator.canPop(_contextList[_controller.index]!)) {
+                Navigator.pop(_contextList[_controller.index]!);
+              } else {
+                widget.onItemSelected?.call(0);
+                _controller.index = 0;
               }
-            : widget.handleAndroidBackButtonPress && widget.onWillPop != null
-                ? () async {
-                    if (_controller.index == 0 &&
-                        !Navigator.canPop(_contextList.first!)) {
-                      return widget.onWillPop!(_contextList.first);
-                    } else {
-                      if (Navigator.canPop(_contextList[_controller.index]!)) {
-                        Navigator.pop(_contextList[_controller.index]!);
-                      } else {
-                        widget.onItemSelected?.call(0);
-                        _controller.index = 0;
-                      }
-                      return false;
-                    }
-                  }
-                : () async {
-                    if (_controller.index == 0 &&
-                        !Navigator.canPop(_contextList.first!)) {
-                      return true;
-                    } else {
-                      if (Navigator.canPop(_contextList[_controller.index]!)) {
-                        Navigator.pop(_contextList[_controller.index]!);
-                      } else {
-                        widget.onItemSelected?.call(0);
-                        _controller.index = 0;
-                      }
-                      return false;
-                    }
-                  },
+              return;
+            }
+          } else {
+            if (_controller.index == 0 &&
+                !Navigator.canPop(_contextList.first!)) {
+              await Navigator.maybePop(_contextList[_controller.index]!);
+              return;
+            } else {
+              if (Navigator.canPop(_contextList[_controller.index]!)) {
+                Navigator.pop(_contextList[_controller.index]!);
+              } else {
+                widget.onItemSelected?.call(0);
+                _controller.index = 0;
+              }
+              return;
+            }
+          }
+        },
         child: navigationBarWidget(),
       );
     } else {

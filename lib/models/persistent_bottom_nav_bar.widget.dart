@@ -10,7 +10,6 @@ class _PersistentBottomNavBar extends StatelessWidget {
     required this.navBarStyle,
     required this.hideNavigationBar,
     required this.navBarHideAnimationController,
-    this.margin = EdgeInsets.zero,
     this.customNavBarWidget,
     this.onAnimationComplete,
     this.neumorphicProperties = const NeumorphicProperties(),
@@ -20,7 +19,6 @@ class _PersistentBottomNavBar extends StatelessWidget {
 
   final AnimationController navBarHideAnimationController;
   final _NavBarEssentials navBarEssentials;
-  final EdgeInsets margin;
   final NavBarDecoration navBarDecoration;
   final NavBarStyle navBarStyle;
   final NeumorphicProperties? neumorphicProperties;
@@ -31,12 +29,12 @@ class _PersistentBottomNavBar extends StatelessWidget {
   final bool isCustomWidget;
 
   Padding _navBarWidget(final BuildContext context) => Padding(
-        padding: margin,
+        padding: navBarEssentials.margin,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isCustomWidget)
-              margin.bottom > 0
+              navBarEssentials.margin.bottom > 0
                   ? DecoratedBox(
                       decoration: BoxDecoration(
                         color: navBarEssentials.backgroundColor,
@@ -69,7 +67,7 @@ class _PersistentBottomNavBar extends StatelessWidget {
                     )
             else
               navBarStyle == NavBarStyle.style19
-                  ? margin.bottom > 0
+                  ? navBarEssentials.margin.bottom > 0
                       ? Padding(
                           padding: EdgeInsets.only(
                               bottom: confineToSafeArea
@@ -96,7 +94,7 @@ class _PersistentBottomNavBar extends StatelessWidget {
                         )
                   : navBarStyle == NavBarStyle.style15 ||
                           navBarStyle == NavBarStyle.style16
-                      ? margin.bottom > 0
+                      ? navBarEssentials.margin.bottom > 0
                           ? DecoratedBox(
                               decoration:
                                   _PersistentBottomNavigationBarUtilFunctions
@@ -200,7 +198,7 @@ class _PersistentBottomNavBar extends StatelessWidget {
       );
 
   @override
-  Widget build(final BuildContext context) => OffsetAnimation(
+  Widget build(final BuildContext context) => _OffsetAnimation(
         hideNavigationBar: hideNavigationBar,
         navBarHeight: navBarEssentials.navBarHeight +
             MediaQuery.paddingOf(context).bottom,
@@ -220,7 +218,6 @@ class _PersistentBottomNavBar extends StatelessWidget {
           final List<PersistentBottomNavBarItem>? items,
           final ValueChanged<int>? onItemSelected,
           final double? navBarHeight,
-          final EdgeInsets? margin,
           final NavBarStyle? navBarStyle,
           final double? horizontalPadding,
           final NeumorphicProperties? neumorphicProperties,
@@ -238,7 +235,6 @@ class _PersistentBottomNavBar extends StatelessWidget {
           final EdgeInsets? padding}) =>
       _PersistentBottomNavBar(
           confineToSafeArea: confineToSafeArea ?? this.confineToSafeArea,
-          margin: margin ?? this.margin,
           navBarHideAnimationController: navBarHideAnimationController ??
               this.navBarHideAnimationController,
           neumorphicProperties:

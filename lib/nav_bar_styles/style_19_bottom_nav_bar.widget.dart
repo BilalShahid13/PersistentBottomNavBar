@@ -32,7 +32,9 @@ class _BottomNavStyle19 extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     final double itemWidth = (MediaQuery.of(context).size.width -
-            (navBarEssentials.padding.left + navBarEssentials.padding.right)) /
+            ((navBarEssentials.padding.left + navBarEssentials.padding.right) +
+                (navBarEssentials.margin.left +
+                    navBarEssentials.margin.right))) /
         navBarEssentials.items.length;
     return SizedBox(
       width: double.infinity,

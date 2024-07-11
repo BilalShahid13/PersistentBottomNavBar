@@ -7,8 +7,6 @@ import "dart:ui";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 
-//Animations
-part "animations/animations.dart";
 //Models
 part "models/nav_bar_animation.model.dart";
 part "models/nav_bar_essentials.model.dart";

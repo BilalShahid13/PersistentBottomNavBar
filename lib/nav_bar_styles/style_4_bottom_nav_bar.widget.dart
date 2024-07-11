@@ -74,7 +74,9 @@ class _BottomNavStyle4 extends StatelessWidget {
     final Color selectedItemActiveColor = navBarEssentials
         .items[navBarEssentials.selectedIndex].activeColorPrimary;
     final double itemWidth = (MediaQuery.of(context).size.width -
-            (navBarEssentials.padding.left + navBarEssentials.padding.right)) /
+            ((navBarEssentials.padding.left + navBarEssentials.padding.right) +
+                (navBarEssentials.margin.left +
+                    navBarEssentials.margin.right))) /
         navBarEssentials.items.length;
     return Container(
       width: double.infinity,

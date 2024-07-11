@@ -9,6 +9,7 @@ class _NavBarEssentials {
     required this.itemAnimationProperties,
     required this.onItemSelected,
     required this.padding,
+    required this.margin,
     required this.navBarItemsAlignment,
     this.selectedScreenBuildContext,
     this.navBarHeight = 0.0,
@@ -24,6 +25,7 @@ class _NavBarEssentials {
   final ItemAnimationSettings itemAnimationProperties;
   final BuildContext? selectedScreenBuildContext;
   final MainAxisAlignment navBarItemsAlignment;
+  final EdgeInsets margin;
 
   _NavBarEssentials copyWith({
     final int? selectedIndex,
@@ -34,6 +36,7 @@ class _NavBarEssentials {
     final ValueChanged<int>? onItemSelected,
     final double? navBarHeight,
     final EdgeInsets? padding,
+    final EdgeInsets? margin,
     final Function(int)? popAllScreensForTheSelectedTab,
     final ItemAnimationSettings? itemAnimationProperties,
     final BuildContext? selectedScreenBuildContext,
@@ -47,6 +50,7 @@ class _NavBarEssentials {
         onItemSelected: onItemSelected ?? this.onItemSelected,
         navBarHeight: navBarHeight ?? this.navBarHeight,
         padding: padding ?? this.padding,
+        margin: margin ?? this.margin,
         itemAnimationProperties:
             itemAnimationProperties ?? this.itemAnimationProperties,
         selectedScreenBuildContext:
