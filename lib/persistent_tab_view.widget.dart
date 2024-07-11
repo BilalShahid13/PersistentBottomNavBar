@@ -91,8 +91,8 @@ class PersistentTabView extends PersistentTabViewBase {
     this.selectedTabScreenContext,
     this.hideNavigationBarWhenKeyboardAppears = true,
     this.backgroundColor = CupertinoColors.white,
-    final _CustomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
-        const _CustomWidgetRouteAndNavigatorSettings(),
+    final CustomWidgetRouteAndNavigatorSettings routeAndNavigatorSettings =
+        const CustomWidgetRouteAndNavigatorSettings(),
     this.confineToSafeArea = true,
     this.onWillPop,
     this.hideOnScrollSettings = const HideOnScrollSettings(),
@@ -330,7 +330,7 @@ class PersistentTabViewBase extends StatefulWidget {
   ///Define navigation bar route name and settings here.
   ///
   ///If you want to programmatically pop to initial screen on a specific use this route name when popping.
-  final _CustomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
+  final CustomWidgetRouteAndNavigatorSettings? routeAndNavigatorSettings;
 
   ///When these scroll controllers detect a scroll down motion, the navigation bar hides automatically. A hidden navigation bar appears again when scroll up motion is detected.
   final HideOnScrollSettings hideOnScrollSettings;
