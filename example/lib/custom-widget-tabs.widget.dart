@@ -3,8 +3,9 @@
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart";
 
-import "package:persistent_bottom_nav_bar_example_project/main.dart";
-import "package:persistent_bottom_nav_bar_example_project/screens.dart";
+import "main.dart";
+import "screens.dart";
+
 
 class CustomWidgetExample extends StatefulWidget {
   const CustomWidgetExample({

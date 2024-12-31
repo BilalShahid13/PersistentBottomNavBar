@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart";
-import "package:persistent_bottom_nav_bar_example_project/modal_screen.dart";
+
+import "modal_screen.dart";
+
 
 class MainScreen extends StatelessWidget {
   const MainScreen({
@@ -84,7 +86,7 @@ class MainScreen extends StatelessWidget {
                       showModalBottomSheet(
                         context: context,
                         backgroundColor: Colors.white,
-                        useRootNavigator: false,
+                       
                         builder: (final context) => Center(
                           child: ElevatedButton(
                             onPressed: () {

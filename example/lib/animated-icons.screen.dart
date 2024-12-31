@@ -1,6 +1,8 @@
 import "package:flutter/material.dart";
 import "package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart";
-import "package:persistent_bottom_nav_bar_example_project/screens.dart";
+
+import "screens.dart";
+
 
 class AnimatedIconScreen extends StatefulWidget {
   const AnimatedIconScreen({required this.menuScreenContext, super.key});
@@ -243,7 +245,6 @@ class _AnimatedIconScreenState extends State<AnimatedIconScreen>
           onWillPop: (final context) async {
             await showDialog(
               context: context ?? this.context,
-              useSafeArea: true,
               builder: (final context) => Container(
                 height: 50,
                 width: 50,
