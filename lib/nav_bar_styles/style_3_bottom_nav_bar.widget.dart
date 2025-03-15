@@ -48,19 +48,13 @@ class _BottomNavStyle3 extends StatelessWidget {
                           type: MaterialType.transparency,
                           child: DefaultTextStyle.merge(
                             style: TextStyle(
-                                color: item.textStyle != null
-                                    ? item.textStyle!.apply(
-                                            color: isSelected
-                                                ? (item.activeColorSecondary ??
-                                                    item.activeColorPrimary)
-                                                : item.inactiveColorPrimary)
-                                        as Color?
-                                    : isSelected
+                                color: isSelected
                                         ? (item.activeColorSecondary ??
                                             item.activeColorPrimary)
                                         : item.inactiveColorPrimary,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 12),
+                                fontFamily: item.textStyle != null && item.textStyle!.fontFamily != null ? item.textStyle!.fontFamily : null,
+                                fontSize: item.textStyle != null && item.textStyle!.fontSize != null ? item.textStyle!.fontSize : 12),
                             child: FittedBox(child: Text(item.title!)),
                           ),
                         ),
